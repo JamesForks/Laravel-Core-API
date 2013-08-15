@@ -11,7 +11,9 @@
     ],
     "require": {
         "php": ">=5.3.3",
-        "illuminate/support": "4.0.x"
+        "illuminate/support": "4.0.*",
+        "symfony/event-dispatcher": "2.3.*",
+        "guzzle/guzzle": "3.7.*"
     },
     "require-dev": {
         "mockery/mockery": "dev-master",
@@ -19,7 +21,7 @@
     },
     "autoload": {
         "psr-0": {
-            "GrahamCampbell\\Passwd": "src/"
+            "GrahamCampbell\\CoreAPI": "src/"
         }
     },
     "minimum-stability": "dev"
