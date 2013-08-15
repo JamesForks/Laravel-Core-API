@@ -1,0 +1,26 @@
+{
+    "name": "graham-campbell/core-api",
+    "description": "Core API Provides Some Core API Client Functions For Laravel 4",
+    "keywords": ["laravel", "framework", "core api", "core", "api", "Core API", "Core-API", "Laravel Core API", "Laravel-Core-API", "Graham Campbell", "GrahamCampbell"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Graham Campbell",
+            "email": "graham@mineuk.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.3",
+        "illuminate/support": "4.0.x"
+    },
+    "require-dev": {
+        "mockery/mockery": "dev-master",
+        "phpunit/phpunit": "3.7.*@stable"
+    },
+    "autoload": {
+        "psr-0": {
+            "GrahamCampbell\\Passwd": "src/"
+        }
+    },
+    "minimum-stability": "dev"
+}
