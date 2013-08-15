@@ -21,10 +21,10 @@ Copyright © [Graham Campbell](https://github.com/GrahamCampbell) 2013
 
 ## What Is Laravel Core API?
 
-Laravel Core API Provides Some Core API Client Functions For [Laravel 4](http://laravel.com).  
+Laravel Core API provides some core API client functions for [Laravel 4](http://laravel.com).  
 
 * Laravel Core API was created by, and is maintained by [Graham Campbell](https://github.com/GrahamCampbell).  
-* Laravel Core API relies on the [Guzzle](https://github.com/guzzle/guzzle) package for web requests.  
+* Laravel Core API relies on the [Guzzle](https://github.com/guzzle/guzzle) package.  
 * Laravel Core API uses [Travis CI](https://travis-ci.org/GrahamCampbell/Laravel-Core-API) to run tests to check if it's working as it should.  
 * Laravel Core API uses [Composer](https://getcomposer.org) to load and manage dependencies.  
 * Laravel Core API provides a [change log](https://github.com/GrahamCampbell/Laravel-Core-API/blob/master/CHANGELOG.md), [releases](https://github.com/GrahamCampbell/Laravel-Core-API/releases), and a [wiki](https://github.com/GrahamCampbell/Laravel-Core-API/wiki).  
