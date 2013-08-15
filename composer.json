@@ -24,5 +24,10 @@
             "GrahamCampbell\\CoreAPI": "src/"
         }
     },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "0.1.x-dev"
+        }
+    },
     "minimum-stability": "dev"
 }
