@@ -134,7 +134,7 @@ class CoreAPI {
             $cache = 0;
         }
 
-        if (Config::get('core-api::cache') === 0 && Config::get('core-api::force')) {
+        if (Config::get('core-api::cache') === 0 && Config::get('core-api::force') === true) {
             $cache = 0;
         }
 

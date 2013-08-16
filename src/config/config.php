@@ -37,6 +37,6 @@ return array(
     |
     */
 
-    'cache'  => true,
+    'force'  => true,
 
 );
