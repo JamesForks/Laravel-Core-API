@@ -148,8 +148,9 @@ class CoreAPI {
     }
 
     public function goGet($uri = null, $headers = null, $options = array(), $cache = true) {
-        return $this->cache(json_encode('get').json_encode($uri).json_encode($headers).json_encode($options), function($client) {
-            return $client->get($uri, $headers, $options)->send()->getBody();
+        return $this->cache(json_encode('get').json_encode($uri).json_encode($headers).json_encode($options),
+            function($client, $uri = $uri, $headers = $headers, $options = $options) {
+                return $client->get($uri, $headers, $options)->send()->getBody();
         }, $cache);
     }
 
@@ -162,8 +163,9 @@ class CoreAPI {
     }
 
     public function goHead($uri = null, $headers = null, $options = array(), $cache = false) {
-        return $this->cache(json_encode('get').json_encode($uri).json_encode($headers).json_encode($options), function($client) {
-            return $client->head($uri, $headers, $options)->send()->getBody();
+        return $this->cache(json_encode('get').json_encode($uri).json_encode($headers).json_encode($options),
+            function($client, $uri = $uri, $headers = $headers, $options = $options) {
+                return $client->head($uri, $headers, $options)->send()->getBody();
         }, $cache);
     }
 
@@ -190,8 +192,9 @@ class CoreAPI {
     }
 
     public function goPut($uri = null, $headers = null, $body = null, $options = array(), $cache = false) {
-        return $this->cache(json_encode('get').json_encode($uri).json_encode($headers).json_encode($body).json_encode($options), function($client) {
-            return $client->put($uri, $headers, $body, $options)->send()->getBody();
+        return $this->cache(json_encode('get').json_encode($uri).json_encode($headers).json_encode($body).json_encode($options),
+            function($client, $uri = $uri, $headers = $headers, $body = $body, $options = $options) {
+                return $client->put($uri, $headers, $body, $options)->send()->getBody();
         }, $cache);
     }
 
@@ -204,8 +207,9 @@ class CoreAPI {
     }
 
     public function goPatch($uri = null, $headers = null, $body = null, $options = array(), $cache = false) {
-        return $this->cache(json_encode('get').json_encode($uri).json_encode($headers).json_encode($body).json_encode($options), function($client) {
-            return $client->patch($uri, $headers, $body, $options)->send()->getBody();
+        return $this->cache(json_encode('get').json_encode($uri).json_encode($headers).json_encode($body).json_encode($options),
+            function($client, $uri = $uri, $headers = $headers, $body = $body, $options = $options) {
+                return $client->patch($uri, $headers, $body, $options)->send()->getBody();
         }, $cache);
     }
 
@@ -218,8 +222,9 @@ class CoreAPI {
     }
 
     public function goPost($uri = null, $headers = null, $body = null, $options = array(), $cache = false) {
-        return $this->cache(json_encode('get').json_encode($uri).json_encode($headers).json_encode($body).json_encode($options), function($client) {
-            return $client->post($uri, $headers, $body, $options)->send()->getBody();
+        return $this->cache(json_encode('get').json_encode($uri).json_encode($headers).json_encode($body).json_encode($options),
+            function($client, $uri = $uri, $headers = $headers, $body = $body, $options = $options) {
+                return $client->post($uri, $headers, $body, $options)->send()->getBody();
         }, $cache);
     }
 
@@ -232,8 +237,9 @@ class CoreAPI {
     }
 
     public function goOptions($uri = null, array $options = array(), $cache = false) {
-        return $this->cache(json_encode('get').json_encode($uri).json_encode($options), function($client) {
-            return $client->options($uri, $options)->send()->getBody();
+        return $this->cache(json_encode('get').json_encode($uri).json_encode($options),
+            function($client, $uri = $uri, $options = $options) {
+                return $client->options($uri, $options)->send()->getBody();
         }, $cache);
     }
 }
