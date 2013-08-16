@@ -134,6 +134,10 @@ class CoreAPI {
             $cache = 0;
         }
 
+        if (Config::get('core-api::cache') === 0 && Config::get('core-api::force')) {
+            $cache = 0;
+        }
+
         if ($cache !== 0) {
             $key = $this->getKey($values, $type);
 

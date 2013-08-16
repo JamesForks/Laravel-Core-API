@@ -8,17 +8,35 @@ return array(
     |--------------------------------------------------------------------------
     |
     | This option specifies the time in minutes to cache API requests.
-    | Setting it to 0 will disable caching. 15 minutes might be a good value.
-    | Normally, only GET requests are cached, however as a last parameter in
-    | requests, you may override this and ask other methods to be cached too.
-    | Note that if this value is set to 0, overriding will have no affect
-    | because the override will just tell it to follow the GET caching rules.
-    | You can also override GET request caching in the same way to disable it.
+    | Setting it to 0 will disable caching. Normally, only GET requests are
+    | cached, however as a last parameter in requests, you may override this
+    | and ask other methods to be cached too. You may of course override a GET
+    | call with a custom cache time of your choosing. If the force no cache
+    | setting is enabled, this setting will be ignored.
+    |
+    | If you which to take advantage of caching, you should set this to to a
+    | value above 2. 15 minutes might be a good value.
     |
     | Default: 0
     |
     */
 
     'cache'  => 0,
+
+    /*
+    |--------------------------------------------------------------------------
+    | Force No Cache
+    |--------------------------------------------------------------------------
+    |
+    | This option specifies if the caching should be forced off when the cache
+    | time is set to 0. This will ignore all overrides that would work before.
+    |
+    | If you which to take advantage of caching, you MUST set this to false.
+    |
+    | Default: true
+    |
+    */
+
+    'cache'  => true,
 
 );
