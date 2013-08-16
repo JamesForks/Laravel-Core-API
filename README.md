@@ -2,15 +2,11 @@ Laravel Core API
 ================
 
 
-[![Latest Stable Version](https://poser.pugx.org/graham-campbell/core-api/v/stable.png)](https://packagist.org/packages/graham-campbell/core-api)
 [![Build Status](https://travis-ci.org/GrahamCampbell/Laravel-Core-API.png?branch=master)](https://travis-ci.org/GrahamCampbell/Laravel-Core-API)
-[![Latest Unstable Version](https://poser.pugx.org/graham-campbell/core-api/v/unstable.png)](https://packagist.org/packages/graham-campbell/core-api)
-[![Build Status](https://travis-ci.org/GrahamCampbell/Laravel-Core-API.png?branch=develop)](https://travis-ci.org/GrahamCampbell/Laravel-Core-API)
+[![Latest Version](https://poser.pugx.org/graham-campbell/core-api/v/stable.png)](https://packagist.org/packages/graham-campbell/core-api)
 [![Total Downloads](https://poser.pugx.org/graham-campbell/core-api/downloads.png)](https://packagist.org/packages/graham-campbell/core-api)
-[![Still Maintained](http://stillmaintained.com/GrahamCampbell/Laravel-Core-API.png)](http://stillmaintained.com/GrahamCampbell/Laravel-Core-API)
-
-
 [![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/GrahamCampbell/laravel-core-api/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+[![Still Maintained](http://stillmaintained.com/GrahamCampbell/Laravel-Core-API.png)](http://stillmaintained.com/GrahamCampbell/Laravel-Core-API)
 
 
 Copyright © [Graham Campbell](https://github.com/GrahamCampbell) 2013  
