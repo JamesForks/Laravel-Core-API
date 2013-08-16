@@ -129,37 +129,37 @@ class CoreAPI {
                 return Cache::section('api')->get($key);
             }
 
-            $value = $this->getBody($values, $func);
+            $value = $this->getBody($values, $func, $type);
 
             Cache::section('api')->put($key, $value, Config::get('core-api::cache'));
 
             return $value;
         }
 
-        return $this->getBody($values, $func);
+        return $this->getBody($values, $func, $type);
     }
 
     protected function getKey($values, $type) {
-        if (isset($values['headers'])) {
-            if (isset($values['body'])) {
-                return md5(json_encode($type).json_encode($values['uri']).json_encode($values['headers']).json_encode($values['body']).json_encode($values['options']));
-            } else {
+        switch ($type) {
+            case 'get':
+            case 'head':
                 return md5(json_encode($type).json_encode($values['uri']).json_encode($values['headers']).json_encode($values['options']));
-            }
-        } else {
-            return md5(json_encode($type).json_encode($values['uri']).json_encode($values['options']));
+            case 'options':
+                return md5(json_encode($type).json_encode($values['uri']).json_encode($values['options']));
+            default:
+                return md5(json_encode($type).json_encode($values['uri']).json_encode($values['headers']).json_encode($values['body']).json_encode($values['options']));
         }
     }
 
-    protected function getBody($values, $func) {
-        if (isset($values['headers'])) {
-            if (isset($values['body'])) {
-                return json_encode(json_decode($func($this->client, $values['uri'], $values['headers'], $values['body'], $values['options'])));
-            } else {
+    protected function getBody($values, $func, $type) {
+        switch ($type) {
+            case 'get':
+            case 'head':
                 return json_encode(json_decode($func($this->client, $values['uri'], $values['headers'], $values['options'])));
-            }
-        } else {
-            return json_encode(json_decode($func($this->client, $values['uri'], $values['options'])));
+            case 'options':
+                return json_encode(json_decode($func($this->client, $values['uri'], $values['options'])));
+            default:
+                return json_encode(json_decode($func($this->client, $values['uri'], $values['headers'], $values['body'], $values['options'])));
         }
     }
 
