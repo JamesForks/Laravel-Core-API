@@ -122,7 +122,19 @@ class CoreAPI {
 
 
     protected function cache($values, $func, $type, $cache) {
-        if (Config::get('core-api::cache') !== 0 && $cache === true) {
+        if ($cache === true) {
+            $cache = Config::get('core-api::cache');
+        } elseif ($cache === false) {
+            $cache = 0;
+        } elseif (is_numeric($cache)) {
+            $cache = (int)$cache;
+        }
+
+        if (!is_int($cache)) {
+            $cache = 0;
+        }
+
+        if ($cache !== 0) {
             $key = $this->getKey($values, $type);
 
             if (Cache::section('api')->has($key)) {
@@ -131,7 +143,7 @@ class CoreAPI {
 
             $value = $this->getBody($values, $func, $type);
 
-            Cache::section('api')->put($key, $value, Config::get('core-api::cache'));
+            Cache::section('api')->put($key, $value, $cache);
 
             return $value;
         }
