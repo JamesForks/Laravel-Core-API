@@ -1,5 +1,6 @@
 <?php namespace GrahamCampbell\CoreAPI\Classes;
 
+use Guzzle\Common\Collection;
 use Guzzle\Http\Client;
 use Guzzle\Plugin\Oauth\OauthPlugin;
 
