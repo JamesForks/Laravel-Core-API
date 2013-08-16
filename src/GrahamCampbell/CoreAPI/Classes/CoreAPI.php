@@ -129,13 +129,13 @@ class CoreAPI {
                 return Cache::section('api')->get($key);
             }
 
-            $value = json_encode(json_decode($func()));
+            $value = json_encode(json_decode($func($this->client)));
             Cache::section('api')->put($key, $value, Config::get('core-api::cache'));
 
             return $value;
         }
 
-        return json_encode(json_decode($func()));
+        return json_encode(json_decode($func($this->client)));
     }
 
 
@@ -148,7 +148,7 @@ class CoreAPI {
     }
 
     public function goGet($uri = null, $headers = null, $options = array(), $cache = true) {
-        return $this->cache(json_encode('get').json_encode($uri).json_encode($headers).json_encode($options), function($client = $this->client){
+        return $this->cache(json_encode('get').json_encode($uri).json_encode($headers).json_encode($options), function($client) {
             return $client->get($uri, $headers, $options)->send()->getBody();
         }, $cache);
     }
@@ -162,7 +162,7 @@ class CoreAPI {
     }
 
     public function goHead($uri = null, $headers = null, $options = array(), $cache = false) {
-        return $this->cache(json_encode('get').json_encode($uri).json_encode($headers).json_encode($options), function($client = $this->client){
+        return $this->cache(json_encode('get').json_encode($uri).json_encode($headers).json_encode($options), function($client) {
             return $client->head($uri, $headers, $options)->send()->getBody();
         }, $cache);
     }
@@ -176,7 +176,7 @@ class CoreAPI {
     }
 
     public function goDelete($uri = null, $headers = null, $body = null, $options = array(), $cache = false) {
-        return $this->cache(json_encode('get').json_encode($uri).json_encode($headers).json_encode($body).json_encode($options), function($client = $this->client){
+        return $this->cache(json_encode('get').json_encode($uri).json_encode($headers).json_encode($body).json_encode($options), function($client) {
             return $client->delete($uri, $headers, $body, $options)->send()->getBody();
         }, $cache);
     }
@@ -190,7 +190,7 @@ class CoreAPI {
     }
 
     public function goPut($uri = null, $headers = null, $body = null, $options = array(), $cache = false) {
-        return $this->cache(json_encode('get').json_encode($uri).json_encode($headers).json_encode($body).json_encode($options), function($client = $this->client){
+        return $this->cache(json_encode('get').json_encode($uri).json_encode($headers).json_encode($body).json_encode($options), function($client) {
             return $client->put($uri, $headers, $body, $options)->send()->getBody();
         }, $cache);
     }
@@ -204,7 +204,7 @@ class CoreAPI {
     }
 
     public function goPatch($uri = null, $headers = null, $body = null, $options = array(), $cache = false) {
-        return $this->cache(json_encode('get').json_encode($uri).json_encode($headers).json_encode($body).json_encode($options), function($client = $this->client){
+        return $this->cache(json_encode('get').json_encode($uri).json_encode($headers).json_encode($body).json_encode($options), function($client) {
             return $client->patch($uri, $headers, $body, $options)->send()->getBody();
         }, $cache);
     }
@@ -218,7 +218,7 @@ class CoreAPI {
     }
 
     public function goPost($uri = null, $headers = null, $body = null, $options = array(), $cache = false) {
-        return $this->cache(json_encode('get').json_encode($uri).json_encode($headers).json_encode($body).json_encode($options), function($client = $this->client){
+        return $this->cache(json_encode('get').json_encode($uri).json_encode($headers).json_encode($body).json_encode($options), function($client) {
             return $client->post($uri, $headers, $body, $options)->send()->getBody();
         }, $cache);
     }
@@ -232,7 +232,7 @@ class CoreAPI {
     }
 
     public function goOptions($uri = null, array $options = array(), $cache = false) {
-        return $this->cache(json_encode('get').json_encode($uri).json_encode($options), function($client = $this->client){
+        return $this->cache(json_encode('get').json_encode($uri).json_encode($options), function($client) {
             return $client->options($uri, $options)->send()->getBody();
         }, $cache);
     }
