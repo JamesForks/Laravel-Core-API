@@ -33,8 +33,39 @@ class CoreAPI {
         }
     }
 
+    public function getURL() {
+        return $this->url;
+    }
+
+    public function setURL($value) {
+        $this->url = $value;
+        $this->makeNewClient();
+    }
+
+    public function getConfig() {
+        return $this->url;
+    }
+
+    public function setConfig($value) {
+        $this->url = $value;
+        $this->makeNewClient();
+    }
+
+    public function getOauth() {
+        return $this->url;
+    }
+
+    public function setOauth($value) {
+        $this->url = $value;
+        $this->makeNewClient();
+    }
+
     public function getClient() {
         return $this->client;
+    }
+
+    public function setClient($client) {
+        $this->client = $client;
     }
 
     public function get($uri = null, $headers = null, $options = array()) {
