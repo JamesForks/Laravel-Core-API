@@ -15,7 +15,7 @@ class CoreAPI {
 
         if ($this->oauth) {
             $oauth = new OauthPlugin($oauth);
-            $this->client->addSubscriber($oauth));
+            $this->client->addSubscriber($oauth);
         }
     }
 
