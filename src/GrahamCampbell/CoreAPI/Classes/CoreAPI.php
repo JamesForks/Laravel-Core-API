@@ -12,13 +12,23 @@ class CoreAPI {
     protected $baseurl;
     protected $config;
     protected $oauth;
+    protected $auth;
     protected $userAgent;
     protected $client;
 
-    public function setUp($baseurl, $config = array(), $oauth = null, $userAgent = null) {
+    public function setUp($baseurl, $config = array(), $authentication = null, $userAgent = null) {
         $this->baseurl = $baseurl;
+
         $this->config = new Collection($config);
-        $this->oauth = $oauth;
+
+        if (isset($authentication['user'])) {
+            $this->auth = $authentication;
+            $this->oauth = null;
+        } else {
+            $this->auth = null;
+            $this->oauth = $authentication;
+        }
+        
         $this->userAgent = $userAgent;
 
         $this->makeNewClient();
@@ -69,6 +79,14 @@ class CoreAPI {
         $this->oauth = $oauth;
         $oauth = new OauthPlugin($oauth);
         $this->client->addSubscriber($oauth);
+    }
+
+    public function setAuth($auth) {
+        $this->auth = $auth;
+    }
+
+    public function getAuth() {
+        return $this->auth;
     }
 
     public function getUserAgent() {
@@ -191,6 +209,9 @@ class CoreAPI {
     public function goGet($uri = null, $headers = null, $options = array(), $cache = true) {
         return $this->cache(array('uri' => $uri, 'headers' => $headers, 'options' => $options),
             function($client, $uri, $headers, $options) {
+                if (isset($this->auth['user'])) {
+                    return $client->get($uri, $headers, $options)->setAuth($this->auth['user'], $this->auth['pass'])->send()->getBody();
+                }
                 return $client->get($uri, $headers, $options)->send()->getBody();
         }, 'get', $cache);
     }
