@@ -189,11 +189,11 @@ class CoreAPI {
         switch ($type) {
             case 'get':
             case 'head':
-                return json_decode($func($this->client, $values['uri'], $values['headers'], $values['options']));
+                return json_decode($func($this->client, $values['uri'], $values['headers'], $values['options']), true);
             case 'options':
-                return json_decode($func($this->client, $values['uri'], $values['options']));
+                return json_decode($func($this->client, $values['uri'], $values['options']), true);
             default:
-                return json_decode($func($this->client, $values['uri'], $values['headers'], $values['body'], $values['options']));
+                return json_decode($func($this->client, $values['uri'], $values['headers'], $values['body'], $values['options']), true);
         }
     }
 
