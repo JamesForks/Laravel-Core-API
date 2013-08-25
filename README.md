@@ -2,10 +2,11 @@ Laravel Core API
 ================
 
 
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/GrahamCampbell/laravel-core-api/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
 [![Build Status](https://travis-ci.org/GrahamCampbell/Laravel-Core-API.png?branch=master)](https://travis-ci.org/GrahamCampbell/Laravel-Core-API)
 [![Latest Version](https://poser.pugx.org/graham-campbell/core-api/v/stable.png)](https://packagist.org/packages/graham-campbell/core-api)
 [![Total Downloads](https://poser.pugx.org/graham-campbell/core-api/downloads.png)](https://packagist.org/packages/graham-campbell/core-api)
-[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/GrahamCampbell/laravel-core-api/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+[![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/GrahamCampbell/Laravel-Core-API/badges/quality-score.png?s=a2f20fc191087f35712aa469b0225e1a2bf5d0fd)](https://scrutinizer-ci.com/g/GrahamCampbell/Laravel-Core-API)
 [![Still Maintained](http://stillmaintained.com/GrahamCampbell/Laravel-Core-API.png)](http://stillmaintained.com/GrahamCampbell/Laravel-Core-API)
 
 
@@ -22,6 +23,7 @@ Laravel Core API provides some core API client functions for [Laravel 4](http://
 * Laravel Core API was created by, and is maintained by [Graham Campbell](https://github.com/GrahamCampbell).  
 * Laravel Core API relies on the [Guzzle](https://github.com/guzzle/guzzle) package.  
 * Laravel Core API uses [Travis CI](https://travis-ci.org/GrahamCampbell/Laravel-Core-API) to run tests to check if it's working as it should.  
+* Laravel Core API uses [Scrutinizer CI](https://scrutinizer-ci.com/g/GrahamCampbell/Laravel-Core-API) to run additional tests and checks.  
 * Laravel Core API uses [Composer](https://getcomposer.org) to load and manage dependencies.  
 * Laravel Core API provides a [change log](https://github.com/GrahamCampbell/Laravel-Core-API/blob/master/CHANGELOG.md), [releases](https://github.com/GrahamCampbell/Laravel-Core-API/releases), and a [wiki](https://github.com/GrahamCampbell/Laravel-Core-API/wiki).  
 * Laravel Core API is licensed under the MIT, available [here](https://github.com/GrahamCampbell/Laravel-Core-API/blob/master/LICENSE.md).  
