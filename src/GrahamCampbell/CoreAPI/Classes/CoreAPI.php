@@ -140,6 +140,16 @@ class CoreAPI {
 
 
     protected function cache($values, $func, $type, $cache) {
+        $cache = $this->shouldCache($cache);
+
+        if ($cache !== 0) {
+            return $this->pullCache($values, $func, $type)
+        }
+
+        return $this->getBody($values, $func, $type);
+    }
+
+    protected function shouldCache($cache) {
         if ($cache === true) {
             $cache = Config::get('core-api::cache');
         } elseif ($cache === false) {
@@ -156,21 +166,21 @@ class CoreAPI {
             $cache = 0;
         }
 
-        if ($cache !== 0) {
-            $key = $this->getKey($values, $type);
+        return $cache;
+    }
 
-            if (Cache::section('api')->has($key)) {
-                return Cache::section('api')->get($key);
-            }
+    protected function pullCache($values, $func, $type) {
+        $key = $this->getKey($values, $type);
 
-            $value = $this->getBody($values, $func, $type);
-
-            Cache::section('api')->put($key, $value, $cache);
-
-            return $value;
+        if (Cache::section('api')->has($key)) {
+            return Cache::section('api')->get($key);
         }
 
-        return $this->getBody($values, $func, $type);
+        $value = $this->getBody($values, $func, $type);
+
+        Cache::section('api')->put($key, $value, $cache);
+
+        return $value;
     }
 
     protected function getKey($values, $type) {
