@@ -143,7 +143,7 @@ class CoreAPI {
         $cache = $this->shouldCache($cache);
 
         if ($cache !== 0) {
-            return $this->pullCache($values, $func, $type)
+            return $this->pullCache($values, $func, $type);
         }
 
         return $this->getBody($values, $func, $type);
