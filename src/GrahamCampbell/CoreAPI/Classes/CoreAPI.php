@@ -143,7 +143,7 @@ class CoreAPI {
         $cache = $this->shouldCache($cache);
 
         if ($cache !== 0) {
-            return $this->pullCache($values, $func, $type);
+            return $this->pullCache($values, $func, $type, $cache);
         }
 
         return $this->getBody($values, $func, $type);
@@ -169,7 +169,7 @@ class CoreAPI {
         return $cache;
     }
 
-    protected function pullCache($values, $func, $type) {
+    protected function pullCache($values, $func, $type, $cache) {
         $key = $this->getKey($values, $type);
 
         if (Cache::section('api')->has($key)) {
