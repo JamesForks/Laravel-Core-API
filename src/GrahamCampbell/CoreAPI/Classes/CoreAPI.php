@@ -149,10 +149,11 @@ class CoreAPI {
 
     public function goGet($method = 'GET', $uri = null, $headers = null, $body = null, array $options = array(), $cache = false) {
         $key = $this->getKey($method, $uri, $headers, $body, $options);
+        $time = $this->cacheTime($cache);
 
         // if should cache
         Log::debug('checking if should pull from the cache');
-        if ($this->shouldCache($cache) === true) {
+        if ($time > 0) {
             Log::debug('decided to PULL from the cache');
             // check if the cache needs regenerating
             Log::debug('checking if the cache is valid');
@@ -196,7 +197,7 @@ class CoreAPI {
         return md5(json_encode($method).json_encode($uri).json_encode($headers).json_encode($body).json_encode($options));
     }
 
-    protected function shouldCache($cache) {
+    protected function cacheTime($cache) {
         if ($cache === true) {
             $cache = Config::get('core-api::cache');
         } elseif ($cache === false) {
@@ -206,6 +207,10 @@ class CoreAPI {
         }
 
         if (!is_int($cache)) {
+            $cache = 0;
+        }
+
+        if ($cache  < 0) {
             $cache = 0;
         }
 
@@ -247,6 +252,9 @@ class CoreAPI {
         return array('statusCode' => $request->getStatusCode(), 'body' => $request->getBody(true), 'headers' => $request->getHeaders()->toArray());
     }
 
+    protected function setCache($key, $value) {
+        return Cache::section('api')->set($key, $value);
+    }
 
     public function get($uri = null, $headers = null, $options = array(), $cache = false) {
         return is_array($options)
