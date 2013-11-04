@@ -22,6 +22,7 @@
 
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Log;
 
 use Guzzle\Common\Collection;
 use Guzzle\Http\Client;
@@ -147,27 +148,43 @@ class CoreAPI {
 
 
     public function goGet($method = 'GET', $uri = null, $headers = null, $body = null, array $options = array(), $cache = false) {
+        $key = getKey($method, $uri, $headers, $body, $options);
+
         // if should cache
+        Log::debug('checking if should pull from the cache');
         if ($this->shouldCache($cache) === true) {
+            Log::debug('decided to PULL from the cache');
             // check if the cache needs regenerating
-            if ($this->validCache(getKey($method, $uri, $headers, $body, $options))) {
-                // if not, then pull from the cache
-                $value = $this->getCache(getKey($method, $uri, $headers, $body, $options));
+            Log::debug('checking if the cache is valid');
+            if ($this->validCache($key)) {
+                Log::debug('decided the cache is VALID');
+                // if so, then pull from the cache
+                Log::debug('PULLING FROM THE CACHE');
+                $value = $this->getCache($key);
                 // check if the value is valid
-                if ($this->validValue($value)) {
+                Log::debug('checking if the value is valid');
+                if (!$this->validValue($value)) {
+                    Log::debug('decided the value is NOT valid');
                     // if is invalid, do the work
+                    Log::debug('DOING THE WORK');
                     $value = $this->sendGet($method, $uri, $headers, $body, $options);
                     // add the value from the work to the cache
-                    $this->setCache(getKey($method, $uri, $headers, $body, $options), $value);
+                    Log::debug('SETTING THE CACHE');
+                    $this->setCache($key, $value);
                 }
             } else {
+                Log::debug('decided the cache is NOT valid');
                 // if regeneration is needed, do the work
+                Log::debug('DOING THE WORK');
                 $value = $this->sendGet($method, $uri, $headers, $body, $options);
                 // add the value from the work to the cache
-                $this->setCache(getKey($method, $uri, $headers, $body, $options), $value);
+                Log::debug('SETTING THE CACHE');
+                $this->setCache($key, $value);
             }
         } else {
+            Log::debug('decided NOT to pull from the cache');
             // do the work because caching is disabled
+            Log::debug('DOING THE WORK');
             $value = $this->sendGet($method, $uri, $headers, $body, $options);
         }
 
@@ -208,7 +225,7 @@ class CoreAPI {
     }
 
     protected function validValue($value) {
-        if (!is_array($value)) {
+        if (is_null($value) || !is_array($value)) {
             return false;
         }
 
