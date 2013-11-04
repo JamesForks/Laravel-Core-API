@@ -146,27 +146,37 @@ class CoreAPI {
     }
 
 
-    public function getAllEvents() {
-        return $this->client->getAllEvents();
-    }
-
-    public function createRequest($method = 'GET', $uri = null, $headers = null, $body = null, array $options = array()) {
-        return $this->client->createRequest($method, $uri, $headers, $body, $options);
-    }
-
-    public function send($requests) {
-        return $this->client->send($requests);
-    }
-
-
-    protected function cache($values, $func, $type, $cache) {
-        $cache = $this->shouldCache($cache);
-
-        if ($cache !== 0) {
-            return $this->pullCache($values, $func, $type, $cache);
+    public function goGet($method = 'GET', $uri = null, $headers = null, $body = null, array $options = array(), $cache = false) {
+        // if should cache
+        if ($this->shouldCache($cache) === true) {
+            // check if the cache needs regenerating
+            if ($this->validCache(getKey($method, $uri, $headers, $body, $options))) {
+                // if not, then pull from the cache
+                $value = $this->getCache(getKey($method, $uri, $headers, $body, $options));
+                // check if the value is valid
+                if ($this->validValue($value)) {
+                    // if is invalid, do the work
+                    $value = $this->sendGet($method, $uri, $headers, $body, $options);
+                    // add the value from the work to the cache
+                    $this->setCache(getKey($method, $uri, $headers, $body, $options), $value);
+                }
+            } else {
+                // if regeneration is needed, do the work
+                $value = $this->sendGet($method, $uri, $headers, $body, $options);
+                // add the value from the work to the cache
+                $this->setCache(getKey($method, $uri, $headers, $body, $options), $value);
+            }
+        } else {
+            // do the work because caching is disabled
+            $value = $this->sendGet($method, $uri, $headers, $body, $options);
         }
 
-        return $this->getBody($values, $func, $type);
+        // spit out the response
+        return new APIResponse($value['statusCode'], $value['body'], $value['headers']);
+    }
+
+    protected function getKey($method, $uri, $headers, $body, $options) {
+        return md5(json_encode($method).json_encode($uri).json_encode($headers).json_encode($body).json_encode($options));
     }
 
     protected function shouldCache($cache) {
@@ -189,150 +199,57 @@ class CoreAPI {
         return $cache;
     }
 
-    protected function pullCache($values, $func, $type, $cache) {
-        $key = $this->getKey($values, $type);
+    protected function validCache($key) {
+        return Cache::section('api')->has($key);
+    }
 
-        if (Cache::section('api')->has($key)) {
-            return Cache::section('api')->get($key);
+    protected function getCache($key) {
+        return Cache::section('api')->get($key);
+    }
+
+    protected function validValue($value) {
+        if (!is_array($value)) {
+            return false;
         }
 
-        $value = $this->getBody($values, $func, $type);
-
-        Cache::section('api')->put($key, $value, $cache);
-
-        return $value;
-    }
-
-    protected function getKey($values, $type) {
-        switch ($type) {
-            case 'get':
-            case 'head':
-                return md5(json_encode($type).json_encode($values['uri']).json_encode($values['headers']).json_encode($values['options']));
-            case 'options':
-                return md5(json_encode($type).json_encode($values['uri']).json_encode($values['options']));
-            default:
-                return md5(json_encode($type).json_encode($values['uri']).json_encode($values['headers']).json_encode($values['body']).json_encode($values['options']));
+        if (!array_key_exists('statusCode', $value) || !array_key_exists('body', $value) || !array_key_exists('headers', $value)) {
+        return false;
         }
+
+        return true;
     }
 
-    protected function getBody($values, $func, $type) {
-        switch ($type) {
-            case 'get':
-            case 'head':
-                return json_decode($func($this->client, $values['uri'], $values['headers'], $values['options']), true);
-            case 'options':
-                return json_decode($func($this->client, $values['uri'], $values['options']), true);
-            default:
-                return json_decode($func($this->client, $values['uri'], $values['headers'], $values['body'], $values['options']), true);
+    protected function sendGet($method, $uri, $headers, $body, $options) {
+        $request = $this->client->createRequest($method, $uri, $headers, $body, $options)->send();
+
+        if ($request->isSuccessful !== true) {
+            throw new APIException($request->getStatusCode(), null, $request->getBody(), $request->getRawHeaders());
+            
         }
+
+        return array('statusCode' => $request->getStatusCode(), 'body' => $request->getBody(), 'headers' => $request->getRawHeaders());
     }
 
 
-    public function get($uri = null, $headers = null, $options = array()) {
-        return $this->client->get($uri, $headers, $options);
+    public function get($uri = null, $headers = null, $options = array(), $cache = false) {
+        return is_array($options)
+            ? $this->goGet('GET', $uri, $headers, null, $options, $cache)
+            : $this->goGet('GET', $uri, $headers, $options, array(), $cache);
     }
 
-    public function sendGet($uri = null, $headers = null, $options = array()) {
-        return $this->client->get($uri, $headers, $options)->send();
+    public function post($uri = null, $headers = null, $body = null, $options = array(), $cache = false) {
+        return $this->goGet('POST', $uri, $headers, $body, $options, $cache);
     }
 
-    public function goGet($uri = null, $headers = null, $options = array(), $cache = true) {
-        return $this->cache(array('uri' => $uri, 'headers' => $headers, 'options' => $options),
-            function($client, $uri, $headers, $options) {
-                if (isset($this->auth['user'])) {
-                    return $client->get($uri, $headers, $options)->setAuth($this->auth['user'], $this->auth['pass'])->send()->getBody();
-                }
-                return $client->get($uri, $headers, $options)->send()->getBody();
-        }, 'get', $cache);
+    public function put($uri = null, $headers = null, $body = null, $options = array(), $cache = false) {
+        return $this->goGet('PUT', $uri, $headers, $body, $options, $cache);
     }
 
-    public function head($uri = null, $headers = null, $options = array()) {
-        return $this->client->head($uri, $headers, $options);
+    public function patch($uri = null, $headers = null, $body = null, $options = array(), $cache = false) {
+        return $this->goGet('PATCH', $uri, $headers, $body, $options, $cache);
     }
 
-    public function sendHead($uri = null, $headers = null, $options = array()) {
-        return $this->client->head($uri, $headers, $options)->send();
-    }
-
-    public function goHead($uri = null, $headers = null, $options = array(), $cache = false) {
-       return $this->cache(array('uri' => $uri, 'headers' => $headers, 'options' => $options),
-            function($client, $uri, $headers, $options) {
-                return $client->head($uri, $headers, $options)->send()->getBody();
-        }, 'head', $cache);
-    }
-
-    public function delete($uri = null, $headers = null, $body = null, $options = array()) {
-        return $this->client->delete($uri, $headers, $body, $options);
-    }
-
-    public function sendDelete($uri = null, $headers = null, $body = null, $options = array()) {
-        return $this->client->delete($uri, $headers, $body, $options)->send();
-    }
-
-    public function goDelete($uri = null, $headers = null, $body = null, $options = array(), $cache = false) {
-        return $this->cache(array('uri' => $uri, 'headers' => $headers, 'body' => $body, 'options' => $options),
-            function($client, $uri, $headers, $body, $options) {
-                return $client->delete($uri, $headers, $body, $options)->send()->getBody();
-        }, 'delete', $cache);
-    }
-
-    public function put($uri = null, $headers = null, $body = null, $options = array()) {
-        return $this->client->put($uri, $headers, $body, $options);
-    }
-
-    public function sendPut($uri = null, $headers = null, $body = null, $options = array()) {
-        return $this->client->put($uri, $headers, $body, $options)->send();
-    }
-
-    public function goPut($uri = null, $headers = null, $body = null, $options = array(), $cache = false) {
-        return $this->cache(array('uri' => $uri, 'headers' => $headers, 'body' => $body, 'options' => $options),
-            function($client, $uri, $headers, $body, $options) {
-                return $client->put($uri, $headers, $body, $options)->send()->getBody();
-        }, 'put', $cache);
-    }
-
-    public function patch($uri = null, $headers = null, $body = null, $options = array()) {
-        return $this->client->patch($uri, $headers, $body, $options);
-    }
-
-    public function sendPatch($uri = null, $headers = null, $body = null, $options = array()) {
-        return $this->client->patch($uri, $headers, $body, $options)->send();
-    }
-
-    public function goPatch($uri = null, $headers = null, $body = null, $options = array(), $cache = false) {
-        return $this->cache(array('uri' => $uri, 'headers' => $headers, 'body' => $body, 'options' => $options),
-            function($client, $uri, $headers, $body, $options) {
-                return $client->patch($uri, $headers, $body, $options)->send()->getBody();
-        }, 'patch', $cache);
-    }
-
-    public function post($uri = null, $headers = null, $body = null, $options = array()) {
-        return $this->client->post($uri, $headers, $body, $options);
-    }
-
-    public function sendPost($uri = null, $headers = null, $body = null, $options = array()) {
-        return $this->client->post($uri, $headers, $body, $options)->send();
-    }
-
-    public function goPost($uri = null, $headers = null, $body = null, $options = array(), $cache = false) {
-        return $this->cache(array('uri' => $uri, 'headers' => $headers, 'body' => $body, 'options' => $options),
-            function($client, $uri, $headers, $body, $options) {
-                return $client->post($uri, $headers, $body, $options)->send()->getBody();
-        }, 'post', $cache);
-    }
-
-    public function options($uri = null, array $options = array()) {
-        return $this->client->options($uri, $options);
-    }
-
-    public function sendOptions($uri = null, array $options = array()) {
-        return $this->client->options($uri, $options)->send();
-    }
-
-    public function goOptions($uri = null, array $options = array(), $cache = false) {
-        return $this->cache(array('uri' => $uri, 'options' => $options),
-            function($client, $uri, $headers, $body, $options) {
-                return $client->options($uri, $options)->send()->getBody();
-        }, 'options', $cache);
+    public function delete($uri = null, $headers = null, $body = null, $options = array(), $cache = false) {
+        return $this->goGet('DELETE', $uri, $headers, $body, $options, $cache);
     }
 }
