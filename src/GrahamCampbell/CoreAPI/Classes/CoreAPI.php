@@ -222,7 +222,7 @@ class CoreAPI {
     protected function sendGet($method, $uri, $headers, $body, $options) {
         $request = $this->client->createRequest($method, $uri, $headers, $body, $options)->send();
 
-        if ($request->isSuccessful !== true) {
+        if ($request->isSuccessful() !== true) {
             throw new APIException($request->getStatusCode(), null, $request->getBody(), $request->getRawHeaders());
             
         }

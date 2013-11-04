@@ -45,6 +45,6 @@ class APIResponse {
     }
 
     public function decodeBody() {
-        return json_decode($this->body);
+        return json_decode($this->body, true);
     }
 }
