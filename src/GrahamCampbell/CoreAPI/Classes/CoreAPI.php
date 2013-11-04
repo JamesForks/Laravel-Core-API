@@ -223,11 +223,11 @@ class CoreAPI {
         $request = $this->client->createRequest($method, $uri, $headers, $body, $options)->send();
 
         if ($request->isSuccessful() !== true) {
-            throw new APIException($request->getStatusCode(), null, $request->getBody(), $request->getRawHeaders());
+            throw new APIException($request->getStatusCode(), null, $request->getBody(), $request->getHeaders());
             
         }
 
-        return array('statusCode' => $request->getStatusCode(), 'body' => $request->getBody(), 'headers' => $request->getRawHeaders());
+        return array('statusCode' => $request->getStatusCode(), 'body' => $request->getBody(), 'headers' => $request->getHeaders());
     }
 
 
