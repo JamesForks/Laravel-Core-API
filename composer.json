@@ -11,10 +11,9 @@
     ],
     "require": {
         "php": ">=5.3.3",
-        "illuminate/support": "4.0.*@stable",
+        "orchestra/testbench": "2.0.*",
         "symfony/event-dispatcher": "2.3.*",
-        "guzzle/guzzle": "3.7.*@stable",
-        "philf/setting": "dev-master"
+        "guzzle/guzzle": "3.7.*@stable"
     },
     "require-dev": {
         "mockery/mockery": "0.8.*@stable",
