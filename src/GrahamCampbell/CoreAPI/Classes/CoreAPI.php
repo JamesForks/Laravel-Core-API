@@ -253,7 +253,7 @@ class CoreAPI {
     }
 
     protected function setCache($key, $value) {
-        return Cache::section('api')->set($key, $value);
+        return Cache::section('api')->put($key, $value);
     }
 
     public function get($uri = null, $headers = null, $options = array(), $cache = false) {
