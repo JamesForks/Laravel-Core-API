@@ -148,7 +148,7 @@ class CoreAPI {
 
 
     public function goGet($method = 'GET', $uri = null, $headers = null, $body = null, array $options = array(), $cache = false) {
-        $key = getKey($method, $uri, $headers, $body, $options);
+        $key = $this->getKey($method, $uri, $headers, $body, $options);
 
         // if should cache
         Log::debug('checking if should pull from the cache');
