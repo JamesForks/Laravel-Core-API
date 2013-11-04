@@ -171,7 +171,7 @@ class CoreAPI {
                     $value = $this->sendGet($method, $uri, $headers, $body, $options);
                     // add the value from the work to the cache
                     Log::debug('SETTING THE CACHE');
-                    $this->setCache($key, $value);
+                    $this->setCache($key, $value, $time);
                 }
             } else {
                 Log::debug('decided the cache is NOT valid');
@@ -180,7 +180,7 @@ class CoreAPI {
                 $value = $this->sendGet($method, $uri, $headers, $body, $options);
                 // add the value from the work to the cache
                 Log::debug('SETTING THE CACHE');
-                $this->setCache($key, $value);
+                $this->setCache($key, $value, $time);
             }
         } else {
             Log::debug('decided NOT to pull from the cache');
@@ -252,8 +252,8 @@ class CoreAPI {
         return array('statusCode' => $request->getStatusCode(), 'body' => $request->getBody(true), 'headers' => $request->getHeaders()->toArray());
     }
 
-    protected function setCache($key, $value) {
-        return Cache::section('api')->put($key, $value);
+    protected function setCache($key, $value, $time) {
+        return Cache::section('api')->put($key, $value, $time);
     }
 
     public function get($uri = null, $headers = null, $options = array(), $cache = false) {
