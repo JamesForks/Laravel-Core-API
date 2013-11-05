@@ -151,31 +151,18 @@ class CoreAPI {
         $key = $this->getKey($method, $uri, $headers, $body, $options);
         $time = $this->cacheTime($cache);
 
-        // if should cache
+        // check if we are using the cache
         Log::debug('checking if should pull from the cache');
         if ($time > 0) {
             Log::debug('decided to PULL from the cache');
-            // check if the cache needs regenerating
-            Log::debug('checking if the cache is valid');
-            if ($this->validCache($key)) {
-                Log::debug('decided the cache is VALID');
-                // if so, then pull from the cache
-                Log::debug('PULLING FROM THE CACHE');
-                $value = $this->getCache($key);
-                // check if the value is valid
-                Log::debug('checking if the value is valid');
-                if (!$this->validValue($value)) {
-                    Log::debug('decided the value is NOT valid');
-                    // if is invalid, do the work
-                    Log::debug('DOING THE WORK');
-                    $value = $this->sendGet($method, $uri, $headers, $body, $options);
-                    // add the value from the work to the cache
-                    Log::debug('SETTING THE CACHE');
-                    $this->setCache($key, $value, $time);
-                }
-            } else {
-                Log::debug('decided the cache is NOT valid');
-                // if regeneration is needed, do the work
+            // if so, then pull from the cache
+            Log::debug('PULLING FROM THE CACHE');
+            $value = $this->getCache($key);
+            // check if the value is valid
+            Log::debug('checking if the value is valid');
+            if (!$this->validCache($value)) {
+                Log::debug('decided the value is NOT valid');
+                // if is invalid, do the work
                 Log::debug('DOING THE WORK');
                 $value = $this->sendGet($method, $uri, $headers, $body, $options);
                 // add the value from the work to the cache
@@ -221,15 +208,11 @@ class CoreAPI {
         return $cache;
     }
 
-    protected function validCache($key) {
-        return Cache::section('api')->has($key);
-    }
-
     protected function getCache($key) {
         return Cache::section('api')->get($key);
     }
 
-    protected function validValue($value) {
+    protected function validCache($key) {
         if (is_null($value) || !is_array($value)) {
             return false;
         }
