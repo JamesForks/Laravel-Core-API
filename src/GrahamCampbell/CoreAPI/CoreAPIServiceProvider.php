@@ -47,7 +47,7 @@ class CoreAPIServiceProvider extends ServiceProvider {
      */
     public function register() {
         $this->app['coreapi'] = $this->app->share(function($app) {
-            return new Classes\CoreAPI;
+            return new Classes\CoreAPI($app);
         });
     }
 

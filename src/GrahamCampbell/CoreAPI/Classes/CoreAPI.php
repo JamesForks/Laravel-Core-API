@@ -20,22 +20,23 @@
  * @link       https://github.com/GrahamCampbell/Laravel-Core-API
  */
 
-use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Facades\Log;
-
 use Guzzle\Common\Collection;
 use Guzzle\Http\Client;
 use Guzzle\Plugin\Oauth\OauthPlugin;
 
 class CoreAPI {
 
+    protected $app;
     protected $baseurl;
     protected $config;
     protected $oauth;
     protected $auth;
     protected $userAgent;
     protected $client;
+
+    public function __construct($app) {
+        $this->app = $app;
+    }
 
     public function setUp($baseurl, $config = array(), $authentication = null, $userAgent = null) {
         $this->baseurl = $baseurl;
@@ -152,27 +153,18 @@ class CoreAPI {
         $time = $this->cacheTime($cache);
 
         // check if we are using the cache
-        Log::debug('checking if should pull from the cache');
         if ($time > 0) {
-            Log::debug('decided to PULL from the cache');
             // if so, then pull from the cache
-            Log::debug('PULLING FROM THE CACHE');
             $value = $this->getCache($key);
             // check if the value is valid
-            Log::debug('checking if the value is valid');
             if (!$this->validCache($value)) {
-                Log::debug('decided the value is NOT valid');
                 // if is invalid, do the work
-                Log::debug('DOING THE WORK');
                 $value = $this->sendGet($method, $uri, $headers, $body, $options);
                 // add the value from the work to the cache
-                Log::debug('SETTING THE CACHE');
                 $this->setCache($key, $value, $time);
             }
         } else {
-            Log::debug('decided NOT to pull from the cache');
             // do the work because caching is disabled
-            Log::debug('DOING THE WORK');
             $value = $this->sendGet($method, $uri, $headers, $body, $options);
         }
 
@@ -186,7 +178,7 @@ class CoreAPI {
 
     protected function cacheTime($cache) {
         if ($cache === true) {
-            $cache = Config::get('core-api::cache');
+            $cache = $this->app['config']['core-api::cache'];
         } elseif ($cache === false) {
             $cache = 0;
         } elseif (is_numeric($cache)) {
@@ -201,7 +193,7 @@ class CoreAPI {
             $cache = 0;
         }
 
-        if (Config::get('core-api::cache') === 0 && Config::get('core-api::force') === true) {
+        if ($this->app['config']['core-api::cache'] === 0 && $this->app['config']['core-api::force'] === true) {
             $cache = 0;
         }
 
@@ -209,10 +201,10 @@ class CoreAPI {
     }
 
     protected function getCache($key) {
-        return Cache::section('api')->get($key);
+        return $this->app['cache']->section('api')->get($key);
     }
 
-    protected function validCache($key) {
+    protected function validCache($value) {
         if (is_null($value) || !is_array($value)) {
             return false;
         }
@@ -236,8 +228,9 @@ class CoreAPI {
     }
 
     protected function setCache($key, $value, $time) {
-        return Cache::section('api')->put($key, $value, $time);
+        return $this->app['cache']->section('api')->put($key, $value, $time);
     }
+
 
     public function get($uri = null, $headers = null, $options = array(), $cache = false) {
         return is_array($options)
