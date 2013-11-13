@@ -47,4 +47,18 @@ class APIResponse {
     public function decodeBody() {
         return json_decode($this->body, true);
     }
+
+    public function isDecodable() {
+        $decode = $this->decodeBody();
+
+        if (is_null($decode)) {
+            return false;
+        }
+
+        if (!is_array($decode) || empty($decode)) {
+            return false;
+        }
+
+        return true;
+    }
 }
