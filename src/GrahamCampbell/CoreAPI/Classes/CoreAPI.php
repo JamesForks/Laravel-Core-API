@@ -149,7 +149,7 @@ class CoreAPI {
 
 
     public function goGet($method = 'GET', $uri = null, $headers = null, $body = null, array $options = array(), $cache = false) {
-        $key = $this->getKey($method, $uri, $headers, $body, $options);
+        $key = md5(json_encode($method).json_encode($uri).json_encode($headers).json_encode($body).json_encode($options));
         $time = $this->cacheTime($cache);
 
         // check if we are using the cache
@@ -170,10 +170,6 @@ class CoreAPI {
 
         // spit out the response
         return new APIResponse($value['statusCode'], $value['body'], $value['headers']);
-    }
-
-    protected function getKey($method, $uri, $headers, $body, $options) {
-        return md5(json_encode($method).json_encode($uri).json_encode($headers).json_encode($body).json_encode($options));
     }
 
     protected function cacheTime($cache) {
