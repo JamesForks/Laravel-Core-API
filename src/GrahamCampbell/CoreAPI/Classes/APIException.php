@@ -45,7 +45,7 @@ class APIException extends RuntimeException {
     }
 
     public function getBody() {
-        return $this->headers;
+        return $this->body;
     }
 
     public function decodeBody() {

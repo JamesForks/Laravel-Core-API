@@ -41,7 +41,7 @@ class APIResponse {
     }
 
     public function getBody() {
-        return $this->headers;
+        return $this->body;
     }
 
     public function decodeBody() {
