@@ -28,9 +28,9 @@ class APIResponse {
     protected $request;
     protected $response;
 
-    public function __construct($method, $uri, $headers, $body, $options) {
-        $this->request = $this->client->createRequest($method, $uri, $headers, $body, $options);
-        $this->response = $this->request->send();
+    public function __construct(RequestInterface $request) {
+        $this->response = $request->send();
+        $this->request = $request;
     }
 
     /**

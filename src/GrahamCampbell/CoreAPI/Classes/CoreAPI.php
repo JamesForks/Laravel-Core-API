@@ -209,7 +209,8 @@ class CoreAPI {
     }
 
     protected function sendGet($method, $uri, $headers, $body, $options) {
-        return new APIResponse($method, $uri, $headers, $body, $options);
+        $request = $this->client->createRequest($method, $uri, $headers, $body, $options);
+        return new APIResponse($request);
     }
 
     protected function setCache($key, $value, $time) {
