@@ -201,7 +201,7 @@ class CoreAPI {
     }
 
     protected function validCache($value) {
-        if (is_null($value) || !is_a($value, 'Guzzle\Http\Message\Response')) {
+        if (is_null($value) || !is_a($value, '\GrahamCampbell\CoreAPI\Classes\APIResponse')) {
             return false;
         }
 
@@ -209,7 +209,7 @@ class CoreAPI {
     }
 
     protected function sendGet($method, $uri, $headers, $body, $options) {
-        return $this->client->createRequest($method, $uri, $headers, $body, $options)->send();
+        return new APIResponse($method, $uri, $headers, $body, $options);
     }
 
     protected function setCache($key, $value, $time) {
