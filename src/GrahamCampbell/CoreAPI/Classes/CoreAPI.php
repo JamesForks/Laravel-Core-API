@@ -169,7 +169,7 @@ class CoreAPI {
         }
 
         // spit out the response
-        return new APIResponse($value['statusCode'], $value['body'], $value['headers']);
+        return $value;
     }
 
     protected function cacheTime($cache) {
@@ -201,26 +201,15 @@ class CoreAPI {
     }
 
     protected function validCache($value) {
-        if (is_null($value) || !is_array($value)) {
+        if (is_null($value) || !is_a($value, 'Guzzle\Http\Message\Response')) {
             return false;
-        }
-
-        if (!array_key_exists('statusCode', $value) || !array_key_exists('body', $value) || !array_key_exists('headers', $value)) {
-        return false;
         }
 
         return true;
     }
 
     protected function sendGet($method, $uri, $headers, $body, $options) {
-        $request = $this->client->createRequest($method, $uri, $headers, $body, $options)->send();
-
-        if ($request->isSuccessful() !== true) {
-            throw new APIException($request->getStatusCode(), null, $request->getBody(true), $request->getHeaders()->toArray());
-            
-        }
-
-        return array('statusCode' => $request->getStatusCode(), 'body' => $request->getBody(true), 'headers' => $request->getHeaders()->toArray());
+        return $this->client->createRequest($method, $uri, $headers, $body, $options)->send();
     }
 
     protected function setCache($key, $value, $time) {
