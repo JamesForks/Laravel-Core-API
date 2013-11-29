@@ -11,8 +11,8 @@
     ],
     "require": {
         "php": ">=5.3.3",
-        "orchestra/testbench": "2.0.*",
-        "symfony/event-dispatcher": "2.3.*",
+        "orchestra/testbench": "~2",
+        "symfony/event-dispatcher": "~2.3",
         "guzzle/guzzle": "3.7.*@stable"
     },
     "require-dev": {
