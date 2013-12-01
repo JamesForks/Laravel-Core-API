@@ -2,7 +2,7 @@ CHANGE LOG
 ==========
 
 
-## V0.2 Alpha (Upcoming)
+## V0.3 Alpha (Upcoming)
 #### Major Release
 
 * Added unit tests
