@@ -5,9 +5,19 @@ CHANGE LOG
 ## V0.2 Alpha (Upcoming)
 #### Major Release
 
-* Updated license
 * Added unit tests
-* Minor tweaks
+
+
+## V0.2 Alpha (Upcoming)
+#### Major Release
+
+* Updated license
+* Updated scrutiniser config
+* Updated documentation
+* Laravel 4.1 support
+* Major refactor
+* Added APIResponse class
+* Caching improvements
 
 
 ## V0.1.1 Alpha (26/08/2013)
