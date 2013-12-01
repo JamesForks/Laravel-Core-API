@@ -68,4 +68,15 @@ class APIResponse {
     public function getResponse() {
         return $this->response;
     }
+
+    /**
+     * Dynamically call methods on the response.
+     *
+     * @param  string  $method
+     * @param  array   $parameters
+     * @return mixed
+     */
+    public function __call($method, $parameters) {
+        return call_user_func_array(array($this->response, $parameters), $args);
+    }
 }
