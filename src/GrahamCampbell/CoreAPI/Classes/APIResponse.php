@@ -77,6 +77,6 @@ class APIResponse {
      * @return mixed
      */
     public function __call($method, $parameters) {
-        return call_user_func_array(array($this->response, $parameters), $args);
+        return call_user_func_array(array($this->response, $method), $parameters);
     }
 }
