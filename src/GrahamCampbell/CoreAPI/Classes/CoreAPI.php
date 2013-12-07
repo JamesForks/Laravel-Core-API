@@ -20,13 +20,14 @@
  * @link       https://github.com/GrahamCampbell/Laravel-Core-API
  */
 
+use Illuminate\Cache\CacheManager;
+use Illuminate\Config\Repository;
 use Guzzle\Common\Collection;
 use Guzzle\Http\Client;
 use Guzzle\Plugin\Oauth\OauthPlugin;
 
 class CoreAPI {
 
-    protected $app;
     protected $baseurl;
     protected $config;
     protected $oauth;
@@ -34,8 +35,23 @@ class CoreAPI {
     protected $userAgent;
     protected $client;
 
-    public function __construct($app) {
-        $this->app = $app;
+    /**
+     * The cache instance.
+     *
+     * @var \Illuminate\Cache\CacheManager
+     */
+    protected $cache;
+
+    /**
+     * The config instance.
+     *
+     * @var \Illuminate\Config\Repository
+     */
+    protected $config;
+
+    public function __construct(CacheManager $cache, Repository $config) {
+        $this->cache = $cache;
+        $this->config = $config;
     }
 
     public function setUp($baseurl, $config = array(), $authentication = null, $userAgent = null) {
@@ -174,7 +190,7 @@ class CoreAPI {
 
     protected function cacheTime($cache) {
         if ($cache === true) {
-            $cache = $this->app['config']['core-api::cache'];
+            $cache = $this->config['core-api::cache'];
         } elseif ($cache === false) {
             $cache = 0;
         } elseif (is_numeric($cache)) {
@@ -189,7 +205,7 @@ class CoreAPI {
             $cache = 0;
         }
 
-        if ($this->app['config']['core-api::cache'] === 0 && $this->app['config']['core-api::force'] === true) {
+        if ($this->config['core-api::cache'] === 0 && $this->config['core-api::force'] === true) {
             $cache = 0;
         }
 
@@ -197,7 +213,7 @@ class CoreAPI {
     }
 
     protected function getCache($key) {
-        return $this->app['cache']->section('api')->get($key);
+        return $this->cache->section('api')->get($key);
     }
 
     protected function validCache($value) {
@@ -214,7 +230,7 @@ class CoreAPI {
     }
 
     protected function setCache($key, $value, $time) {
-        return $this->app['cache']->section('api')->put($key, $value, $time);
+        return $this->cache->section('api')->put($key, $value, $time);
     }
 
 
