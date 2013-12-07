@@ -29,7 +29,7 @@ use Guzzle\Plugin\Oauth\OauthPlugin;
 class CoreAPI {
 
     protected $baseurl;
-    protected $config;
+    protected $conf;
     protected $oauth;
     protected $auth;
     protected $userAgent;
@@ -54,10 +54,10 @@ class CoreAPI {
         $this->config = $config;
     }
 
-    public function setUp($baseurl, $config = array(), $authentication = null, $userAgent = null) {
+    public function setUp($baseurl, $conf = array(), $authentication = null, $userAgent = null) {
         $this->baseurl = $baseurl;
 
-        $this->config = new Collection($config);
+        $this->conf = new Collection($conf);
 
         if (isset($authentication['user'])) {
             $this->auth = $authentication;
@@ -73,7 +73,7 @@ class CoreAPI {
     }
 
     protected function makeNewClient() {
-        $this->client = new Client($this->baseurl, $this->config);
+        $this->client = new Client($this->baseurl, $this->conf);
 
         if ($this->oauth) {
             $this->setOauth($this->oauth);
@@ -104,9 +104,9 @@ class CoreAPI {
         return $this->client->getConfig();
     }
 
-    public function setConfig($config) {
-        $this->config = new Collection($config);
-        return $this->client->setConfig($this->config);
+    public function setConfig($conf) {
+        $this->conf = new Collection($conf);
+        return $this->client->setConfig($this->conf);
     }
 
     public function getOauth() {
