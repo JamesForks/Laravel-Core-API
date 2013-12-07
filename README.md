@@ -10,9 +10,6 @@ Laravel Core API
 [![Still Maintained](http://stillmaintained.com/GrahamCampbell/Laravel-Core-API.png)](http://stillmaintained.com/GrahamCampbell/Laravel-Core-API)
 
 
-## THIS ALPHA RELEASE IS FOR TESTING ONLY
-
-
 ## What Is Laravel Core API?
 
 Laravel Core API provides some core API client functions for [Laravel 4](http://laravel.com).  
