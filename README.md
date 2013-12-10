@@ -2,18 +2,12 @@ Laravel Core API
 ================
 
 
-[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/GrahamCampbell/laravel-core-api/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/GrahamCampbell/Laravel-Core-API/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
 [![Build Status](https://travis-ci.org/GrahamCampbell/Laravel-Core-API.png?branch=master)](https://travis-ci.org/GrahamCampbell/Laravel-Core-API)
 [![Latest Version](https://poser.pugx.org/graham-campbell/core-api/v/stable.png)](https://packagist.org/packages/graham-campbell/core-api)
 [![Total Downloads](https://poser.pugx.org/graham-campbell/core-api/downloads.png)](https://packagist.org/packages/graham-campbell/core-api)
 [![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/GrahamCampbell/Laravel-Core-API/badges/quality-score.png?s=a2f20fc191087f35712aa469b0225e1a2bf5d0fd)](https://scrutinizer-ci.com/g/GrahamCampbell/Laravel-Core-API)
 [![Still Maintained](http://stillmaintained.com/GrahamCampbell/Laravel-Core-API.png)](http://stillmaintained.com/GrahamCampbell/Laravel-Core-API)
-
-
-Copyright © [Graham Campbell](https://github.com/GrahamCampbell) 2013  
-
-
-## THIS ALPHA RELEASE IS FOR TESTING ONLY
 
 
 ## What Is Laravel Core API?
@@ -26,7 +20,7 @@ Laravel Core API provides some core API client functions for [Laravel 4](http://
 * Laravel Core API uses [Scrutinizer CI](https://scrutinizer-ci.com/g/GrahamCampbell/Laravel-Core-API) to run additional tests and checks.  
 * Laravel Core API uses [Composer](https://getcomposer.org) to load and manage dependencies.  
 * Laravel Core API provides a [change log](https://github.com/GrahamCampbell/Laravel-Core-API/blob/master/CHANGELOG.md), [releases](https://github.com/GrahamCampbell/Laravel-Core-API/releases), and a [wiki](https://github.com/GrahamCampbell/Laravel-Core-API/wiki).  
-* Laravel Core API is licensed under the MIT, available [here](https://github.com/GrahamCampbell/Laravel-Core-API/blob/master/LICENSE.md).  
+* Laravel Core API is licensed under the Apache License, available [here](https://github.com/GrahamCampbell/Laravel-Core-API/blob/master/LICENSE.md).  
 
 
 ## System Requirements
@@ -68,32 +62,36 @@ The first command is only necessary the first time. If you have issues merging, 
 
 You can then update the branch:  
 
-    git pull --rebase upstream master
+    git pull --rebase upstream develop
     git push --force origin <branch_name>
 
 Once it is set up, run `git mergetool`. Once all conflicts are fixed, run `git rebase --continue`, and `git push --force origin <branch_name>`.  
 
 
+## Pull Requests
+
+Please submit pull requests against the develop branch.  
+
+* Any pull requests made against the master branch will be closed immediately.  
+* If you plan to fix a bug, please create a branch called `fix-`, followed by an appropriate name.  
+* If you plan to add a feature, please create a branch called `feature-`, followed by an appropriate name.  
+* Please indent with 4 spaces rather than tabs, and make sure your code is commented.  
+
+
 ## License
 
-The MIT License (MIT)
+Apache License  
 
-Copyright (c) 2013 Graham Campbell
+Copyright 2013 Graham Campbell  
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at  
 
-The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
+ http://www.apache.org/licenses/LICENSE-2.0  
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-THE SOFTWARE.
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.  
