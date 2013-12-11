@@ -26,13 +26,14 @@ use Guzzle\Common\Collection;
 use Guzzle\Http\Client;
 use Guzzle\Plugin\Oauth\OauthPlugin;
 use Guzzle\Plugin\CurlAuth\CurlAuthPlugin;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class CoreAPI {
 
     protected $baseurl;
     protected $conf;
-    protected $oauth;
     protected $auth;
+    protected $plugin;
     protected $userAgent;
     protected $client;
 
@@ -55,19 +56,10 @@ class CoreAPI {
         $this->config = $config;
     }
 
-    public function setUp($baseurl, array $conf = array(), $authentication = null, $userAgent = null) {
+    public function setUp($baseurl, array $conf = array(), array $auth = array(), $userAgent = null) {
         $this->baseurl = $baseurl;
-
         $this->conf = new Collection($conf);
-
-        if (isset($authentication['user'])) {
-            $this->auth = $authentication;
-            $this->oauth = null;
-        } else {
-            $this->auth = null;
-            $this->oauth = $authentication;
-        }
-
+        $this->auth = $auth;
         $this->userAgent = $userAgent;
 
         $this->makeNewClient();
@@ -76,15 +68,8 @@ class CoreAPI {
     protected function makeNewClient() {
         $this->client = new Client($this->baseurl, $this->conf);
 
-        if ($this->oauth) {
-            $this->setOauth($this->oauth);
-        } elseif ($this->auth) {
-            $this->setAuth($this->auth);
-        }
-
-        if ($this->userAgent) {
-            $this->setUserAgent($this->userAgent);
-        }
+        $this->setAuth($this->auth);
+        $this->setUserAgent($this->userAgent);
     }
 
     public function reset() {
@@ -112,20 +97,32 @@ class CoreAPI {
         return $this->client->setConfig($this->conf);
     }
 
-    public function getOauth() {
-        return $this->oauth;
-    }
-
-    public function setOauth($oauth) {
-        $this->oauth = $oauth;
-        $oauth = new OauthPlugin($oauth);
-        $this->client->addSubscriber($oauth);
-    }
-
     public function setAuth($auth) {
+        if (!is_array($auth)) {
+            $auth = array();
+        }
+
         $this->auth = $auth;
-        $authPlugin = new CurlAuthPlugin($auth['username'], $auth['password']);
-        $this->client->addSubscriber($auth);
+
+        try {
+            if (is_object($this->plugin)) {
+                if ($this->plugin instanceof EventSubscriberInterface) {
+                    $this->client->getEventDispatcher()->removeSubscriber($this->plugin);
+                }
+            }
+        } catch (\Exception $e) {
+            // ignore any errors fails
+        }
+
+        if (!empty($this->auth) && is_array($this->auth)) {
+            if (array_key_exists('username', $this->auth) && array_key_exists('password', $this->auth)) {
+                $this->plugin = new CurlAuthPlugin($this->auth['username'], $this->auth['password']);
+                $this->client->getEventDispatcher()->addSubscriber($this->plugin);
+            } elseif (array_key_exists('consumer_key', $this->auth) && array_key_exists('consumer_secret', $this->auth)) {
+                $this->plugin = new OauthPlugin($this->auth);
+                $this->client->getEventDispatcher()->addSubscriber($this->plugin);
+            }
+        }
     }
 
     public function getAuth() {
