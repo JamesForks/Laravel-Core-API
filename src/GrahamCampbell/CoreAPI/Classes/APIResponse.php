@@ -25,7 +25,18 @@ use Guzzle\Http\Message\Response;
 
 class APIResponse {
 
+    /**
+     * The request instance.
+     *
+     * @var \Guzzle\Http\Message\RequestInterface
+     */
     protected $request;
+
+    /**
+     * The response instance.
+     *
+     * @var \Guzzle\Http\Message\Response
+     */
     protected $response;
 
     public function __construct(RequestInterface $request) {
@@ -34,7 +45,7 @@ class APIResponse {
     }
 
     /**
-     * Set the request that caused the exception.
+     * Set the request instance.
      *
      * @param RequestInterface  $request
      */
@@ -43,7 +54,7 @@ class APIResponse {
     }
 
     /**
-     * Get the request that caused the exception.
+     * Get the request instance.
      *
      * @return RequestInterface
      */
@@ -52,7 +63,7 @@ class APIResponse {
     }
 
     /**
-     * Set the response that caused the exception.
+     * Set the response instance.
      *
      * @param Response  $response
      */
@@ -61,7 +72,7 @@ class APIResponse {
     }
 
     /**
-     * Get the response that caused the exception.
+     * Get the response instance.
      *
      * @return Response
      */
