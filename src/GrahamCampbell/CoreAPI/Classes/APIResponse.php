@@ -39,6 +39,12 @@ class APIResponse {
      */
     protected $response;
 
+    /**
+     * Create a new instance.
+     *
+     * @param  \Guzzle\Http\Message\RequestInterface  $request
+     * @return void
+     */
     public function __construct(RequestInterface $request) {
         $this->response = $request->send();
         $this->request = $request;
@@ -47,7 +53,8 @@ class APIResponse {
     /**
      * Set the request instance.
      *
-     * @param RequestInterface  $request
+     * @param  \Guzzle\Http\Message\RequestInterface  $request
+     * @return void
      */
     public function setRequest(RequestInterface $request) {
         $this->request = $request;
@@ -56,7 +63,7 @@ class APIResponse {
     /**
      * Get the request instance.
      *
-     * @return RequestInterface
+     * @return \Guzzle\Http\Message\RequestInterface
      */
     public function getRequest() {
         return $this->request;
@@ -65,7 +72,8 @@ class APIResponse {
     /**
      * Set the response instance.
      *
-     * @param Response  $response
+     * @param  \Guzzle\Http\Message\Response  $request
+     * @return void
      */
     public function setResponse(Response $response) {
         $this->response = $response;
@@ -74,7 +82,7 @@ class APIResponse {
     /**
      * Get the response instance.
      *
-     * @return Response
+     * @return \Guzzle\Http\Message\Response
      */
     public function getResponse() {
         return $this->response;
