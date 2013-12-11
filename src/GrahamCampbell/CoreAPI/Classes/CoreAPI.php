@@ -25,6 +25,7 @@ use Illuminate\Config\Repository;
 use Guzzle\Common\Collection;
 use Guzzle\Http\Client;
 use Guzzle\Plugin\Oauth\OauthPlugin;
+use Guzzle\Plugin\CurlAuth\CurlAuthPlugin;
 
 class CoreAPI {
 
@@ -54,7 +55,7 @@ class CoreAPI {
         $this->config = $config;
     }
 
-    public function setUp($baseurl, $conf = array(), $authentication = null, $userAgent = null) {
+    public function setUp($baseurl, array $conf = array(), $authentication = null, $userAgent = null) {
         $this->baseurl = $baseurl;
 
         $this->conf = new Collection($conf);
@@ -66,7 +67,7 @@ class CoreAPI {
             $this->auth = null;
             $this->oauth = $authentication;
         }
-        
+
         $this->userAgent = $userAgent;
 
         $this->makeNewClient();
@@ -77,6 +78,8 @@ class CoreAPI {
 
         if ($this->oauth) {
             $this->setOauth($this->oauth);
+        } elseif ($this->auth) {
+            $this->setAuth($this->auth);
         }
 
         if ($this->userAgent) {
@@ -121,6 +124,8 @@ class CoreAPI {
 
     public function setAuth($auth) {
         $this->auth = $auth;
+        $authPlugin = new CurlAuthPlugin($auth['username'], $auth['password']);
+        $this->client->addSubscriber($auth);
     }
 
     public function getAuth() {
