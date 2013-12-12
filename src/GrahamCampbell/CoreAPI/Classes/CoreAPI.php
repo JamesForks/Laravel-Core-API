@@ -153,7 +153,12 @@ class CoreAPI {
      * @return void
      */
     public function setBaseUrl($baseurl) {
+        if (!is_string($baseurl)) {
+            $baseurl = '';
+        }
+
         $this->baseurl = $baseurl;
+
         return $this->client->setBaseUrl($this->baseurl);
     }
 
@@ -173,7 +178,12 @@ class CoreAPI {
      * @return void
      */
     public function setConfig(array $config) {
+        if (!is_array($config)) {
+            $config = array();
+        }
+
         $this->conf = new Collection($config);
+
         return $this->client->setConfig($this->conf);
     }
 
@@ -283,12 +293,12 @@ class CoreAPI {
     /**
      * Generate a response via the specified method.
      *
-     * @param  string    $method
-     * @param  string    $uri
-     * @param  array     $headers
-     * @param  array     $body
-     * @param  array     $options
-     * @param  bool|int  $cache
+     * @param  string       $method
+     * @param  string|null  $uri
+     * @param  array|null   $headers
+     * @param  array|null   $body
+     * @param  array        $options
+     * @param  bool|int     $cache
      * @return \GrahamCampbell\CoreAPI\Classes\APIResponse
      */
     public function goGet($method = 'GET', $uri = null, $headers = null, $body = null, array $options = array(), $cache = false) {
@@ -348,14 +358,14 @@ class CoreAPI {
     /**
      * Send a request.
      *
-     * @param  string    $method
-     * @param  string    $uri
-     * @param  array     $headers
-     * @param  array     $body
-     * @param  array     $options
+     * @param  string       $method
+     * @param  string|null  $uri
+     * @param  array|null   $headers
+     * @param  array|null   $body
+     * @param  array        $options
      * @return \GrahamCampbell\CoreAPI\Classes\APIResponse
      */
-    protected function sendGet($method, $uri, $headers, $body, $options) {
+    protected function sendGet($method, $uri, $headers, $body, array $options) {
         $request = $this->client->createRequest($method, $uri, $headers, $body, $options);
         return new APIResponse($request);
     }
@@ -403,13 +413,13 @@ class CoreAPI {
     /**
      * Generate a response from a get request.
      *
-     * @param  string    $uri
-     * @param  array     $headers
-     * @param  array     $options
-     * @param  bool|int  $cache
+     * @param  string|null  $uri
+     * @param  array|null   $headers
+     * @param  array        $options
+     * @param  bool|int     $cache
      * @return \GrahamCampbell\CoreAPI\Classes\APIResponse
      */
-    public function get($uri = null, $headers = null, $options = array(), $cache = false) {
+    public function get($uri = null, $headers = null, array $options = array(), $cache = false) {
         return is_array($options)
             ? $this->goGet('GET', $uri, $headers, null, $options, $cache)
             : $this->goGet('GET', $uri, $headers, $options, array(), $cache);
@@ -418,56 +428,56 @@ class CoreAPI {
     /**
      * Generate a response from a post request.
      *
-     * @param  string    $uri
-     * @param  array     $headers
-     * @param  array     $body
-     * @param  array     $options
-     * @param  bool|int  $cache
+     * @param  string|null  $uri
+     * @param  array|null   $headers
+     * @param  array|null   $body
+     * @param  array        $options
+     * @param  bool|int     $cache
      * @return \GrahamCampbell\CoreAPI\Classes\APIResponse
      */
-    public function post($uri = null, $headers = null, $body = null, $options = array(), $cache = false) {
+    public function post($uri = null, $headers = null, $body = null, array $options = array(), $cache = false) {
         return $this->goGet('POST', $uri, $headers, $body, $options, $cache);
     }
 
     /**
      * Generate a response from a put request.
      *
-     * @param  string    $uri
-     * @param  array     $headers
-     * @param  array     $body
-     * @param  array     $options
-     * @param  bool|int  $cache
+     * @param  string|null  $uri
+     * @param  array|null   $headers
+     * @param  array|null   $body
+     * @param  array        $options
+     * @param  bool|int     $cache
      * @return \GrahamCampbell\CoreAPI\Classes\APIResponse
      */
-    public function put($uri = null, $headers = null, $body = null, $options = array(), $cache = false) {
+    public function put($uri = null, $headers = null, $body = null, array $options = array(), $cache = false) {
         return $this->goGet('PUT', $uri, $headers, $body, $options, $cache);
     }
 
     /**
      * Generate a response from a patch request.
      *
-     * @param  string    $uri
-     * @param  array     $headers
-     * @param  array     $body
-     * @param  array     $options
-     * @param  bool|int  $cache
+     * @param  string|null  $uri
+     * @param  array|null   $headers
+     * @param  array|null   $body
+     * @param  array        $options
+     * @param  bool|int     $cache
      * @return \GrahamCampbell\CoreAPI\Classes\APIResponse
      */
-    public function patch($uri = null, $headers = null, $body = null, $options = array(), $cache = false) {
+    public function patch($uri = null, $headers = null, $body = null, array $options = array(), $cache = false) {
         return $this->goGet('PATCH', $uri, $headers, $body, $options, $cache);
     }
 
     /**
      * Generate a response from a delete request.
      *
-     * @param  string    $uri
-     * @param  array     $headers
-     * @param  array     $body
-     * @param  array     $options
-     * @param  bool|int  $cache
+     * @param  string|null  $uri
+     * @param  array|null   $headers
+     * @param  array|null   $body
+     * @param  array        $options
+     * @param  bool|int     $cache
      * @return \GrahamCampbell\CoreAPI\Classes\APIResponse
      */
-    public function delete($uri = null, $headers = null, $body = null, $options = array(), $cache = false) {
+    public function delete($uri = null, $headers = null, $body = null, array $options = array(), $cache = false) {
         return $this->goGet('DELETE', $uri, $headers, $body, $options, $cache);
     }
 }
