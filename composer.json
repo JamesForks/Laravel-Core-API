@@ -24,11 +24,6 @@
             "GrahamCampbell\\CoreAPI": "src/"
         }
     },
-    "extra": {
-        "branch-alias": {
-            "dev-develop": "0.3-dev"
-        }
-    },
     "minimum-stability": "dev",
     "prefer-stable": true
 }
