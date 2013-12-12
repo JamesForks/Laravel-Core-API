@@ -25,45 +25,64 @@ use Guzzle\Http\Message\Response;
 
 class APIResponse {
 
+    /**
+     * The request instance.
+     *
+     * @var \Guzzle\Http\Message\RequestInterface
+     */
     protected $request;
+
+    /**
+     * The response instance.
+     *
+     * @var \Guzzle\Http\Message\Response
+     */
     protected $response;
 
+    /**
+     * Create a new instance.
+     *
+     * @param  \Guzzle\Http\Message\RequestInterface  $request
+     * @return void
+     */
     public function __construct(RequestInterface $request) {
         $this->response = $request->send();
         $this->request = $request;
     }
 
     /**
-     * Set the request that caused the exception.
+     * Set the request instance.
      *
-     * @param RequestInterface  $request
+     * @param  \Guzzle\Http\Message\RequestInterface  $request
+     * @return void
      */
     public function setRequest(RequestInterface $request) {
         $this->request = $request;
     }
 
     /**
-     * Get the request that caused the exception.
+     * Get the request instance.
      *
-     * @return RequestInterface
+     * @return \Guzzle\Http\Message\RequestInterface
      */
     public function getRequest() {
         return $this->request;
     }
 
     /**
-     * Set the response that caused the exception.
+     * Set the response instance.
      *
-     * @param Response  $response
+     * @param  \Guzzle\Http\Message\Response  $request
+     * @return void
      */
     public function setResponse(Response $response) {
         $this->response = $response;
     }
 
     /**
-     * Get the response that caused the exception.
+     * Get the response instance.
      *
-     * @return Response
+     * @return \Guzzle\Http\Message\Response
      */
     public function getResponse() {
         return $this->response;

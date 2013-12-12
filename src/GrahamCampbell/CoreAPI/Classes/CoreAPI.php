@@ -25,14 +25,51 @@ use Illuminate\Config\Repository;
 use Guzzle\Common\Collection;
 use Guzzle\Http\Client;
 use Guzzle\Plugin\Oauth\OauthPlugin;
+use Guzzle\Plugin\CurlAuth\CurlAuthPlugin;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class CoreAPI {
 
+    /**
+     * The base url.
+     *
+     * @var string
+     */
     protected $baseurl;
+
+    /**
+     * The config.
+     *
+     * @var \Guzzle\Common\Collection
+     */
     protected $conf;
-    protected $oauth;
+
+    /**
+     * The auth data.
+     *
+     * @var array
+     */
     protected $auth;
+
+    /**
+     * The auth plugin.
+     *
+     * @var \Symfony\Component\EventDispatcher\EventSubscriberInterface
+     */
+    protected $plugin;
+
+    /**
+     * The user agent.
+     *
+     * @var string
+     */
     protected $userAgent;
+
+    /**
+     * The client instance.
+     *
+     * @var \Guzzle\Http\Client
+     */
     protected $client;
 
     /**
@@ -49,121 +86,211 @@ class CoreAPI {
      */
     protected $config;
 
+    /**
+     * Create a new instance.
+     *
+     * @param  \Illuminate\Cache\CacheManager  $cache
+     * @param  \Illuminate\Config\Repository   $config
+     * @return void
+     */
     public function __construct(CacheManager $cache, Repository $config) {
         $this->cache = $cache;
         $this->config = $config;
     }
 
-    public function setUp($baseurl, $conf = array(), $authentication = null, $userAgent = null) {
+    /**
+     * Setup the instance.
+     *
+     * @param  string  $baseurl
+     * @param  array   $conf
+     * @param  array   $auth
+     * @param  array   $userAgent
+     * @return void
+     */
+    public function setUp($baseurl, array $conf = array(), array $auth = array(), $userAgent = null) {
         $this->baseurl = $baseurl;
-
         $this->conf = new Collection($conf);
-
-        if (isset($authentication['user'])) {
-            $this->auth = $authentication;
-            $this->oauth = null;
-        } else {
-            $this->auth = null;
-            $this->oauth = $authentication;
-        }
-        
+        $this->auth = $auth;
         $this->userAgent = $userAgent;
 
         $this->makeNewClient();
     }
 
-    protected function makeNewClient() {
+    /**
+     * Make a new default client.
+     *
+     * @return void
+     */
+    public function makeNewClient() {
+        if (!is_string($this->baseurl) || !is_object($this->conf)) {
+            throw new \BadFunctionCallException('CoreAPI has not been initialised. Please run the setup method first.');
+        }
+
+        if ($this->conf instanceof Collection) {
+            throw new \BadFunctionCallException('CoreAPI has not been initialised. Please run the setup method first.');
+        }
+
         $this->client = new Client($this->baseurl, $this->conf);
 
-        if ($this->oauth) {
-            $this->setOauth($this->oauth);
-        }
-
-        if ($this->userAgent) {
-            $this->setUserAgent($this->userAgent);
-        }
+        $this->setAuth($this->auth);
+        $this->setUserAgent($this->userAgent);
     }
 
-    public function reset() {
-        if ($this->baseurl) {
-            $this->makeNewClient();
-        }
-    }
-
-
+    /**
+     * Get the base url.
+     *
+     * @param  bool  $expand
+     * @return string
+     */
     public function getBaseUrl($expand = true) {
         return $this->client->getBaseUrl($expand);
     }
 
+    /**
+     * Set the base url.
+     *
+     * @param  string  $baseurl
+     * @return void
+     */
     public function setBaseUrl($baseurl) {
         $this->baseurl = $baseurl;
         return $this->client->setBaseUrl($this->baseurl);
     }
 
+    /**
+     * Get the config.
+     *
+     * @return \Guzzle\Common\Collection
+     */
     public function getConfig() {
         return $this->client->getConfig();
     }
 
-    public function setConfig($conf) {
-        $this->conf = new Collection($conf);
+    /**
+     * Set the config.
+     *
+     * @param  array  $config
+     * @return void
+     */
+    public function setConfig(array $config) {
+        $this->conf = new Collection($config);
         return $this->client->setConfig($this->conf);
     }
 
-    public function getOauth() {
-        return $this->oauth;
-    }
-
-    public function setOauth($oauth) {
-        $this->oauth = $oauth;
-        $oauth = new OauthPlugin($oauth);
-        $this->client->addSubscriber($oauth);
-    }
-
-    public function setAuth($auth) {
-        $this->auth = $auth;
-    }
-
+    /**
+     * Get the auth data.
+     *
+     * @return array
+     */
     public function getAuth() {
         return $this->auth;
     }
 
+    /**
+     * Set the auth data.
+     *
+     * @param  array  $auth
+     * @return void
+     */
+    public function setAuth(array $auth) {
+        if (!is_array($auth)) {
+            $auth = array();
+        }
+
+        $this->auth = $auth;
+
+        try {
+            if (is_object($this->plugin)) {
+                if ($this->plugin instanceof EventSubscriberInterface) {
+                    $this->client->getEventDispatcher()->removeSubscriber($this->plugin);
+                }
+            }
+        } catch (\Exception $e) {
+            // ignore any errors fails
+        }
+
+        if (!empty($this->auth) && is_array($this->auth)) {
+            if (array_key_exists('username', $this->auth) && array_key_exists('password', $this->auth)) {
+                $this->plugin = new CurlAuthPlugin($this->auth['username'], $this->auth['password']);
+                $this->client->getEventDispatcher()->addSubscriber($this->plugin);
+            } elseif (array_key_exists('consumer_key', $this->auth) && array_key_exists('consumer_secret', $this->auth)) {
+                $this->plugin = new OauthPlugin($this->auth);
+                $this->client->getEventDispatcher()->addSubscriber($this->plugin);
+            }
+        }
+    }
+
+    /**
+     * Get the user agent.
+     *
+     * @return string
+     */
     public function getUserAgent() {
         return $this->userAgent();
     }
 
-    public function getDefaultUserAgent() {
-        return $this->client->getDefaultUserAgent();
-    }
-
-    public function setUserAgent($userAgent, $includeDefault = false) {
-        if ($includeDefault) {
-            $userAgent .= ' ' . $this->getDefaultUserAgent();
+    /**
+     * Set the user agent.
+     *
+     * @param  string  $userAgent
+     * @return void
+     */
+    public function setUserAgent($userAgent) {
+        if (!is_string($userAgent)) {
+            $userAgent = $this->getUserAgent();
         }
+
+        if (!is_string($userAgent)) {
+            $userAgent = '';
+        }
+
         $this->userAgent = $userAgent;
+
         return $this->client->setUserAgent($this->userAgent);
     }
 
-    public function setDefaultOption($keyOrPath, $value) {
-        return $this->client->setDefaultOption($keyOrPath, $value);
-    }
-
-    public function getDefaultOption($keyOrPath) {
-        return $this->client->getDefaultOption($keyOrPath);
-    }
-
+    /**
+     * Get the client instance.
+     *
+     * @return \Guzzle\Http\Client
+     */
     public function getClient() {
         return $this->client;
     }
 
-    public function setClient($client) {
+    /**
+     * Set the client instance.
+     *
+     * @param  \Guzzle\Http\Client  $client
+     * @return void
+     */
+    public function setClient(Client $client) {
         return $this->client = $client;
     }
 
+    /**
+     * Set ssl verification.
+     *
+     * @param  bool  $certificateAuthority
+     * @param  bool  $verifyPeer
+     * @param  int   $verifyHost
+     * @return void
+     */
     public function setSslVerification($certificateAuthority = true, $verifyPeer = true, $verifyHost = 2) {
         return $this->client->setSslVerification($certificateAuthority, $verifyPeer, $verifyHost);
     }
 
-
+    /**
+     * Generate a response via the specified method.
+     *
+     * @param  string    $method
+     * @param  string    $uri
+     * @param  array     $headers
+     * @param  array     $body
+     * @param  array     $options
+     * @param  bool|int  $cache
+     * @return \GrahamCampbell\CoreAPI\Classes\APIResponse
+     */
     public function goGet($method = 'GET', $uri = null, $headers = null, $body = null, array $options = array(), $cache = false) {
         $key = md5(json_encode($method).json_encode($uri).json_encode($headers).json_encode($body).json_encode($options));
         $time = $this->cacheTime($cache);
@@ -188,6 +315,12 @@ class CoreAPI {
         return $value;
     }
 
+    /**
+     * Get the cache time.
+     *
+     * @param  bool|int  $cache
+     * @return int
+     */
     protected function cacheTime($cache) {
         if ($cache === true) {
             $cache = $this->config['core-api::cache'];
@@ -212,46 +345,128 @@ class CoreAPI {
         return $cache;
     }
 
-    protected function getCache($key) {
-        return $this->cache->section('api')->get($key);
+    /**
+     * Send a request.
+     *
+     * @param  string    $method
+     * @param  string    $uri
+     * @param  array     $headers
+     * @param  array     $body
+     * @param  array     $options
+     * @return \GrahamCampbell\CoreAPI\Classes\APIResponse
+     */
+    protected function sendGet($method, $uri, $headers, $body, $options) {
+        $request = $this->client->createRequest($method, $uri, $headers, $body, $options);
+        return new APIResponse($request);
     }
 
+    /**
+     * Check if the cached response is valid
+     *
+     * @param  mixed  $value
+     * @return bool
+     */
     protected function validCache($value) {
-        if (is_null($value) || !is_a($value, '\GrahamCampbell\CoreAPI\Classes\APIResponse')) {
+        if (!is_object($value)) {
+            return false;
+        }
+
+        if (!$value instanceof APIResponse) {
             return false;
         }
 
         return true;
     }
 
-    protected function sendGet($method, $uri, $headers, $body, $options) {
-        $request = $this->client->createRequest($method, $uri, $headers, $body, $options);
-        return new APIResponse($request);
+    /**
+     * Pull a response from the cache.
+     *
+     * @param  bool|int  $cache
+     * @return \GrahamCampbell\CoreAPI\Classes\APIResponse
+     */
+    protected function getCache($key) {
+        return $this->cache->section('api')->get($key);
     }
 
-    protected function setCache($key, $value, $time) {
+    /**
+     * Add a response to the cache.
+     *
+     * @param  string  $key
+     * @param  \GrahamCampbell\CoreAPI\Classes\APIResponse  $value
+     * @param  int  $time
+     * @return void
+     */
+    protected function setCache($key, APIResponse $value, $time) {
         return $this->cache->section('api')->put($key, $value, $time);
     }
 
-
+    /**
+     * Generate a response from a get request.
+     *
+     * @param  string    $uri
+     * @param  array     $headers
+     * @param  array     $options
+     * @param  bool|int  $cache
+     * @return \GrahamCampbell\CoreAPI\Classes\APIResponse
+     */
     public function get($uri = null, $headers = null, $options = array(), $cache = false) {
         return is_array($options)
             ? $this->goGet('GET', $uri, $headers, null, $options, $cache)
             : $this->goGet('GET', $uri, $headers, $options, array(), $cache);
     }
 
+    /**
+     * Generate a response from a post request.
+     *
+     * @param  string    $uri
+     * @param  array     $headers
+     * @param  array     $body
+     * @param  array     $options
+     * @param  bool|int  $cache
+     * @return \GrahamCampbell\CoreAPI\Classes\APIResponse
+     */
     public function post($uri = null, $headers = null, $body = null, $options = array(), $cache = false) {
         return $this->goGet('POST', $uri, $headers, $body, $options, $cache);
     }
 
+    /**
+     * Generate a response from a put request.
+     *
+     * @param  string    $uri
+     * @param  array     $headers
+     * @param  array     $body
+     * @param  array     $options
+     * @param  bool|int  $cache
+     * @return \GrahamCampbell\CoreAPI\Classes\APIResponse
+     */
     public function put($uri = null, $headers = null, $body = null, $options = array(), $cache = false) {
         return $this->goGet('PUT', $uri, $headers, $body, $options, $cache);
     }
 
+    /**
+     * Generate a response from a patch request.
+     *
+     * @param  string    $uri
+     * @param  array     $headers
+     * @param  array     $body
+     * @param  array     $options
+     * @param  bool|int  $cache
+     * @return \GrahamCampbell\CoreAPI\Classes\APIResponse
+     */
     public function patch($uri = null, $headers = null, $body = null, $options = array(), $cache = false) {
         return $this->goGet('PATCH', $uri, $headers, $body, $options, $cache);
     }
 
+    /**
+     * Generate a response from a delete request.
+     *
+     * @param  string    $uri
+     * @param  array     $headers
+     * @param  array     $body
+     * @param  array     $options
+     * @param  bool|int  $cache
+     * @return \GrahamCampbell\CoreAPI\Classes\APIResponse
+     */
     public function delete($uri = null, $headers = null, $body = null, $options = array(), $cache = false) {
         return $this->goGet('DELETE', $uri, $headers, $body, $options, $cache);
     }
