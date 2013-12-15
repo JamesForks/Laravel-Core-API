@@ -220,8 +220,7 @@ class CoreAPI
 
         try {
             if (is_object($this->plugin)) {
-                if ($this->plugin instanceof EventSubscriberInterface)
-                {
+                if ($this->plugin instanceof EventSubscriberInterface) {
                     $this->client->getEventDispatcher()->removeSubscriber($this->plugin);
                 }
             }
@@ -413,8 +412,8 @@ class CoreAPI
      * @param  bool|int  $cache
      * @return \GrahamCampbell\CoreAPI\Classes\APIResponse
      */
-    protected function getCache($key) 
-
+    protected function getCache($key)
+    {
         return $this->cache->section('api')->get($key);
     }
 
