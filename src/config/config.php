@@ -57,6 +57,6 @@ return array(
     |
     */
 
-    'force' => true,
+    'force' => true
 
 );

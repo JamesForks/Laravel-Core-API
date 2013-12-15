@@ -23,8 +23,8 @@
 use Guzzle\Http\Message\RequestInterface;
 use Guzzle\Http\Message\Response;
 
-class APIResponse {
-
+class APIResponse
+{
     /**
      * The request instance.
      *
@@ -45,7 +45,8 @@ class APIResponse {
      * @param  \Guzzle\Http\Message\RequestInterface  $request
      * @return void
      */
-    public function __construct(RequestInterface $request) {
+    public function __construct(RequestInterface $request)
+    {
         $this->response = $request->send();
         $this->request = $request;
     }
@@ -56,7 +57,8 @@ class APIResponse {
      * @param  \Guzzle\Http\Message\RequestInterface  $request
      * @return void
      */
-    public function setRequest(RequestInterface $request) {
+    public function setRequest(RequestInterface $request)
+    {
         $this->request = $request;
     }
 
@@ -65,7 +67,8 @@ class APIResponse {
      *
      * @return \Guzzle\Http\Message\RequestInterface
      */
-    public function getRequest() {
+    public function getRequest()
+    {
         return $this->request;
     }
 
@@ -75,7 +78,8 @@ class APIResponse {
      * @param  \Guzzle\Http\Message\Response  $request
      * @return void
      */
-    public function setResponse(Response $response) {
+    public function setResponse(Response $response)
+    {
         $this->response = $response;
     }
 
@@ -84,7 +88,8 @@ class APIResponse {
      *
      * @return \Guzzle\Http\Message\Response
      */
-    public function getResponse() {
+    public function getResponse()
+    {
         return $this->response;
     }
 
@@ -95,7 +100,8 @@ class APIResponse {
      * @param  array   $parameters
      * @return mixed
      */
-    public function __call($method, $parameters) {
+    public function __call($method, $parameters)
+    {
         return call_user_func_array(array($this->response, $method), $parameters);
     }
 }

@@ -1,6 +1,6 @@
 {
     "name": "graham-campbell/core-api",
-    "description": "Core API Provides Some Core API Client Functions For Laravel 4",
+    "description": "Core API Provides Some Core API Client Functions For Laravel 4.1",
     "keywords": ["laravel", "framework", "core api", "core", "api", "Core API", "Core-API", "Laravel Core API", "Laravel-Core-API", "Graham Campbell", "GrahamCampbell"],
     "license": "Apache License 2.0",
     "authors": [
@@ -10,9 +10,9 @@
         }
     ],
     "require": {
-        "php": ">=5.3.3",
-        "orchestra/testbench": "2.0.*|2.1.*",
-        "symfony/event-dispatcher": "2.3.*|2.4.*",
+        "php": ">=5.4.7",
+        "orchestra/testbench": "2.1.*",
+        "symfony/event-dispatcher": "2.4.*",
         "guzzle/guzzle": "3.8.*"
     },
     "require-dev": {
