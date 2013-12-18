@@ -1,4 +1,4 @@
-<?php namespace GrahamCampbell\CoreAPI\Facades;
+<?php
 
 /**
  * This file is part of Laravel Core API by Graham Campbell.
@@ -12,16 +12,21 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
- * @package    Laravel-Core-API
- * @author     Graham Campbell
- * @license    Apache License
- * @copyright  Copyright 2013 Graham Campbell
- * @link       https://github.com/GrahamCampbell/Laravel-Core-API
  */
+
+namespace GrahamCampbell\CoreAPI\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
+/**
+ * This is the core api facade class.
+ *
+ * @package    Laravel-Core-API
+ * @author     Graham Campbell
+ * @copyright  Copyright 2013 Graham Campbell
+ * @license    https://github.com/GrahamCampbell/Laravel-Core-API/blob/develop/LICENSE.md
+ * @link       https://github.com/GrahamCampbell/Laravel-Core-API
+ */
 class CoreAPI extends Facade
 {
     /**

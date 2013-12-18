@@ -1,4 +1,4 @@
-<?php namespace GrahamCampbell\CoreAPI\Classes;
+<?php
 
 /**
  * This file is part of Laravel Core API by Graham Campbell.
@@ -12,13 +12,9 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
- * @package    Laravel-Core-API
- * @author     Graham Campbell
- * @license    Apache License
- * @copyright  Copyright 2013 Graham Campbell
- * @link       https://github.com/GrahamCampbell/Laravel-Core-API
  */
+
+namespace GrahamCampbell\CoreAPI\Classes;
 
 use Illuminate\Cache\CacheManager;
 use Illuminate\Config\Repository;
@@ -26,8 +22,18 @@ use Guzzle\Common\Collection;
 use Guzzle\Http\Client;
 use Guzzle\Plugin\Oauth\OauthPlugin;
 use Guzzle\Plugin\CurlAuth\CurlAuthPlugin;
+use GrahamCampbell\CoreAPI\Responses\APIResponse;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
+/**
+ * This is the core api class.
+ *
+ * @package    Laravel-Core-API
+ * @author     Graham Campbell
+ * @copyright  Copyright 2013 Graham Campbell
+ * @license    https://github.com/GrahamCampbell/Laravel-Core-API/blob/develop/LICENSE.md
+ * @link       https://github.com/GrahamCampbell/Laravel-Core-API
+ */
 class CoreAPI
 {
     /**
@@ -313,7 +319,7 @@ class CoreAPI
      * @param  array|null   $body
      * @param  array        $options
      * @param  bool|int     $cache
-     * @return \GrahamCampbell\CoreAPI\Classes\APIResponse
+     * @return \GrahamCampbell\CoreAPI\Responses\APIResponse
      */
     public function goGet($method = 'GET', $uri = null, $headers = null, $body = null, array $options = array(), $cache = false)
     {
@@ -379,7 +385,7 @@ class CoreAPI
      * @param  array|null   $headers
      * @param  array|null   $body
      * @param  array        $options
-     * @return \GrahamCampbell\CoreAPI\Classes\APIResponse
+     * @return \GrahamCampbell\CoreAPI\Responses\APIResponse
      */
     protected function sendGet($method, $uri, $headers, $body, array $options)
     {
@@ -410,7 +416,7 @@ class CoreAPI
      * Pull a response from the cache.
      *
      * @param  bool|int  $cache
-     * @return \GrahamCampbell\CoreAPI\Classes\APIResponse
+     * @return \GrahamCampbell\CoreAPI\Responses\APIResponse
      */
     protected function getCache($key)
     {
@@ -421,7 +427,7 @@ class CoreAPI
      * Add a response to the cache.
      *
      * @param  string  $key
-     * @param  \GrahamCampbell\CoreAPI\Classes\APIResponse  $value
+     * @param  \GrahamCampbell\CoreAPI\Responses\APIResponse  $value
      * @param  int  $time
      * @return void
      */
@@ -437,7 +443,7 @@ class CoreAPI
      * @param  array|null   $headers
      * @param  array        $options
      * @param  bool|int     $cache
-     * @return \GrahamCampbell\CoreAPI\Classes\APIResponse
+     * @return \GrahamCampbell\CoreAPI\Responses\APIResponse
      */
     public function get($uri = null, $headers = null, array $options = array(), $cache = false)
     {
@@ -454,7 +460,7 @@ class CoreAPI
      * @param  array|null   $body
      * @param  array        $options
      * @param  bool|int     $cache
-     * @return \GrahamCampbell\CoreAPI\Classes\APIResponse
+     * @return \GrahamCampbell\CoreAPI\Responses\APIResponse
      */
     public function post($uri = null, $headers = null, $body = null, array $options = array(), $cache = false)
     {
@@ -469,7 +475,7 @@ class CoreAPI
      * @param  array|null   $body
      * @param  array        $options
      * @param  bool|int     $cache
-     * @return \GrahamCampbell\CoreAPI\Classes\APIResponse
+     * @return \GrahamCampbell\CoreAPI\Responses\APIResponse
      */
     public function put($uri = null, $headers = null, $body = null, array $options = array(), $cache = false)
     {
@@ -484,7 +490,7 @@ class CoreAPI
      * @param  array|null   $body
      * @param  array        $options
      * @param  bool|int     $cache
-     * @return \GrahamCampbell\CoreAPI\Classes\APIResponse
+     * @return \GrahamCampbell\CoreAPI\Responses\APIResponse
      */
     public function patch($uri = null, $headers = null, $body = null, array $options = array(), $cache = false)
     {
@@ -499,7 +505,7 @@ class CoreAPI
      * @param  array|null   $body
      * @param  array        $options
      * @param  bool|int     $cache
-     * @return \GrahamCampbell\CoreAPI\Classes\APIResponse
+     * @return \GrahamCampbell\CoreAPI\Responses\APIResponse
      */
     public function delete($uri = null, $headers = null, $body = null, array $options = array(), $cache = false)
     {
