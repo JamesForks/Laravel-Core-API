@@ -114,7 +114,7 @@ class CoreAPI
      * @param  array   $userAgent
      * @return void
      */
-    public function setUp($baseurl, array $conf = array(), array $auth = array(), $userAgent = null)
+    public function setup($baseurl, array $conf = array(), array $auth = array(), $userAgent = null)
     {
         $this->baseurl = $baseurl;
         $this->conf = new Collection($conf);
