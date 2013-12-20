@@ -39,7 +39,7 @@
         "guzzle/guzzle": "3.8.*"
     },
     "require-dev": {
-        "graham-campbell/testbench": "0.1.*"
+        "graham-campbell/testbench": "0.2.*"
     },
     "autoload": {
         "psr-0": {
