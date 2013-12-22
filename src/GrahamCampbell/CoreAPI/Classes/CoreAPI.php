@@ -109,15 +109,15 @@ class CoreAPI
      * Setup the instance.
      *
      * @param  string  $baseurl
-     * @param  array   $conf
+     * @param  array   $config
      * @param  array   $auth
      * @param  array   $userAgent
      * @return void
      */
-    public function setup($baseurl, array $conf = array(), array $auth = array(), $userAgent = null)
+    public function setup($baseurl, array $config = array(), array $auth = array(), $userAgent = null)
     {
         $this->baseurl = $baseurl;
-        $this->conf = new Collection($conf);
+        $this->conf = new Collection($config);
         $this->auth = $auth;
         $this->userAgent = $userAgent;
 
@@ -227,7 +227,7 @@ class CoreAPI
         try {
             if (is_object($this->plugin)) {
                 if ($this->plugin instanceof EventSubscriberInterface) {
-                    $this->client->getEventDispatcher()->removeSubscriber($this->plugin);
+                    $this->removeSubscriber($this->plugin);
                 }
             }
         } catch (\Exception $e) {
@@ -237,10 +237,10 @@ class CoreAPI
         if (!empty($this->auth) && is_array($this->auth)) {
             if (array_key_exists('username', $this->auth) && array_key_exists('password', $this->auth)) {
                 $this->plugin = new CurlAuthPlugin($this->auth['username'], $this->auth['password']);
-                $this->client->getEventDispatcher()->addSubscriber($this->plugin);
+                $this->addSubscriber($this->plugin);
             } elseif (array_key_exists('consumer_key', $this->auth) && array_key_exists('consumer_secret', $this->auth)) {
                 $this->plugin = new OauthPlugin($this->auth);
-                $this->client->getEventDispatcher()->addSubscriber($this->plugin);
+                $this->addSubscriber($this->plugin);
             }
         }
     }
@@ -308,6 +308,28 @@ class CoreAPI
     public function setSslVerification($certificateAuthority = true, $verifyPeer = true, $verifyHost = 2)
     {
         return $this->client->setSslVerification($certificateAuthority, $verifyPeer, $verifyHost);
+    }
+
+    /**
+     * Add an event subscriber.
+     *
+     * @param  \Symfony\Component\EventDispatcher\EventSubscriberInterface  $subscriber
+     * @return void
+     */
+    public function addSubscriber(EventSubscriberInterface $subscriber)
+    {
+        return $this->client->getEventDispatcher()->addSubscriber($subscriber);
+    }
+
+    /**
+     * Removed an event subscriber.
+     *
+     * @param  \Symfony\Component\EventDispatcher\EventSubscriberInterface  $subscriber
+     * @return void
+     */
+    public function removeSubscriber(EventSubscriberInterface $subscriber)
+    {
+        return $this->client->getEventDispatcher()->removeSubscriber($subscriber);
     }
 
     /**
