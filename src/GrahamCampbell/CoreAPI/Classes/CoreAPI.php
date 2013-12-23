@@ -21,6 +21,7 @@ use Illuminate\Config\Repository;
 use Guzzle\Common\Collection;
 use Guzzle\Http\Client;
 use Guzzle\Plugin\Oauth\OauthPlugin;
+use Guzzle\Plugin\Backoff\BackoffPlugin;
 use Guzzle\Plugin\CurlAuth\CurlAuthPlugin;
 use GrahamCampbell\CoreAPI\Responses\APIResponse;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -60,16 +61,16 @@ class CoreAPI
     /**
      * The auth plugin.
      *
-     * @var \Symfony\Component\EventDispatcher\EventSubscriberInterface
+     * @var \Guzzle\Plugin\CurlAuth\CurlAuthPlugin
      */
     protected $plugin;
 
     /**
-     * The user agent.
+     * The back off plugin.
      *
-     * @var string
+     * @var bool|\Guzzle\Plugin\Backoff\BackoffPlugin
      */
-    protected $userAgent;
+    protected $backOff;
 
     /**
      * The client instance.
@@ -111,17 +112,27 @@ class CoreAPI
      * @param  string  $baseurl
      * @param  array   $config
      * @param  array   $auth
-     * @param  array   $userAgent
+     * @param  bool|\Guzzle\Plugin\Backoff\BackoffPlugin  $backOff
      * @return void
      */
-    public function setup($baseurl, array $config = array(), array $auth = array(), $userAgent = null)
+    public function setup($baseurl, array $config = array(), array $auth = array(), $backOff = true)
     {
         $this->baseurl = $baseurl;
         $this->conf = new Collection($config);
-        $this->auth = $auth;
-        $this->userAgent = $userAgent;
 
-        $this->makeNewClient();
+        $this->client = new Client($this->baseurl, $this->conf);
+
+        $this->setAuth($auth);
+
+        if (is_object($backOff)) {
+            if ($backOff instanceof BackoffPlugin) {
+                return $this->setBackOff($backOff);
+            }
+        }
+
+        if ($backOff) {
+            $this->setBackOff(BackoffPlugin::getExponentialBackoff());
+        }
     }
 
     /**
@@ -142,7 +153,7 @@ class CoreAPI
         $this->client = new Client($this->baseurl, $this->conf);
 
         $this->setAuth($this->auth);
-        $this->setUserAgent($this->userAgent);
+        $this->setBackOff($this->backOff);
     }
 
     /**
@@ -191,10 +202,6 @@ class CoreAPI
      */
     public function setConfig(array $config)
     {
-        if (!is_array($config)) {
-            $config = array();
-        }
-
         $this->conf = new Collection($config);
 
         return $this->client->setConfig($this->conf);
@@ -218,12 +225,6 @@ class CoreAPI
      */
     public function setAuth(array $auth)
     {
-        if (!is_array($auth)) {
-            $auth = array();
-        }
-
-        $this->auth = $auth;
-
         try {
             if (is_object($this->plugin)) {
                 if ($this->plugin instanceof EventSubscriberInterface) {
@@ -233,6 +234,8 @@ class CoreAPI
         } catch (\Exception $e) {
             // ignore any errors fails
         }
+
+        $this->auth = $auth;
 
         if (!empty($this->auth) && is_array($this->auth)) {
             if (array_key_exists('username', $this->auth) && array_key_exists('password', $this->auth)) {
@@ -246,34 +249,40 @@ class CoreAPI
     }
 
     /**
-     * Get the user agent.
+     * Get the back off plugin.
      *
-     * @return string
+     * @return |bool\Guzzle\Plugin\Backoff\BackoffPlugin
      */
-    public function getUserAgent()
+    public function getBackOff()
     {
-        return $this->userAgent();
+        return $this->backOff;
     }
 
     /**
-     * Set the user agent.
+     * Set the back off plugin.
      *
-     * @param  string  $userAgent
+     * @param  \Guzzle\Plugin\Backoff\BackoffPlugin  $backOff
      * @return void
      */
-    public function setUserAgent($userAgent)
+    public function setBackOff($backOff)
     {
-        if (!is_string($userAgent)) {
-            $userAgent = $this->getUserAgent();
+        try {
+            if (is_object($this->backOff)) {
+                if ($this->backOff instanceof EventSubscriberInterface) {
+                    $this->removeSubscriber($this->backOff);
+                }
+            }
+        } catch (\Exception $e) {
+            // ignore any errors fails
         }
 
-        if (!is_string($userAgent)) {
-            $userAgent = '';
+        $this->backOff = $backOff;
+
+        if (is_object($this->backOff)) {
+            if ($this->backOff instanceof BackoffPlugin) {
+                $this->addSubscriber($this->backOff);
+            }
         }
-
-        $this->userAgent = $userAgent;
-
-        return $this->client->setUserAgent($this->userAgent);
     }
 
     /**
