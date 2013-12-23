@@ -136,27 +136,6 @@ class CoreAPI
     }
 
     /**
-     * Make a new default client.
-     *
-     * @return void
-     */
-    public function makeNewClient()
-    {
-        if (!is_string($this->baseurl) || !is_object($this->conf)) {
-            throw new \BadFunctionCallException('CoreAPI has not been initialised. Please run the setup method first.');
-        }
-
-        if ($this->conf instanceof Collection) {
-            throw new \BadFunctionCallException('CoreAPI has not been initialised. Please run the setup method first.');
-        }
-
-        $this->client = new Client($this->baseurl, $this->conf);
-
-        $this->setAuth($this->auth);
-        $this->setBackOff($this->backOff);
-    }
-
-    /**
      * Get the base url.
      *
      * @param  bool  $expand
