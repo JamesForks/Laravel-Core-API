@@ -53,8 +53,21 @@ class CoreAPIServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app['coreapi'] = $this->app->share(function ($app) {
-            return new Classes\CoreAPI($app['cache'], $app['config']);
+        $this->registerCoreAPI();
+    }
+
+    /**
+     * Register the core api class.
+     *
+     * @return void
+     */
+    protected function registerCoreAPI()
+    {
+        $this->app->bindShared('coreapi', function ($app) {
+            $cache = $app['cache'];
+            $config = $app['config'];
+
+            return new Classes\CoreAPI($cache, $config);
         });
     }
 
