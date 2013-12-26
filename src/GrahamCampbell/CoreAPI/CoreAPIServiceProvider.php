@@ -78,6 +78,8 @@ class CoreAPIServiceProvider extends ServiceProvider
      */
     public function provides()
     {
-        return array('coreapi');
+        return array(
+            'coreapi'
+        );
     }
 }
