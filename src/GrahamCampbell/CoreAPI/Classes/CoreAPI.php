@@ -113,7 +113,7 @@ class CoreAPI
      * @param  array   $config
      * @param  array   $auth
      * @param  bool|\Guzzle\Plugin\Backoff\BackoffPlugin  $backOff
-     * @return void
+     * @return $this
      */
     public function setup($baseurl, array $config = array(), array $auth = array(), $backOff = true)
     {
@@ -133,6 +133,8 @@ class CoreAPI
         if ($backOff) {
             $this->setBackOff(BackoffPlugin::getExponentialBackoff());
         }
+
+        return $this;
     }
 
     /**
@@ -150,7 +152,7 @@ class CoreAPI
      * Set the base url.
      *
      * @param  string  $baseurl
-     * @return void
+     * @return $this
      */
     public function setBaseUrl($baseurl)
     {
@@ -160,7 +162,9 @@ class CoreAPI
 
         $this->baseurl = $baseurl;
 
-        return $this->client->setBaseUrl($this->baseurl);
+        $this->client->setBaseUrl($this->baseurl);
+
+        return $this;
     }
 
     /**
@@ -177,13 +181,15 @@ class CoreAPI
      * Set the config.
      *
      * @param  array  $config
-     * @return void
+     * @return $this
      */
     public function setConfig(array $config)
     {
         $this->conf = new Collection($config);
 
-        return $this->client->setConfig($this->conf);
+        $this->client->setConfig($this->conf);
+
+        return $this;
     }
 
     /**
@@ -200,7 +206,7 @@ class CoreAPI
      * Set the auth data.
      *
      * @param  array  $auth
-     * @return void
+     * @return $this
      */
     public function setAuth(array $auth)
     {
@@ -225,6 +231,8 @@ class CoreAPI
                 $this->addSubscriber($this->plugin);
             }
         }
+
+        return $this;
     }
 
     /**
@@ -241,7 +249,7 @@ class CoreAPI
      * Set the back off plugin.
      *
      * @param  \Guzzle\Plugin\Backoff\BackoffPlugin  $backOff
-     * @return void
+     * @return $this
      */
     public function setBackOff($backOff)
     {
@@ -262,6 +270,8 @@ class CoreAPI
                 $this->addSubscriber($this->backOff);
             }
         }
+
+        return $this;
     }
 
     /**
@@ -278,11 +288,13 @@ class CoreAPI
      * Set the client instance.
      *
      * @param  \Guzzle\Http\Client  $client
-     * @return void
+     * @return $this
      */
     public function setClient(Client $client)
     {
-        return $this->client = $client;
+        $this->client = $client;
+
+        return $this;
     }
 
     /**
@@ -291,33 +303,39 @@ class CoreAPI
      * @param  bool  $certificateAuthority
      * @param  bool  $verifyPeer
      * @param  int   $verifyHost
-     * @return void
+     * @return $this
      */
     public function setSslVerification($certificateAuthority = true, $verifyPeer = true, $verifyHost = 2)
     {
-        return $this->client->setSslVerification($certificateAuthority, $verifyPeer, $verifyHost);
+        $this->client->setSslVerification($certificateAuthority, $verifyPeer, $verifyHost);
+
+        return $this;
     }
 
     /**
      * Add an event subscriber.
      *
      * @param  \Symfony\Component\EventDispatcher\EventSubscriberInterface  $subscriber
-     * @return void
+     * @return $this
      */
     public function addSubscriber(EventSubscriberInterface $subscriber)
     {
-        return $this->client->getEventDispatcher()->addSubscriber($subscriber);
+        $this->client->getEventDispatcher()->addSubscriber($subscriber);
+
+        return $this;
     }
 
     /**
      * Removed an event subscriber.
      *
      * @param  \Symfony\Component\EventDispatcher\EventSubscriberInterface  $subscriber
-     * @return void
+     * @return $this
      */
     public function removeSubscriber(EventSubscriberInterface $subscriber)
     {
-        return $this->client->getEventDispatcher()->removeSubscriber($subscriber);
+        $this->client->getEventDispatcher()->removeSubscriber($subscriber);
+
+        return $this;
     }
 
     /**
@@ -439,11 +457,13 @@ class CoreAPI
      * @param  string  $key
      * @param  \GrahamCampbell\CoreAPI\Responses\APIResponse  $value
      * @param  int  $time
-     * @return void
+     * @return $this
      */
     protected function setCache($key, APIResponse $value, $time)
     {
-        return $this->cache->section('api')->put($key, $value, $time);
+        $this->cache->section('api')->put($key, $value, $time);
+
+        return $this;
     }
 
     /**

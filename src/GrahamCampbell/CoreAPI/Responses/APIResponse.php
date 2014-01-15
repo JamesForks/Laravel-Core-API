@@ -60,11 +60,13 @@ class APIResponse
      * Set the request instance.
      *
      * @param  \Guzzle\Http\Message\RequestInterface  $request
-     * @return void
+     * @return $this
      */
     public function setRequest(RequestInterface $request)
     {
         $this->request = $request;
+
+        return $this;
     }
 
     /**
@@ -81,11 +83,13 @@ class APIResponse
      * Set the response instance.
      *
      * @param  \Guzzle\Http\Message\Response  $request
-     * @return void
+     * @return $this
      */
     public function setResponse(Response $response)
     {
         $this->response = $response;
+
+        return $this;
     }
 
     /**
