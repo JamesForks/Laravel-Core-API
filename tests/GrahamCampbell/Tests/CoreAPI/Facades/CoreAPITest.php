@@ -22,7 +22,7 @@ namespace GrahamCampbell\Tests\CoreAPI\Facades;
  * @package    Laravel-Core-API
  * @author     Graham Campbell
  * @copyright  Copyright 2013-2014 Graham Campbell
- * @license    https://github.com/GrahamCampbell/Laravel-Core-API/blob/develop/LICENSE.md
+ * @license    https://github.com/GrahamCampbell/Laravel-Core-API/blob/master/LICENSE.md
  * @link       https://github.com/GrahamCampbell/Laravel-Core-API
  */
 class CoreAPITest extends AbstractFacadeTestCase
