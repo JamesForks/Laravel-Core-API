@@ -1,4 +1,4 @@
-<?php namespace GrahamCampbell\CoreAPI\Classes;
+<?php
 
 /**
  * This file is part of Laravel Core API by Graham Campbell.
@@ -12,24 +12,31 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
- * @package    Laravel-Core-API
- * @author     Graham Campbell
- * @license    Apache License
- * @copyright  Copyright 2013 Graham Campbell
- * @link       https://github.com/GrahamCampbell/Laravel-Core-API
  */
+
+namespace GrahamCampbell\CoreAPI\Classes;
 
 use Illuminate\Cache\CacheManager;
 use Illuminate\Config\Repository;
 use Guzzle\Common\Collection;
 use Guzzle\Http\Client;
 use Guzzle\Plugin\Oauth\OauthPlugin;
+use Guzzle\Plugin\Backoff\BackoffPlugin;
 use Guzzle\Plugin\CurlAuth\CurlAuthPlugin;
+use GrahamCampbell\CoreAPI\Responses\APIResponse;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-class CoreAPI {
-
+/**
+ * This is the core api class.
+ *
+ * @package    Laravel-Core-API
+ * @author     Graham Campbell
+ * @copyright  Copyright 2013-2014 Graham Campbell
+ * @license    https://github.com/GrahamCampbell/Laravel-Core-API/blob/master/LICENSE.md
+ * @link       https://github.com/GrahamCampbell/Laravel-Core-API
+ */
+class CoreAPI
+{
     /**
      * The base url.
      *
@@ -54,16 +61,16 @@ class CoreAPI {
     /**
      * The auth plugin.
      *
-     * @var \Symfony\Component\EventDispatcher\EventSubscriberInterface
+     * @var \Guzzle\Plugin\CurlAuth\CurlAuthPlugin
      */
     protected $plugin;
 
     /**
-     * The user agent.
+     * The back off plugin.
      *
-     * @var string
+     * @var bool|\Guzzle\Plugin\Backoff\BackoffPlugin
      */
-    protected $userAgent;
+    protected $backOff;
 
     /**
      * The client instance.
@@ -93,7 +100,8 @@ class CoreAPI {
      * @param  \Illuminate\Config\Repository   $config
      * @return void
      */
-    public function __construct(CacheManager $cache, Repository $config) {
+    public function __construct(CacheManager $cache, Repository $config)
+    {
         $this->cache = $cache;
         $this->config = $config;
     }
@@ -102,38 +110,31 @@ class CoreAPI {
      * Setup the instance.
      *
      * @param  string  $baseurl
-     * @param  array   $conf
+     * @param  array   $config
      * @param  array   $auth
-     * @param  array   $userAgent
-     * @return void
+     * @param  bool|\Guzzle\Plugin\Backoff\BackoffPlugin  $backOff
+     * @return $this
      */
-    public function setUp($baseurl, array $conf = array(), array $auth = array(), $userAgent = null) {
+    public function setup($baseurl, array $config = array(), array $auth = array(), $backOff = true)
+    {
         $this->baseurl = $baseurl;
-        $this->conf = new Collection($conf);
-        $this->auth = $auth;
-        $this->userAgent = $userAgent;
-
-        $this->makeNewClient();
-    }
-
-    /**
-     * Make a new default client.
-     *
-     * @return void
-     */
-    public function makeNewClient() {
-        if (!is_string($this->baseurl) || !is_object($this->conf)) {
-            throw new \BadFunctionCallException('CoreAPI has not been initialised. Please run the setup method first.');
-        }
-
-        if ($this->conf instanceof Collection) {
-            throw new \BadFunctionCallException('CoreAPI has not been initialised. Please run the setup method first.');
-        }
+        $this->conf = new Collection($config);
 
         $this->client = new Client($this->baseurl, $this->conf);
 
-        $this->setAuth($this->auth);
-        $this->setUserAgent($this->userAgent);
+        $this->setAuth($auth);
+
+        if (is_object($backOff)) {
+            if ($backOff instanceof BackoffPlugin) {
+                return $this->setBackOff($backOff);
+            }
+        }
+
+        if ($backOff) {
+            $this->setBackOff(BackoffPlugin::getExponentialBackoff());
+        }
+
+        return $this;
     }
 
     /**
@@ -142,7 +143,8 @@ class CoreAPI {
      * @param  bool  $expand
      * @return string
      */
-    public function getBaseUrl($expand = true) {
+    public function getBaseUrl($expand = true)
+    {
         return $this->client->getBaseUrl($expand);
     }
 
@@ -150,11 +152,19 @@ class CoreAPI {
      * Set the base url.
      *
      * @param  string  $baseurl
-     * @return void
+     * @return $this
      */
-    public function setBaseUrl($baseurl) {
+    public function setBaseUrl($baseurl)
+    {
+        if (!is_string($baseurl)) {
+            $baseurl = '';
+        }
+
         $this->baseurl = $baseurl;
-        return $this->client->setBaseUrl($this->baseurl);
+
+        $this->client->setBaseUrl($this->baseurl);
+
+        return $this;
     }
 
     /**
@@ -162,7 +172,8 @@ class CoreAPI {
      *
      * @return \Guzzle\Common\Collection
      */
-    public function getConfig() {
+    public function getConfig()
+    {
         return $this->client->getConfig();
     }
 
@@ -170,11 +181,15 @@ class CoreAPI {
      * Set the config.
      *
      * @param  array  $config
-     * @return void
+     * @return $this
      */
-    public function setConfig(array $config) {
+    public function setConfig(array $config)
+    {
         $this->conf = new Collection($config);
-        return $this->client->setConfig($this->conf);
+
+        $this->client->setConfig($this->conf);
+
+        return $this;
     }
 
     /**
@@ -182,7 +197,8 @@ class CoreAPI {
      *
      * @return array
      */
-    public function getAuth() {
+    public function getAuth()
+    {
         return $this->auth;
     }
 
@@ -190,63 +206,72 @@ class CoreAPI {
      * Set the auth data.
      *
      * @param  array  $auth
-     * @return void
+     * @return $this
      */
-    public function setAuth(array $auth) {
-        if (!is_array($auth)) {
-            $auth = array();
-        }
-
-        $this->auth = $auth;
-
+    public function setAuth(array $auth)
+    {
         try {
             if (is_object($this->plugin)) {
                 if ($this->plugin instanceof EventSubscriberInterface) {
-                    $this->client->getEventDispatcher()->removeSubscriber($this->plugin);
+                    $this->removeSubscriber($this->plugin);
                 }
             }
         } catch (\Exception $e) {
             // ignore any errors fails
         }
 
+        $this->auth = $auth;
+
         if (!empty($this->auth) && is_array($this->auth)) {
             if (array_key_exists('username', $this->auth) && array_key_exists('password', $this->auth)) {
                 $this->plugin = new CurlAuthPlugin($this->auth['username'], $this->auth['password']);
-                $this->client->getEventDispatcher()->addSubscriber($this->plugin);
+                $this->addSubscriber($this->plugin);
             } elseif (array_key_exists('consumer_key', $this->auth) && array_key_exists('consumer_secret', $this->auth)) {
                 $this->plugin = new OauthPlugin($this->auth);
-                $this->client->getEventDispatcher()->addSubscriber($this->plugin);
+                $this->addSubscriber($this->plugin);
             }
         }
+
+        return $this;
     }
 
     /**
-     * Get the user agent.
+     * Get the back off plugin.
      *
-     * @return string
+     * @return |bool\Guzzle\Plugin\Backoff\BackoffPlugin
      */
-    public function getUserAgent() {
-        return $this->userAgent();
+    public function getBackOff()
+    {
+        return $this->backOff;
     }
 
     /**
-     * Set the user agent.
+     * Set the back off plugin.
      *
-     * @param  string  $userAgent
-     * @return void
+     * @param  \Guzzle\Plugin\Backoff\BackoffPlugin  $backOff
+     * @return $this
      */
-    public function setUserAgent($userAgent) {
-        if (!is_string($userAgent)) {
-            $userAgent = $this->getUserAgent();
+    public function setBackOff($backOff)
+    {
+        try {
+            if (is_object($this->backOff)) {
+                if ($this->backOff instanceof EventSubscriberInterface) {
+                    $this->removeSubscriber($this->backOff);
+                }
+            }
+        } catch (\Exception $e) {
+            // ignore any errors fails
         }
 
-        if (!is_string($userAgent)) {
-            $userAgent = '';
+        $this->backOff = $backOff;
+
+        if (is_object($this->backOff)) {
+            if ($this->backOff instanceof BackoffPlugin) {
+                $this->addSubscriber($this->backOff);
+            }
         }
 
-        $this->userAgent = $userAgent;
-
-        return $this->client->setUserAgent($this->userAgent);
+        return $this;
     }
 
     /**
@@ -254,7 +279,8 @@ class CoreAPI {
      *
      * @return \Guzzle\Http\Client
      */
-    public function getClient() {
+    public function getClient()
+    {
         return $this->client;
     }
 
@@ -262,10 +288,13 @@ class CoreAPI {
      * Set the client instance.
      *
      * @param  \Guzzle\Http\Client  $client
-     * @return void
+     * @return $this
      */
-    public function setClient(Client $client) {
-        return $this->client = $client;
+    public function setClient(Client $client)
+    {
+        $this->client = $client;
+
+        return $this;
     }
 
     /**
@@ -274,24 +303,54 @@ class CoreAPI {
      * @param  bool  $certificateAuthority
      * @param  bool  $verifyPeer
      * @param  int   $verifyHost
-     * @return void
+     * @return $this
      */
-    public function setSslVerification($certificateAuthority = true, $verifyPeer = true, $verifyHost = 2) {
-        return $this->client->setSslVerification($certificateAuthority, $verifyPeer, $verifyHost);
+    public function setSslVerification($certificateAuthority = true, $verifyPeer = true, $verifyHost = 2)
+    {
+        $this->client->setSslVerification($certificateAuthority, $verifyPeer, $verifyHost);
+
+        return $this;
+    }
+
+    /**
+     * Add an event subscriber.
+     *
+     * @param  \Symfony\Component\EventDispatcher\EventSubscriberInterface  $subscriber
+     * @return $this
+     */
+    public function addSubscriber(EventSubscriberInterface $subscriber)
+    {
+        $this->client->getEventDispatcher()->addSubscriber($subscriber);
+
+        return $this;
+    }
+
+    /**
+     * Removed an event subscriber.
+     *
+     * @param  \Symfony\Component\EventDispatcher\EventSubscriberInterface  $subscriber
+     * @return $this
+     */
+    public function removeSubscriber(EventSubscriberInterface $subscriber)
+    {
+        $this->client->getEventDispatcher()->removeSubscriber($subscriber);
+
+        return $this;
     }
 
     /**
      * Generate a response via the specified method.
      *
-     * @param  string    $method
-     * @param  string    $uri
-     * @param  array     $headers
-     * @param  array     $body
-     * @param  array     $options
-     * @param  bool|int  $cache
-     * @return \GrahamCampbell\CoreAPI\Classes\APIResponse
+     * @param  string       $method
+     * @param  string|null  $uri
+     * @param  array|null   $headers
+     * @param  array|null   $body
+     * @param  array        $options
+     * @param  bool|int     $cache
+     * @return \GrahamCampbell\CoreAPI\Responses\APIResponse
      */
-    public function goGet($method = 'GET', $uri = null, $headers = null, $body = null, array $options = array(), $cache = false) {
+    public function goGet($method = 'GET', $uri = null, $headers = null, $body = null, array $options = array(), $cache = false)
+    {
         $key = md5(json_encode($method).json_encode($uri).json_encode($headers).json_encode($body).json_encode($options));
         $time = $this->cacheTime($cache);
 
@@ -321,7 +380,8 @@ class CoreAPI {
      * @param  bool|int  $cache
      * @return int
      */
-    protected function cacheTime($cache) {
+    protected function cacheTime($cache)
+    {
         if ($cache === true) {
             $cache = $this->config['core-api::cache'];
         } elseif ($cache === false) {
@@ -348,14 +408,15 @@ class CoreAPI {
     /**
      * Send a request.
      *
-     * @param  string    $method
-     * @param  string    $uri
-     * @param  array     $headers
-     * @param  array     $body
-     * @param  array     $options
-     * @return \GrahamCampbell\CoreAPI\Classes\APIResponse
+     * @param  string       $method
+     * @param  string|null  $uri
+     * @param  array|null   $headers
+     * @param  array|null   $body
+     * @param  array        $options
+     * @return \GrahamCampbell\CoreAPI\Responses\APIResponse
      */
-    protected function sendGet($method, $uri, $headers, $body, $options) {
+    protected function sendGet($method, $uri, $headers, $body, array $options)
+    {
         $request = $this->client->createRequest($method, $uri, $headers, $body, $options);
         return new APIResponse($request);
     }
@@ -366,7 +427,8 @@ class CoreAPI {
      * @param  mixed  $value
      * @return bool
      */
-    protected function validCache($value) {
+    protected function validCache($value)
+    {
         if (!is_object($value)) {
             return false;
         }
@@ -382,9 +444,10 @@ class CoreAPI {
      * Pull a response from the cache.
      *
      * @param  bool|int  $cache
-     * @return \GrahamCampbell\CoreAPI\Classes\APIResponse
+     * @return \GrahamCampbell\CoreAPI\Responses\APIResponse
      */
-    protected function getCache($key) {
+    protected function getCache($key)
+    {
         return $this->cache->section('api')->get($key);
     }
 
@@ -392,24 +455,28 @@ class CoreAPI {
      * Add a response to the cache.
      *
      * @param  string  $key
-     * @param  \GrahamCampbell\CoreAPI\Classes\APIResponse  $value
+     * @param  \GrahamCampbell\CoreAPI\Responses\APIResponse  $value
      * @param  int  $time
-     * @return void
+     * @return $this
      */
-    protected function setCache($key, APIResponse $value, $time) {
-        return $this->cache->section('api')->put($key, $value, $time);
+    protected function setCache($key, APIResponse $value, $time)
+    {
+        $this->cache->section('api')->put($key, $value, $time);
+
+        return $this;
     }
 
     /**
      * Generate a response from a get request.
      *
-     * @param  string    $uri
-     * @param  array     $headers
-     * @param  array     $options
-     * @param  bool|int  $cache
-     * @return \GrahamCampbell\CoreAPI\Classes\APIResponse
+     * @param  string|null  $uri
+     * @param  array|null   $headers
+     * @param  array        $options
+     * @param  bool|int     $cache
+     * @return \GrahamCampbell\CoreAPI\Responses\APIResponse
      */
-    public function get($uri = null, $headers = null, $options = array(), $cache = false) {
+    public function get($uri = null, $headers = null, array $options = array(), $cache = false)
+    {
         return is_array($options)
             ? $this->goGet('GET', $uri, $headers, null, $options, $cache)
             : $this->goGet('GET', $uri, $headers, $options, array(), $cache);
@@ -418,56 +485,60 @@ class CoreAPI {
     /**
      * Generate a response from a post request.
      *
-     * @param  string    $uri
-     * @param  array     $headers
-     * @param  array     $body
-     * @param  array     $options
-     * @param  bool|int  $cache
-     * @return \GrahamCampbell\CoreAPI\Classes\APIResponse
+     * @param  string|null  $uri
+     * @param  array|null   $headers
+     * @param  array|null   $body
+     * @param  array        $options
+     * @param  bool|int     $cache
+     * @return \GrahamCampbell\CoreAPI\Responses\APIResponse
      */
-    public function post($uri = null, $headers = null, $body = null, $options = array(), $cache = false) {
+    public function post($uri = null, $headers = null, $body = null, array $options = array(), $cache = false)
+    {
         return $this->goGet('POST', $uri, $headers, $body, $options, $cache);
     }
 
     /**
      * Generate a response from a put request.
      *
-     * @param  string    $uri
-     * @param  array     $headers
-     * @param  array     $body
-     * @param  array     $options
-     * @param  bool|int  $cache
-     * @return \GrahamCampbell\CoreAPI\Classes\APIResponse
+     * @param  string|null  $uri
+     * @param  array|null   $headers
+     * @param  array|null   $body
+     * @param  array        $options
+     * @param  bool|int     $cache
+     * @return \GrahamCampbell\CoreAPI\Responses\APIResponse
      */
-    public function put($uri = null, $headers = null, $body = null, $options = array(), $cache = false) {
+    public function put($uri = null, $headers = null, $body = null, array $options = array(), $cache = false)
+    {
         return $this->goGet('PUT', $uri, $headers, $body, $options, $cache);
     }
 
     /**
      * Generate a response from a patch request.
      *
-     * @param  string    $uri
-     * @param  array     $headers
-     * @param  array     $body
-     * @param  array     $options
-     * @param  bool|int  $cache
-     * @return \GrahamCampbell\CoreAPI\Classes\APIResponse
+     * @param  string|null  $uri
+     * @param  array|null   $headers
+     * @param  array|null   $body
+     * @param  array        $options
+     * @param  bool|int     $cache
+     * @return \GrahamCampbell\CoreAPI\Responses\APIResponse
      */
-    public function patch($uri = null, $headers = null, $body = null, $options = array(), $cache = false) {
+    public function patch($uri = null, $headers = null, $body = null, array $options = array(), $cache = false)
+    {
         return $this->goGet('PATCH', $uri, $headers, $body, $options, $cache);
     }
 
     /**
      * Generate a response from a delete request.
      *
-     * @param  string    $uri
-     * @param  array     $headers
-     * @param  array     $body
-     * @param  array     $options
-     * @param  bool|int  $cache
-     * @return \GrahamCampbell\CoreAPI\Classes\APIResponse
+     * @param  string|null  $uri
+     * @param  array|null   $headers
+     * @param  array|null   $body
+     * @param  array        $options
+     * @param  bool|int     $cache
+     * @return \GrahamCampbell\CoreAPI\Responses\APIResponse
      */
-    public function delete($uri = null, $headers = null, $body = null, $options = array(), $cache = false) {
+    public function delete($uri = null, $headers = null, $body = null, array $options = array(), $cache = false)
+    {
         return $this->goGet('DELETE', $uri, $headers, $body, $options, $cache);
     }
 }

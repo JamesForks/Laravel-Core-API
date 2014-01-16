@@ -1,4 +1,4 @@
-<?php namespace GrahamCampbell\CoreAPI\Classes;
+<?php
 
 /**
  * This file is part of Laravel Core API by Graham Campbell.
@@ -12,19 +12,24 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
- * @package    Laravel-Core-API
- * @author     Graham Campbell
- * @license    Apache License
- * @copyright  Copyright 2013 Graham Campbell
- * @link       https://github.com/GrahamCampbell/Laravel-Core-API
  */
+
+namespace GrahamCampbell\CoreAPI\Responses;
 
 use Guzzle\Http\Message\RequestInterface;
 use Guzzle\Http\Message\Response;
 
-class APIResponse {
-
+/**
+ * This is the api response class.
+ *
+ * @package    Laravel-Core-API
+ * @author     Graham Campbell
+ * @copyright  Copyright 2013-2014 Graham Campbell
+ * @license    https://github.com/GrahamCampbell/Laravel-Core-API/blob/master/LICENSE.md
+ * @link       https://github.com/GrahamCampbell/Laravel-Core-API
+ */
+class APIResponse
+{
     /**
      * The request instance.
      *
@@ -45,7 +50,8 @@ class APIResponse {
      * @param  \Guzzle\Http\Message\RequestInterface  $request
      * @return void
      */
-    public function __construct(RequestInterface $request) {
+    public function __construct(RequestInterface $request)
+    {
         $this->response = $request->send();
         $this->request = $request;
     }
@@ -54,10 +60,13 @@ class APIResponse {
      * Set the request instance.
      *
      * @param  \Guzzle\Http\Message\RequestInterface  $request
-     * @return void
+     * @return $this
      */
-    public function setRequest(RequestInterface $request) {
+    public function setRequest(RequestInterface $request)
+    {
         $this->request = $request;
+
+        return $this;
     }
 
     /**
@@ -65,7 +74,8 @@ class APIResponse {
      *
      * @return \Guzzle\Http\Message\RequestInterface
      */
-    public function getRequest() {
+    public function getRequest()
+    {
         return $this->request;
     }
 
@@ -73,10 +83,13 @@ class APIResponse {
      * Set the response instance.
      *
      * @param  \Guzzle\Http\Message\Response  $request
-     * @return void
+     * @return $this
      */
-    public function setResponse(Response $response) {
+    public function setResponse(Response $response)
+    {
         $this->response = $response;
+
+        return $this;
     }
 
     /**
@@ -84,7 +97,8 @@ class APIResponse {
      *
      * @return \Guzzle\Http\Message\Response
      */
-    public function getResponse() {
+    public function getResponse()
+    {
         return $this->response;
     }
 
@@ -95,7 +109,8 @@ class APIResponse {
      * @param  array   $parameters
      * @return mixed
      */
-    public function __call($method, $parameters) {
+    public function __call($method, $parameters)
+    {
         return call_user_func_array(array($this->response, $method), $parameters);
     }
 }

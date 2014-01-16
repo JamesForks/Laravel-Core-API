@@ -14,12 +14,13 @@
  * limitations under the License.
  */
 
-namespace GrahamCampbell\CoreAPI\Facades;
+namespace GrahamCampbell\Tests\CoreAPI\Facades;
 
-use Illuminate\Support\Facades\Facade;
+use GrahamCampbell\Tests\CoreAPI\AbstractTestCase;
+use GrahamCampbell\TestBench\Traits\FacadeTestCaseTrait;
 
 /**
- * This is the core api facade class.
+ * This is the abstract facade test case class.
  *
  * @package    Laravel-Core-API
  * @author     Graham Campbell
@@ -27,15 +28,7 @@ use Illuminate\Support\Facades\Facade;
  * @license    https://github.com/GrahamCampbell/Laravel-Core-API/blob/master/LICENSE.md
  * @link       https://github.com/GrahamCampbell/Laravel-Core-API
  */
-class CoreAPI extends Facade
+abstract class AbstractFacadeTestCase extends AbstractTestCase
 {
-    /**
-     * Get the registered name of the component.
-     *
-     * @return string
-     */
-    protected static function getFacadeAccessor()
-    {
-        return 'coreapi';
-    }
+    use FacadeTestCaseTrait;
 }

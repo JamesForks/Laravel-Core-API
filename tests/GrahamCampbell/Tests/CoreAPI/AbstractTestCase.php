@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-namespace GrahamCampbell\CoreAPI\Facades;
+namespace GrahamCampbell\Tests\CoreAPI;
 
-use Illuminate\Support\Facades\Facade;
+use GrahamCampbell\TestBench\Classes\AbstractLaravelTestCase as TestCase;
 
 /**
- * This is the core api facade class.
+ * This is the abstract test case class.
  *
  * @package    Laravel-Core-API
  * @author     Graham Campbell
@@ -27,15 +27,25 @@ use Illuminate\Support\Facades\Facade;
  * @license    https://github.com/GrahamCampbell/Laravel-Core-API/blob/master/LICENSE.md
  * @link       https://github.com/GrahamCampbell/Laravel-Core-API
  */
-class CoreAPI extends Facade
+abstract class AbstractTestCase extends TestCase
 {
     /**
-     * Get the registered name of the component.
+     * Get the application base path.
      *
      * @return string
      */
-    protected static function getFacadeAccessor()
+    protected function getBasePath()
     {
-        return 'coreapi';
+        return __DIR__.'/../../../../src';
+    }
+
+    /**
+     * Get the service provider class.
+     *
+     * @return string
+     */
+    protected function getServiceProviderClass()
+    {
+        return 'GrahamCampbell\CoreAPI\CoreAPIServiceProvider';
     }
 }
