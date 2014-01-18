@@ -16,8 +16,8 @@ Laravel Core API provides some core API client functions for [Laravel 4.1](http:
 
 * Laravel Core API was created by, and is maintained by [Graham Campbell](https://github.com/GrahamCampbell).  
 * Laravel Core API relies on the [Guzzle](https://github.com/guzzle/guzzle) package.  
-* Laravel Core API uses [Travis CI](https://travis-ci.org/GrahamCampbell/Laravel-Core-API) to run tests to check if it's working as it should.  
-* Laravel Core API uses [Scrutinizer CI](https://scrutinizer-ci.com/g/GrahamCampbell/Laravel-Core-API) and [Coveralls](https://coveralls.io/r/GrahamCampbell/Laravel-Core-API) to run additional tests and checks.  
+* Laravel Core API uses [Travis CI](https://travis-ci.org/GrahamCampbell/Laravel-Core-API) with [Coveralls](https://coveralls.io/r/GrahamCampbell/Laravel-Core-API) to check everything is working.  
+* Laravel Core API uses [Scrutinizer CI](https://scrutinizer-ci.com/g/GrahamCampbell/Laravel-Core-API) and [SensioLabsInsight](https://insight.sensiolabs.com/projects/fd28e11f-7e03-4835-8952-db9b4ecf34ba) to run additional checks.  
 * Laravel Core API uses [Composer](https://getcomposer.org) to load and manage dependencies.  
 * Laravel Core API provides a [change log](https://github.com/GrahamCampbell/Laravel-Core-API/blob/master/CHANGELOG.md), [releases](https://github.com/GrahamCampbell/Laravel-Core-API/releases), and [api docs](http://grahamcampbell.github.io/Laravel-Core-API).  
 * Laravel Core API is licensed under the Apache License, available [here](https://github.com/GrahamCampbell/Laravel-Core-API/blob/master/LICENSE.md).  
