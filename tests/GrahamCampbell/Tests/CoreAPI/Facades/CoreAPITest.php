@@ -16,6 +16,9 @@
 
 namespace GrahamCampbell\Tests\CoreAPI\Facades;
 
+use GrahamCampbell\Tests\CoreAPI\AbstractTestCase;
+use GrahamCampbell\TestBench\Traits\FacadeTestCaseTrait;
+
 /**
  * This is the core api facade test case class.
  *
@@ -25,8 +28,10 @@ namespace GrahamCampbell\Tests\CoreAPI\Facades;
  * @license    https://github.com/GrahamCampbell/Laravel-Core-API/blob/master/LICENSE.md
  * @link       https://github.com/GrahamCampbell/Laravel-Core-API
  */
-class CoreAPITest extends AbstractFacadeTestCase
+class CoreAPITest extends AbstractTestCase
 {
+    use FacadeTestCaseTrait;
+
     /**
      * Get the facade accessor.
      *
