@@ -20,7 +20,7 @@ use GrahamCampbell\Tests\CoreAPI\AbstractTestCase;
 use GrahamCampbell\TestBench\Traits\FacadeTestCaseTrait;
 
 /**
- * This is the core api facade test case class.
+ * This is the core api facade test class.
  *
  * @package    Laravel-Core-API
  * @author     Graham Campbell
