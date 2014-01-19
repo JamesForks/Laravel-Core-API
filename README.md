@@ -7,6 +7,7 @@ Laravel Core API
 [![Coverage Status](https://coveralls.io/repos/GrahamCampbell/Laravel-Core-API/badge.png)](https://coveralls.io/r/GrahamCampbell/Laravel-Core-API)
 [![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/GrahamCampbell/Laravel-Core-API/badges/quality-score.png?s=a2f20fc191087f35712aa469b0225e1a2bf5d0fd)](https://scrutinizer-ci.com/g/GrahamCampbell/Laravel-Core-API)
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/fd28e11f-7e03-4835-8952-db9b4ecf34ba/mini.png)](https://insight.sensiolabs.com/projects/fd28e11f-7e03-4835-8952-db9b4ecf34ba)
+[![Software License](https://poser.pugx.org/graham-campbell/core-api/license.png)](https://github.com/GrahamCampbell/Laravel-Core-API/blob/master/LICENSE.md)
 [![Latest Version](https://poser.pugx.org/graham-campbell/core-api/v/stable.png)](https://packagist.org/packages/graham-campbell/core-api)
 
 
