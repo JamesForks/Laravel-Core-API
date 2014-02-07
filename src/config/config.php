@@ -21,7 +21,7 @@ return array(
     | Cache Time
     |--------------------------------------------------------------------------
     |
-    | This option specifies the time in minutes to cache API requests.
+    | This option defines the time in minutes to cache API requests.
     | Setting it to 0 will disable caching. Normally, only GET requests are
     | cached, however as a last parameter in requests, you may override this
     | and ask other methods to be cached too. You may of course override a GET
@@ -42,7 +42,7 @@ return array(
     | Force No Cache
     |--------------------------------------------------------------------------
     |
-    | This option specifies if the caching should be forced off when the cache
+    | This option defines if the caching should be forced off when the cache
     | time is set to 0. This will ignore all overrides that would work before.
     |
     | If you which to take advantage of caching, you MUST set this to false.

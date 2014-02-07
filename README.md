@@ -50,6 +50,25 @@ You can register the CoreAPI facade in the `aliases` key of your `app/config/app
 * `'CoreAPI' => 'GrahamCampbell\CoreAPI\Facades\CoreAPI'`
 
 
+## Configuration
+
+Laravel Core API supports optional configuration.
+
+To get started, first publish the package config file:
+
+    php artisan config:publish graham-campbell/core-api
+
+There are two config options:
+
+**Cache Time**
+
+This option (`'cache`) defines the time in minutes to cache API requests. Setting it to 0 will disable caching. Normally, only GET requests are cached, however as a last parameter in requests, you may override this and ask other methods to be cached too. You may of course override a GET call with a custom cache time of your choosing. If the force no cache setting is enabled, this setting will be ignored. If you which to take advantage of caching, you should set this to to a value above 2. 15 minutes might be a good value. The default value for this setting is `0`.
+
+**Force No Cache**
+
+This option (`'force'`) defines if the caching should be forced off when the cache time is set to 0. This will ignore all overrides that would work before. If you which to take advantage of caching, you MUST set this to false. The default value for this setting is `true`.
+
+
 ## Usage
 
 There is currently no usage documentation besides the [API Documentation](http://grahamcampbell.github.io/Laravel-Core-API
