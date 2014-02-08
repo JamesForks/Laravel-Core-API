@@ -383,7 +383,7 @@ class CoreAPI
     protected function cacheTime($cache)
     {
         if ($cache === true) {
-            $cache = $this->config['core-api::cache'];
+            $cache = $this->config['graham-campbell/core-api::cache'];
         } elseif ($cache === false) {
             $cache = 0;
         } elseif (is_numeric($cache)) {
@@ -398,7 +398,7 @@ class CoreAPI
             $cache = 0;
         }
 
-        if ($this->config['core-api::cache'] === 0 && $this->config['core-api::force'] === true) {
+        if ($this->config['graham-campbell/core-api::cache'] === 0 && $this->config['graham-campbell/core-api::force'] === true) {
             $cache = 0;
         }
 

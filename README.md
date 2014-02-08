@@ -62,7 +62,7 @@ There are two config options:
 
 **Cache Time**
 
-This option (`'cache`) defines the time in minutes to cache API requests. Setting it to 0 will disable caching. Normally, only GET requests are cached, however as a last parameter in requests, you may override this and ask other methods to be cached too. You may of course override a GET call with a custom cache time of your choosing. If the force no cache setting is enabled, this setting will be ignored. If you which to take advantage of caching, you should set this to to a value above 2. 15 minutes might be a good value. The default value for this setting is `0`.
+This option (`'cache'`) defines the time in minutes to cache API requests. Setting it to 0 will disable caching. Normally, only GET requests are cached, however as a last parameter in requests, you may override this and ask other methods to be cached too. You may of course override a GET call with a custom cache time of your choosing. If the force no cache setting is enabled, this setting will be ignored. If you which to take advantage of caching, you should set this to to a value above 2. 15 minutes might be a good value. The default value for this setting is `0`.
 
 **Force No Cache**
 
