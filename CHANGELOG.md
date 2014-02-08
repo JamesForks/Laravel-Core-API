@@ -2,13 +2,21 @@ CHANGE LOG
 ==========
 
 
+## V0.5 Alpha (Upcoming)
+
+* Added more unit tests
+* Caching improvements
+
+
 ## V0.4 Alpha (Upcoming)
 
+* PSR-4 autoloading
+* Updated docs
 * Dropped Laravel 4.0 support
 * Travis and Scrutinizer tweaks
 * Coding style fixes
 * Some more refactoring
-* Added unit tests
+* Tweaked unit tests
 * Minor tweaks
 
 
