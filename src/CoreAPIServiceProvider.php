@@ -43,7 +43,7 @@ class CoreAPIServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->package('graham-campbell/core-api');
+        $this->package('graham-campbell/core-api', 'graham-campbell/core-api', __DIR__);
     }
 
     /**

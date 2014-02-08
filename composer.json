@@ -42,9 +42,9 @@
         "graham-campbell/testbench": "0.2.*"
     },
     "autoload": {
-        "psr-0": {
-            "GrahamCampbell\\CoreAPI": "src/",
-            "GrahamCampbell\\Tests\\CoreAPI": "tests/"
+        "psr-4": {
+            "GrahamCampbell\\CoreAPI\\": "src/",
+            "GrahamCampbell\\Tests\\CoreAPI\\": "tests/"
         }
     },
     "extra": {
