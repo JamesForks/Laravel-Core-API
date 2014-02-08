@@ -8,7 +8,7 @@ CHANGE LOG
 * Caching improvements
 
 
-## V0.4 Alpha (Upcoming)
+## V0.4 Alpha (08/02/2014)
 
 * PSR-4 autoloading
 * Updated docs
