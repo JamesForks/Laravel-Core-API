@@ -2,10 +2,17 @@ CHANGE LOG
 ==========
 
 
-## V0.5 Alpha (Upcoming)
+## V0.6 Alpha (Upcoming)
 
+* Updated to guzzle 4.0
 * Added more unit tests
 * Caching improvements
+
+
+## V0.5 Alpha (Upcoming)
+
+* PHP 5.6 and partial HHVM compatibility
+* Added more unit tests
 
 
 ## V0.4 Alpha (08/02/2014)
