@@ -2,13 +2,12 @@ Laravel Core API
 ================
 
 
-[![Build Status](https://travis-ci.org/GrahamCampbell/Laravel-Core-API.png)](https://travis-ci.org/GrahamCampbell/Laravel-Core-API)
-[![Coverage Status](https://coveralls.io/repos/GrahamCampbell/Laravel-Core-API/badge.png)](https://coveralls.io/r/GrahamCampbell/Laravel-Core-API)
+[![Build Status](https://img.shields.io/travis/GrahamCampbell/Laravel-Core-API/master.svg)](https://travis-ci.org/GrahamCampbell/Laravel-Core-API)
+[![Coverage Status](https://img.shields.io/coveralls/GrahamCampbell/Laravel-Core-API/master.svg)](https://coveralls.io/r/GrahamCampbell/Laravel-Core-API)
+[![Software License](https://img.shields.io/badge/license-Apache%202.0-brightgreen.svg)](https://github.com/GrahamCampbell/Laravel-Core-API/blob/master/LICENSE.md)
+[![Latest Version](https://img.shields.io/github/release/GrahamCampbell/Laravel-Core-API.svg)](https://github.com/GrahamCampbell/Laravel-Core-API/releases)
 [![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/GrahamCampbell/Laravel-Core-API/badges/quality-score.png?s=a2f20fc191087f35712aa469b0225e1a2bf5d0fd)](https://scrutinizer-ci.com/g/GrahamCampbell/Laravel-Core-API)
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/fd28e11f-7e03-4835-8952-db9b4ecf34ba/mini.png)](https://insight.sensiolabs.com/projects/fd28e11f-7e03-4835-8952-db9b4ecf34ba)
-[![Software License](https://poser.pugx.org/graham-campbell/core-api/license.png)](https://github.com/GrahamCampbell/Laravel-Core-API/blob/master/LICENSE.md)
-[![Latest Version](https://poser.pugx.org/graham-campbell/core-api/v/stable.png)](https://packagist.org/packages/graham-campbell/core-api)
-[![Still Maintained](http://stillmaintained.com/GrahamCampbell/Laravel-Core-API.png)](http://stillmaintained.com/GrahamCampbell/Laravel-Core-API)
 
 
 ## What Is Laravel Core API?
@@ -26,7 +25,7 @@ Laravel Core API provides some core API client functions for [Laravel 4.1](http:
 
 ## System Requirements
 
-* PHP 5.4.7+ or HHVM 2.4+ (HHVM support is incomplete mainly due to dependencies).
+* PHP 5.4.7+ or HHVM 3.0+ (HHVM support is incomplete mainly due to dependencies).
 * You will need [Laravel 4.1](http://laravel.com) because this package is designed for it.
 * You will need [Composer](https://getcomposer.org) installed to load the dependencies of Laravel Core-API.
 
