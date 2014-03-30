@@ -13,8 +13,8 @@
         "php": ">=5.4.7",
         "laravel/framework": "4.1.*",
         "symfony/config": "2.4.*",
-        "symfony/filesystem": "2.4.*",
         "symfony/event-dispatcher": "2.4.*",
+        "symfony/filesystem": "2.4.*",
         "guzzle/guzzle": "3.8.*"
     },
     "require-dev": {
@@ -22,7 +22,11 @@
     },
     "autoload": {
         "psr-4": {
-            "GrahamCampbell\\CoreAPI\\": "src/",
+            "GrahamCampbell\\CoreAPI\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
             "GrahamCampbell\\Tests\\CoreAPI\\": "tests/"
         }
     },
