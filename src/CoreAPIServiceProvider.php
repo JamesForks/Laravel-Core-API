@@ -67,8 +67,10 @@ class CoreAPIServiceProvider extends ServiceProvider
             $cache = $app['cache'];
             $config = $app['config'];
 
-            return new Classes\CoreAPI($cache, $config);
+            return new CoreAPI($cache, $config);
         });
+
+        $this->app->alias('coreapi', 'GrahamCampbell\CoreAPI\CoreAPI');
     }
 
     /**

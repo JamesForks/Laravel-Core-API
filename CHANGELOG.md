@@ -4,10 +4,11 @@ CHANGE LOG
 
 ## V0.6 Alpha (Upcoming - July 2014)
 
-* Upgrade to Laravel 4.2
+* Upgrade to Laravel 4.1+
 * Updated to guzzle 4.0
 * Added more unit tests
 * Caching improvements
+* Added di aliases
 
 
 ## V0.5 Alpha (21/04/2014)

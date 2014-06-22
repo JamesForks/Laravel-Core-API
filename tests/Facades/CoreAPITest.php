@@ -59,6 +59,6 @@ class CoreAPITest extends AbstractTestCase
      */
     protected function getFacadeRoot()
     {
-        return 'GrahamCampbell\CoreAPI\Classes\CoreAPI';
+        return 'GrahamCampbell\CoreAPI\CoreAPI';
     }
 }

@@ -12,7 +12,7 @@ Laravel Core API
 
 ## What Is Laravel Core API?
 
-Laravel Core API provides some core API client functions for [Laravel 4.1](http://laravel.com).
+Laravel Core API provides some core API client functions for [Laravel 4.1+](http://laravel.com).
 
 * Laravel Core API was created by, and is maintained by [Graham Campbell](https://github.com/GrahamCampbell).
 * Laravel Core API relies on the [Guzzle](https://github.com/guzzle/guzzle) package.
@@ -25,8 +25,8 @@ Laravel Core API provides some core API client functions for [Laravel 4.1](http:
 
 ## System Requirements
 
-* PHP 5.4.7+ or HHVM 3.0+ (Guzzle 3.8 isn't completely HHVM compatible).
-* You will need [Laravel 4.1](http://laravel.com) because this package is designed for it.
+* PHP 5.4.7+ or HHVM 3.1+ is required.
+* You will need [Laravel 4.1+](http://laravel.com) because this package is designed for it.
 * You will need [Composer](https://getcomposer.org) installed to load the dependencies of Laravel Core-API.
 
 
@@ -34,7 +34,7 @@ Laravel Core API provides some core API client functions for [Laravel 4.1](http:
 
 Please check the system requirements before installing Laravel Core API.
 
-To get the latest version of Laravel Core API, simply require `"graham-campbell/core-api": "0.5.*@alpha"` in your `composer.json` file. You'll then need to run `composer install` or `composer update` to download it and have the autoloader updated.
+To get the latest version of Laravel Core API, simply require `"graham-campbell/core-api": "~0.6"` in your `composer.json` file. You'll then need to run `composer install` or `composer update` to download it and have the autoloader updated.
 
 Once Laravel Core API is installed, you need to register the service provider. Open up `app/config/app.php` and add the following to the `providers` key.
 

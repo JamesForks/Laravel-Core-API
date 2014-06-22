@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-namespace GrahamCampbell\CoreAPI\Classes;
+namespace GrahamCampbell\CoreAPI;
 
 use Illuminate\Cache\CacheManager;
 use Illuminate\Config\Repository;
