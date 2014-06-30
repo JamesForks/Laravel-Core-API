@@ -11,7 +11,7 @@ Laravel Core API
 
 ## Introduction
 
-Laravel Core API was created by, and is maintained by [Graham Campbell](https://github.com/GrahamCampbell), and provides some core API client functions for [Laravel 4.1+](http://laravel.com). It utilises [Guzzle 4](https://github.com/guzzle/guzzle). Feel free to check out the [change log](CHANGELOG.md), [releases](https://github.com/GrahamCampbell/Laravel-Core-API/releases), [license](LICENSE.md), [api docs](http://grahamcampbell.github.io/Laravel-Core-API), and [contribution guidelines](CONTRIBUTING.md).
+Laravel Core API was created by, and is maintained by [Graham Campbell](https://github.com/GrahamCampbell), and provides some core API client functions for [Laravel 4.1+](http://laravel.com). It utilises [Guzzle 4](https://github.com/guzzle/guzzle) and my [Laravel Manager](https://github.com/GrahamCampbell/Laravel-Manager) package. Feel free to check out the [change log](CHANGELOG.md), [releases](https://github.com/GrahamCampbell/Laravel-Core-API/releases), [license](LICENSE.md), [api docs](http://grahamcampbell.github.io/Laravel-Core-API), and [contribution guidelines](CONTRIBUTING.md).
 
 
 ## Installation
@@ -20,32 +20,12 @@ Laravel Core API was created by, and is maintained by [Graham Campbell](https://
 
 To get the latest version of Laravel Core API, simply require `"graham-campbell/core-api": "~0.6"` in your `composer.json` file. You'll then need to run `composer install` or `composer update` to download it and have the autoloader updated.
 
-Once Laravel Core API is installed, you need to register the service provider. Open up `app/config/app.php` and add the following to the `providers` key.
-
-* `'GrahamCampbell\CoreAPI\CoreAPIServiceProvider'`
-
-You can register the CoreAPI facade in the `aliases` key of your `app/config/app.php` file if you like.
-
-* `'CoreAPI' => 'GrahamCampbell\CoreAPI\Facades\CoreAPI'`
+You can now utilise the classes in this package to speed up writing Laravel packages further. There are no service providers to register.
 
 
 ## Configuration
 
-Laravel Core API supports optional configuration.
-
-To get started, first publish the package config file:
-
-    php artisan config:publish graham-campbell/core-api
-
-There are two config options:
-
-**Cache Time**
-
-This option (`'cache'`) defines the time in minutes to cache API requests. Setting it to 0 will disable caching. Normally, only GET requests are cached, however as a last parameter in requests, you may override this and ask other methods to be cached too. You may of course override a GET call with a custom cache time of your choosing. If the force no cache setting is enabled, this setting will be ignored. If you which to take advantage of caching, you should set this to to a value above 2. 15 minutes might be a good value. The default value for this setting is `0`.
-
-**Force No Cache**
-
-This option (`'force'`) defines if the caching should be forced off when the cache time is set to 0. This will ignore all overrides that would work before. If you which to take advantage of caching, you MUST set this to false. The default value for this setting is `true`.
+Laravel Core API requires no configuration. Just follow the simple install instructions and go!
 
 
 ## Usage

@@ -6,10 +6,7 @@ CHANGE LOG
 
 * Upgrade to Laravel 4.1+
 * Updated to Guzzle 4.0+
-* Major refactoring
-* Caching improvements
-* Added di aliases
-* Added more unit tests
+* Complete re-write
 
 
 ## V0.5 Alpha (21/04/2014)

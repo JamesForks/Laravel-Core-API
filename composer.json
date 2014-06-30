@@ -11,10 +11,10 @@
     ],
     "require": {
         "php": ">=5.4.7",
-        "illuminate/cache": "~4.1",
-        "illuminate/config": "~4.1",
         "illuminate/support": "~4.1",
-        "guzzle/guzzle": "~3.7"
+        "graham-campbell/manager": "~1.0",
+        "guzzle/guzzle": "~4.0",
+        "guzzlehttp/retry-subscriber": "~0.1"
     },
     "require-dev": {
         "graham-campbell/testbench": "~1.0"
