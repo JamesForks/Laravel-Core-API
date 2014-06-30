@@ -29,7 +29,7 @@ use GrahamCampbell\Manager\Interfaces\ConnectorInterface;
  * @license    https://github.com/GrahamCampbell/Laravel-Core-API/blob/master/LICENSE.md
  * @link       https://github.com/GrahamCampbell/Laravel-Core-API
  */
-abstract class AbstractClientConnector implements ConnectorInterface
+abstract class AbstractConnector implements ConnectorInterface
 {
     /**
      * Make a new guzzle client.
