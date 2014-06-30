@@ -103,7 +103,7 @@ abstract class AbstractClientConnector implements ConnectorInterface
     /**
      * Get the retry subscriber.
      *
-     * @return array
+     * @return \GuzzleHttp\Subscriber\Retry\RetrySubscriber
      */
     protected function getRetrySubscriber()
     {
