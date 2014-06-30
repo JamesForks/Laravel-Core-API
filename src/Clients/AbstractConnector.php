@@ -41,7 +41,7 @@ abstract class AbstractConnector implements ConnectorInterface
     {
         $parameters = $this->getParameters($config);
 
-        $client = new Client($parameters);
+        $client = $this->getClient($parameters);
 
         return $this->attachSubscribers($client);
     }
@@ -53,6 +53,17 @@ abstract class AbstractConnector implements ConnectorInterface
      * @return array
      */
     abstract protected function getParameters(array $config);
+
+    /**
+     * Get the client.
+     *
+     * @param  array  $parameters
+     * @return \GuzzleHttp\Client
+     */
+    public function getClient($parameters)
+    {
+        return new Client($parameters);
+    }
 
     /**
      * Attach all subscribers to the guzzle client.
