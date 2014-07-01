@@ -14,14 +14,16 @@
  * limitations under the License.
  */
 
-namespace GrahamCampbell\CoreAPI\Client;
+namespace GrahamCampbell\CoreAPI\Factories;
 
 use GuzzleHttp\Client;
+use GuzzleHttp\Command\Guzzle\Description;
+use GuzzleHttp\Command\Guzzle\GuzzleClient;
 use GuzzleHttp\Subscriber\Retry\RetrySubscriber;
 use GrahamCampbell\Manager\Interfaces\ConnectorInterface;
 
 /**
- * This is the abstract client connector class.
+ * This is the abstract client factory class.
  *
  * @package    Laravel-Core-API
  * @author     Graham Campbell
@@ -29,19 +31,32 @@ use GrahamCampbell\Manager\Interfaces\ConnectorInterface;
  * @license    https://github.com/GrahamCampbell/Laravel-Core-API/blob/master/LICENSE.md
  * @link       https://github.com/GrahamCampbell/Laravel-Core-API
  */
-abstract class AbstractConnector implements ConnectorInterface
+abstract class AbstractClientFactory
 {
     /**
-     * Make a new guzzle client.
+     * Make a new guzzle services client.
+     *
+     * @param  array  $config
+     * @return \GuzzleHttp\Command\Guzzle\GuzzleClient
+     */
+    public function make(array $config)
+    {
+        $client = $this->makeBaseClient($config);
+
+        return $this->makeServicesClient($client);
+    }
+
+    /**
+     * Make a guzzle client.
      *
      * @param  array  $config
      * @return \GuzzleHttp\Client
      */
-    public function connect(array $config)
+    protected function makeBaseClient($config)
     {
         $parameters = $this->getParameters($config);
 
-        $client = $this->getClient($parameters);
+        $client = new Client($parameters);
 
         return $this->attachSubscribers($client);
     }
@@ -53,17 +68,6 @@ abstract class AbstractConnector implements ConnectorInterface
      * @return array
      */
     abstract protected function getParameters(array $config);
-
-    /**
-     * Get the client.
-     *
-     * @param  array  $parameters
-     * @return \GuzzleHttp\Client
-     */
-    public function getClient($parameters)
-    {
-        return new Client($parameters);
-    }
 
     /**
      * Attach all subscribers to the guzzle client.
@@ -125,4 +129,26 @@ abstract class AbstractConnector implements ConnectorInterface
 
         return new RetrySubscriber(array('filter' => $filter));
     }
+
+    /**
+     * Make a new guzzle services client.
+     *
+     * @param  \GuzzleHttp\Client  $client
+     * @return \GuzzleHttp\Command\Guzzle\GuzzleClient
+     */
+    protected function makeServicesClient(Client $client)
+    {
+        $parameters = $this->getDescription();
+
+        $description = new Description($parameters);
+
+        return new GuzzleClient($client, $description);
+    }
+
+    /**
+     * Get the description constructor parameters.
+     *
+     * @return array
+     */
+    abstract protected function getDescription();
 }
