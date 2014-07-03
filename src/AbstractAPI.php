@@ -74,7 +74,7 @@ abstract class AbstractAPI
             $this->providers[$name] = $this->getNewProvider($name);
         }
 
-        return $this->zones;
+        return $this->providers[$name];
     }
 
     /**
