@@ -30,6 +30,13 @@ use GuzzleHttp\Command\Guzzle\GuzzleClient;
 abstract class AbstractModel
 {
     /**
+     * The request cache.
+     *
+     * @var array
+     */
+    protected $cache = array();
+
+    /**
      * The guzzle client class.
      *
      * @var \GuzzleHttp\Command\Guzzle\GuzzleClient
@@ -45,6 +52,23 @@ abstract class AbstractModel
     public function __construct(GuzzleClient $client)
     {
         $this->client = $client;
+    }
+
+    /**
+     * Clear the request cache.
+     *
+     * @param  string  $method
+     * @return void
+     */
+    public function clearCache($method = null)
+    {
+        if ($cache) {
+            $this->cache['method'] = array();
+        } else {
+            $this->cache = array();
+        }
+
+        return $this;
     }
 
     /**
