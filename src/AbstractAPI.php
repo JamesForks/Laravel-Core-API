@@ -17,6 +17,7 @@
 namespace GrahamCampbell\CoreAPI;
 
 use GuzzleHttp\Command\Guzzle\GuzzleClient;
+use GrahamCampbell\CoreAPI\Exceptions\ProviderNotFoundException;
 
 /**
  * This is the abstract api class.
@@ -97,7 +98,13 @@ abstract AbstractAPI
      */
     protected function getProviderClass($name)
     {
-        return $this->getProviderNamespace().'\\'.ucfirst($name).'Provider';
+        $class = $this->getProviderNamespace().'\\'.ucfirst($name).'Provider';
+
+        if (class_exists($class)) {
+            return $class;
+        }
+
+        throw new ProviderNotFoundException("Class $class not found for the $name provider.");
     }
 
     /**
