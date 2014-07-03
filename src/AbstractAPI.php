@@ -28,7 +28,7 @@ use GrahamCampbell\CoreAPI\Exceptions\ProviderNotFoundException;
  * @license    https://github.com/GrahamCampbell/Laravel-Core-API/blob/master/LICENSE.md
  * @link       https://github.com/GrahamCampbell/Laravel-Core-API
  */
-abstract AbstractAPI
+abstract class AbstractAPI
 {
     /**
      * The provider cache.
