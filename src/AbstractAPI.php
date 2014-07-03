@@ -19,7 +19,7 @@ namespace GrahamCampbell\CoreAPI;
 use GuzzleHttp\Command\Guzzle\GuzzleClient;
 
 /**
- * This is the core api class.
+ * This is the abstract api class.
  *
  * @package    Laravel-Core-API
  * @author     Graham Campbell
@@ -34,7 +34,7 @@ abstract AbstractAPI
      *
      * @var array
      */
-    protected $provders = array()
+    protected $provders = array();
 
     /**
      * The guzzle client class.
@@ -64,18 +64,37 @@ abstract AbstractAPI
     /**
      * Get a provider object.
      *
+     * @param  string  $name
      * @return \GrahamCampbell\CoreAPI\Providers\AbstractProvider
      */
     protected function getProvider($name)
     {
         if (!$this->providers[$name]) {
-            $class = $this->getProviderClass($name);
-            $this->providers[$name] = new $class($this->client);
+            $this->providers[$name] = $this->getNewProvider($name);
         }
 
         return $this->zones;
     }
 
+    /**
+     * Get a new provider object.
+     *
+     * @param  string  $name
+     * @return \GrahamCampbell\CoreAPI\Providers\AbstractProvider
+     */
+    protected function getNewProvider($name)
+    {
+        $class = $this->getProviderClass($name);
+
+        return new $class($this->client);
+    }
+
+    /**
+     * Get a provider class name.
+     *
+     * @param  string  $name
+     * @return string
+     */
     protected function getProviderClass($name)
     {
         return $this->getProviderNamespace().'\\'.ucfirst($name).'Provider';
