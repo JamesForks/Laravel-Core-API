@@ -64,12 +64,12 @@ abstract class AbstractModel
      */
     public function clearCache($methods = null)
     {
-        if ($methods) {
+        if ($methods === null || $methods === 'all') {
+            $this->cache = array();
+        } else {
             foreach ((array) $methods as $method) {
                 $this->cache[$method] = array();
             }
-        } else {
-            $this->cache = array();
         }
 
         return $this;
