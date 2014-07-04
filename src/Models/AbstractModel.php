@@ -30,13 +30,6 @@ use GuzzleHttp\Command\Guzzle\GuzzleClient;
 abstract class AbstractModel
 {
     /**
-     * The request cache.
-     *
-     * @var array
-     */
-    protected $cache = array();
-
-    /**
      * The guzzle client class.
      *
      * @var \GuzzleHttp\Command\Guzzle\GuzzleClient
@@ -44,32 +37,85 @@ abstract class AbstractModel
     protected $client;
 
     /**
+     * The request cache.
+     *
+     * @var array
+     */
+    protected $cache;
+
+    /**
      * Create a new model instance.
      *
      * @param  \GuzzleHttp\Command\Guzzle\GuzzleClient  $client
+     * @param  array  $cache
      * @return void
      */
-    public function __construct(GuzzleClient $client)
+    public function __construct(GuzzleClient $client, array $cache = array())
     {
         $this->client = $client;
+        $this->cache = $cache;
     }
 
     /**
      * Clear the request cache.
      *
-     * @param  string  $method
+     * @param  array|string  $methods
      * @return void
      */
-    public function clearCache($method = null)
+    public function clearCache($methods = null)
     {
-        if ($cache) {
-            $this->cache['method'] = array();
+        if ($methods) {
+            foreach ((array) $methods as $method) {
+                $this->cache[$method] = array();
+            }
         } else {
             $this->cache = array();
         }
 
         return $this;
     }
+
+    /**
+     * Make a get request.
+     *
+     * @param  string  $method
+     * @param  array   $data
+     * @return array
+     */
+    protected function get($method, array $data = array())
+    {
+        $data = $this->data($data);
+
+        if (!$this->cache[$method]) {
+            $this->cache[$method] = $this->client->$method($data)->toArray();
+        }
+
+        return $this->cache[$method];
+    }
+
+    /**
+     * Make a post request.
+     *
+     * @param  string  $method
+     * @param  array   $data
+     * @return array
+     */
+    protected function post($method, array $data = array(), $flush = null)
+    {
+        $data = $this->data($data);
+
+        $this->clearCache($flush);
+
+        return $this->client->$method($data)->toArray();
+    }
+
+    /**
+     * Get the data to make a request.
+     *
+     * @param  array   $data
+     * @return array
+     */
+    abstract protected function data(array $data = array());
 
     /**
      * Get the guzzle client instance.
