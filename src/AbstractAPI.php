@@ -127,10 +127,13 @@ abstract class AbstractAPI
     public function __call($method, $parameters)
     {
         if ($where = (strpos($method, 'Where') > 0)) {
-            $method = substr($method, 0, -5);
+            $normalised = substr($method, 0, -5);
+        } else {
+            // already normalised
+            $normalised = $method;
         }
 
-        if ($isSingular = (($singular = str_singular($method)) == $method) && !$where) {
+        if (($isSingular = (($singular = str_singular($normalised)) == $normalised)) && !$where) {
             $function = 'get';
         } elseif (!$isSingular && !$where) {
             $function = 'all';
