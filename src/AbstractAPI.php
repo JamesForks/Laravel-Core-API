@@ -17,7 +17,7 @@
 namespace GrahamCampbell\CoreAPI;
 
 use GuzzleHttp\Command\Guzzle\GuzzleClient;
-use GrahamCampbell\CoreAPI\Exceptions\ProviderNotFoundException;
+use GrahamCampbell\CoreAPI\Exceptions\ProviderResolutionException;
 
 /**
  * This is the abstract api class.
@@ -104,7 +104,7 @@ abstract class AbstractAPI
             return $class;
         }
 
-        throw new ProviderNotFoundException("Class '$class' not found for the '$name' provider.");
+        throw new ProviderResolutionException("Class '$class' not found for the '$name' provider.");
     }
 
     /**
@@ -127,19 +127,21 @@ abstract class AbstractAPI
     public function __call($method, $parameters)
     {
         if ($where = (strpos($method, 'Where') > 0)) {
-            $method = substr($method, 0, -5));
+            $method = substr($method, 0, -5);
         }
 
-        if (($singular = str_singular($method)) == $method) {
+        if ($isSingular = (($singular = str_singular($method)) == $method) && !$where) {
             $function = 'get';
-        } elseif ($where) {
+        } elseif (!$isSingular && !$where) {
+            $function = 'all';
+        } elseif (!$isSingular && $where) {
             $function = 'where';
         } else {
-            $function = 'all';
+            throw new ProviderResolutionException("The method '$method' could not be resolved.");
         }
 
         if (!method_exists($provider = $this->getProvider($singular), $function)) {
-            throw new ProviderNotFoundException("Method '$function' not found for the '$name' provider.");
+            throw new ProviderResolutionException("The provider does not support '$function' functionality.");
         }
 
         return call_user_func_array(array($provider, $function), $parameters);

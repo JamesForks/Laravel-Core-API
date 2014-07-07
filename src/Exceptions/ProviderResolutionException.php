@@ -27,7 +27,7 @@ use Exception;
  * @license    https://github.com/GrahamCampbell/Laravel-Core-API/blob/master/LICENSE.md
  * @link       https://github.com/GrahamCampbell/Laravel-Core-API
  */
-class ProviderNotFoundException extends Exception
+class ProviderResolutionException extends Exception
 {
     //
 }
