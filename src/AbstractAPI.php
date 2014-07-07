@@ -104,7 +104,7 @@ abstract class AbstractAPI
             return $class;
         }
 
-        throw new ProviderNotFoundException("Class $class not found for the $name provider.");
+        throw new ProviderNotFoundException("Class '$class' not found for the '$name' provider.");
     }
 
     /**
@@ -126,6 +126,22 @@ abstract class AbstractAPI
      */
     public function __call($method, $parameters)
     {
-        return $this->getProvider(str_singular($method));
+        if ($where = (strpos($method, 'Where') > 0)) {
+            $method = substr($method, 0, -5));
+        }
+
+        if (($singular = str_singular($method)) == $method) {
+            $function = 'get';
+        } elseif ($where) {
+            $function = 'where';
+        } else {
+            $function = 'all';
+        }
+
+        if (!method_exists($provider = $this->getProvider($singular), $function)) {
+            throw new ProviderNotFoundException("Method '$function' not found for the '$name' provider.");
+        }
+
+        return call_user_func_array(array($provider, $function), $parameters);
     }
 }

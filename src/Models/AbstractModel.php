@@ -115,7 +115,10 @@ abstract class AbstractModel
      * @param  array   $data
      * @return array
      */
-    abstract protected function data(array $data = array());
+    protected function data(array $data = array())
+    {
+        return $data;
+    }
 
     /**
      * Get the guzzle client instance.
