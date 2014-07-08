@@ -108,6 +108,68 @@ abstract class AbstractAPI
     }
 
     /**
+     * Get the provider method name.
+     *
+     * Here we calculate the correct method to call on the provider. Note that
+     * this won't work if the singular form is the same as the plural. For this
+     * reason, provider classes should be named in away that avoids using such
+     * words, otherwise we have no way for the user to specify whether they
+     * want a single model, or a collection unless we were to change the syntax
+     * of the whole process which is undesirable.
+     *
+     * @param  bool  $singular
+     * @param  bool  $where
+     * @param  bool  $create
+     * @return string
+     */
+    protected function getProviderMethod($singular, $where, $create)
+    {
+        if ($singular && !$where && !$create) {
+            return 'get';
+        }
+
+        if (!$singular && !$where && !$create) {
+            return 'all';
+        }
+
+        if (!$singular && $where && !$create) {
+            return 'where';
+        }
+
+        if ($singular && !$where && $create) {
+            return 'create';
+        }
+
+        throw new ProviderResolutionException("The provider method could not be resolved.");
+    }
+
+    /**
+     * Get the normalised method data.
+     *
+     * See the node about naming on the getProviderMethod method.
+     *
+     * @param  string  $method
+     * @return array
+     */
+    protected function normaliseMethod($method)
+    {
+        // strip the where from the end
+        if ($where = (strpos($method, 'Where') !== FALSE)) {
+            $method = substr($method, 0, -5);
+        }
+
+        // strip the create from the start
+        if ($create = (strpos($method, 'create') !== FALSE)) {
+            $method = lcfirst(substr($method, 6));
+        }
+
+        // calculate singular information
+        $isSingular = (($singular = str_singular($method)) == $method);
+
+        return compact('where', 'create', 'singular', 'isSingular');
+    }
+
+    /**
      * Get the client instance.
      *
      * @return \GuzzleHttp\Command\Guzzle\GuzzleClient
@@ -126,41 +188,16 @@ abstract class AbstractAPI
      */
     public function __call($method, $parameters)
     {
-        // normalise the method
-        if ($where = (strpos($method, 'Where') > 0)) {
-            // strip there where from the end
-            $normalised = substr($method, 0, -5);
-        } else {
-            // already normalised
-            $normalised = $method;
-        }
+        extract($this->normaliseMethod($method));
 
-        // Here we calculate the correct method to call on the provider. Note
-        // that this won't work if the singular form is the same as the plural.
-        // For this reason, provider classes should be named in away that
-        // avoids using such words, otherwise we have no way for the user to
-        // specify whether they want a single model, or a collection unless we
-        // were to change the syntax of the whole process which is undesirable.
-        if (($isSingular = (($singular = str_singular($normalised)) == $normalised)) && !$where) {
-            // the normalised method is singular and is not suffixed by "Where"
-            $function = 'get';
-        } elseif (!$isSingular && !$where) {
-            // the normalised method is plural and is not suffixed by "Where"
-            $function = 'all';
-        } elseif (!$isSingular && $where) {
-            // the normalised method is plural and is suffixed by "Where"
-            $function = 'where';
-        } else {
-            // other - the normalised method is probably singular and is suffixed by "Where"
-            throw new ProviderResolutionException("The method '$method' could not be resolved.");
-        }
+        $function = $this->getProviderMethod($isSingular, $where, $create);
 
-        // verify the calculated method actually exists on the provider
-        if (!method_exists($provider = $this->getProvider($singular), $function)) {
+        $provider = $this->getProvider($singular);
+
+        if (!method_exists($provider, $function)) {
             throw new ProviderResolutionException("The provider does not support '$function' functionality.");
         }
 
-        // call the underline provider
         return call_user_func_array(array($provider, $function), $parameters);
     }
 }
