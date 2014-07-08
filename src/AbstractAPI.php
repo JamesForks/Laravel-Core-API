@@ -154,12 +154,12 @@ abstract class AbstractAPI
     protected function normaliseMethod($method)
     {
         // strip the where from the end
-        if ($where = (strpos($method, 'Where') !== FALSE)) {
+        if ($where = (strpos($method, 'Where') !== false)) {
             $method = substr($method, 0, -5);
         }
 
         // strip the create from the start
-        if ($create = (strpos($method, 'create') !== FALSE)) {
+        if ($create = (strpos($method, 'create') !== false)) {
             $method = lcfirst(substr($method, 6));
         }
 
