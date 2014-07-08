@@ -60,7 +60,7 @@ abstract class AbstractModel
      * Clear the request cache.
      *
      * @param  array|string  $methods
-     * @return void
+     * @return self
      */
     public function clearCache($methods = null)
     {
