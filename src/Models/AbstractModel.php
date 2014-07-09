@@ -80,17 +80,18 @@ abstract class AbstractModel
      *
      * @param  string  $method
      * @param  array   $data
+     * @param  string  $key
      * @return array
      */
-    protected function get($method, array $data = array())
+    protected function get($method, array $data = array(), $key = 'key')
     {
         $data = $this->data($data);
 
-        if (!$this->cache[$method]) {
-            $this->cache[$method] = $this->client->$method($data)->toArray();
+        if (!isset($this->cache[$method][$key])) {
+            $this->cache[$method][$key] = $this->client->$method($data)->toArray();
         }
 
-        return $this->cache[$method];
+        return $this->cache[$method][$key];
     }
 
     /**
