@@ -95,13 +95,14 @@ abstract class AbstractModel
     }
 
     /**
-     * Make a post request.
+     * Make a request.
      *
      * @param  string  $method
      * @param  array   $data
+     * @param  mixed   $flush
      * @return array
      */
-    protected function post($method, array $data = array(), $flush = null)
+    protected function action($method, array $data = array(), $flush = null)
     {
         $data = $this->data($data);
 
