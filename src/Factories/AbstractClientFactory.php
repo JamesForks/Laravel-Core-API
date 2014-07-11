@@ -20,7 +20,6 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Command\Guzzle\Description;
 use GuzzleHttp\Command\Guzzle\GuzzleClient;
 use GuzzleHttp\Subscriber\Retry\RetrySubscriber;
-use GrahamCampbell\Manager\Interfaces\ConnectorInterface;
 
 /**
  * This is the abstract client factory class.
@@ -111,7 +110,6 @@ abstract class AbstractClientFactory
      */
     protected function getSubscriberNames()
     {
-        // TODO: Cache subscriber
         return array('Retry');
     }
 
