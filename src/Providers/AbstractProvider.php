@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-namespace GrahamCampbell\CoreAPI\Facades;
+namespace GrahamCampbell\CoreAPI\Providers;
 
-use Illuminate\Support\Facades\Facade;
+use GuzzleHttp\Command\Guzzle\GuzzleClient;
 
 /**
- * This is the core api facade class.
+ * This is the abstract provider class.
  *
  * @package    Laravel-Core-API
  * @author     Graham Campbell
@@ -27,15 +27,33 @@ use Illuminate\Support\Facades\Facade;
  * @license    https://github.com/GrahamCampbell/Laravel-Core-API/blob/master/LICENSE.md
  * @link       https://github.com/GrahamCampbell/Laravel-Core-API
  */
-class CoreAPI extends Facade
+abstract class AbstractProvider
 {
     /**
-     * Get the registered name of the component.
+     * The guzzle client class.
      *
-     * @return string
+     * @var \GuzzleHttp\Command\Guzzle\GuzzleClient
      */
-    protected static function getFacadeAccessor()
+    protected $client;
+
+    /**
+     * Create a new provider instance.
+     *
+     * @param  \GuzzleHttp\Command\Guzzle\GuzzleClient  $client
+     * @return void
+     */
+    public function __construct(GuzzleClient $client)
     {
-        return 'coreapi';
+        $this->client = $client;
+    }
+
+    /**
+     * Get the guzzle client instance.
+     *
+     * @return \GuzzleHttp\Command\Guzzle\GuzzleClient
+     */
+    public function getClient()
+    {
+        return $this->client;
     }
 }

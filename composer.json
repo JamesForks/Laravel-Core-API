@@ -1,6 +1,6 @@
 {
     "name": "graham-campbell/core-api",
-    "description": "Core API Provides Some Core API Client Functions For Laravel 4.1",
+    "description": "Core API Provides Some Core API Client Functions For Laravel 4.1+",
     "keywords": ["laravel", "framework", "core api", "core", "api", "Core API", "Core-API", "Laravel Core API", "Laravel-Core-API", "Graham Campbell", "GrahamCampbell"],
     "license": "Apache-2.0",
     "authors": [
@@ -11,14 +11,14 @@
     ],
     "require": {
         "php": ">=5.4.7",
-        "laravel/framework": "4.1.*",
-        "symfony/config": "2.4.*",
-        "symfony/event-dispatcher": "2.4.*",
-        "symfony/filesystem": "2.4.*",
-        "guzzle/guzzle": "3.8.*"
+        "illuminate/support": "~4.1",
+        "graham-campbell/manager": "~1.0",
+        "guzzlehttp/guzzle": "~4.0",
+        "guzzlehttp/retry-subscriber": "0.1.*",
+        "guzzlehttp/guzzle-services": "0.3.*"
     },
     "require-dev": {
-        "graham-campbell/testbench": "0.3.*"
+        "graham-campbell/testbench": "~1.0"
     },
     "autoload": {
         "psr-4": {
@@ -32,7 +32,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "0.5-dev"
+            "dev-develop": "0.6-dev"
         }
     },
     "minimum-stability": "dev",

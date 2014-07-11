@@ -14,13 +14,12 @@
  * limitations under the License.
  */
 
-namespace GrahamCampbell\Tests\CoreAPI\Facades;
+namespace GrahamCampbell\CoreAPI\Exceptions;
 
-use GrahamCampbell\Tests\CoreAPI\AbstractTestCase;
-use GrahamCampbell\TestBench\Traits\FacadeTestCaseTrait;
+use Exception;
 
 /**
- * This is the core api facade test class.
+ * This is the provider not found exception class.
  *
  * @package    Laravel-Core-API
  * @author     Graham Campbell
@@ -28,37 +27,7 @@ use GrahamCampbell\TestBench\Traits\FacadeTestCaseTrait;
  * @license    https://github.com/GrahamCampbell/Laravel-Core-API/blob/master/LICENSE.md
  * @link       https://github.com/GrahamCampbell/Laravel-Core-API
  */
-class CoreAPITest extends AbstractTestCase
+class ProviderResolutionException extends Exception
 {
-    use FacadeTestCaseTrait;
-
-    /**
-     * Get the facade accessor.
-     *
-     * @return string
-     */
-    protected function getFacadeAccessor()
-    {
-        return 'coreapi';
-    }
-
-    /**
-     * Get the facade class.
-     *
-     * @return string
-     */
-    protected function getFacadeClass()
-    {
-        return 'GrahamCampbell\CoreAPI\Facades\CoreAPI';
-    }
-
-    /**
-     * Get the facade route.
-     *
-     * @return string
-     */
-    protected function getFacadeRoot()
-    {
-        return 'GrahamCampbell\CoreAPI\Classes\CoreAPI';
-    }
+    //
 }
