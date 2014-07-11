@@ -35,7 +35,7 @@ abstract class AbstractAPI
      *
      * @var array
      */
-    protected $provders = array();
+    protected $providers = array();
 
     /**
      * The guzzle client class.
