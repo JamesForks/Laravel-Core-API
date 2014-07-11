@@ -70,7 +70,7 @@ abstract class AbstractAPI
      */
     protected function getProvider($name)
     {
-        if (!array_key_exists($this->providers, $name)) {
+        if (!array_key_exists($name, $this->providers)) {
             $this->providers[$name] = $this->getNewProvider($name);
         }
 
