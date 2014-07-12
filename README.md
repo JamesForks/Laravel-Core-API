@@ -30,8 +30,7 @@ Laravel Core API requires no configuration. Just follow the simple install instr
 
 ## Usage
 
-There is currently no usage documentation besides the [API Documentation](http://grahamcampbell.github.io/Laravel-Core-API
-) for Laravel Core API.
+There is currently no usage documentation besides the [API Documentation](http://docs.grahamjcampbell.co.uk) for Laravel Core API.
 
 You may see an example of implementation in [Laravel CloudFlare API](https://github.com/GrahamCampbell/Laravel-CloudFlare-API), [Laravel DigitalOcean API](https://github.com/GrahamCampbell/Laravel-DigitalOcean-API), or [Laravel UptimeRobot API](https://github.com/GrahamCampbell/Laravel-UptimeRobot-API).
 
