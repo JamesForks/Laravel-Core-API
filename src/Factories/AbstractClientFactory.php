@@ -106,7 +106,7 @@ abstract class AbstractClientFactory
     /**
      * Get all subscriber names.
      *
-     * @return array
+     * @return string[]
      */
     protected function getSubscriberNames()
     {
