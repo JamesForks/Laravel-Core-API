@@ -16,8 +16,8 @@
 
 namespace GrahamCampbell\CoreAPI;
 
-use GuzzleHttp\Command\Guzzle\GuzzleClient;
 use GrahamCampbell\CoreAPI\Exceptions\ProviderResolutionException;
+use GuzzleHttp\Command\Guzzle\GuzzleClient;
 
 /**
  * This is the abstract api class.

@@ -16,9 +16,9 @@
 
 namespace GrahamCampbell\CoreAPI;
 
-use Illuminate\Config\Repository;
-use GrahamCampbell\Manager\AbstractManager;
 use GrahamCampbell\CoreAPI\Factories\AbstractAPIFactory;
+use GrahamCampbell\Manager\AbstractManager;
+use Illuminate\Config\Repository;
 
 /**
  * This is the abstract api manager class.
