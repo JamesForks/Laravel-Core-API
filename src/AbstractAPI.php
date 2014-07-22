@@ -188,11 +188,11 @@ abstract class AbstractAPI
      */
     public function __call($method, $parameters)
     {
-        extract($this->normaliseMethod($method));
+        $data = $this->normaliseMethod($method);
 
-        $function = $this->getProviderMethod($isSingular, $where, $create);
+        $function = $this->getProviderMethod($data['isSingular'], $data['where'], $data['create']);
 
-        $provider = $this->getProvider($singular);
+        $provider = $this->getProvider($data['singular']);
 
         if (!method_exists($provider, $function)) {
             throw new ProviderResolutionException("The provider does not support '$function' functionality.");
