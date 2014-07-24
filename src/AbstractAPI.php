@@ -95,6 +95,8 @@ abstract class AbstractAPI
      *
      * @param  string  $name
      * @return string
+     *
+     * @throws \GrahamCampbell\CoreAPI\Exceptions\ProviderResolutionException
      */
     protected function getProviderClass($name)
     {
@@ -121,6 +123,8 @@ abstract class AbstractAPI
      * @param  bool  $where
      * @param  bool  $create
      * @return string
+     *
+     * @throws \GrahamCampbell\CoreAPI\Exceptions\ProviderResolutionException
      */
     protected function getProviderMethod($singular, $where, $create)
     {
@@ -185,6 +189,8 @@ abstract class AbstractAPI
      * @param  string  $method
      * @param  array   $parameters
      * @return mixed
+     *
+     * @throws \GrahamCampbell\CoreAPI\Exceptions\ProviderResolutionException
      */
     public function __call($method, $parameters)
     {
