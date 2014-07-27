@@ -60,7 +60,7 @@ abstract class AbstractModel
      *
      * @param string|string[] $methods
      *
-     * @return self
+     * @return $this
      */
     public function clearCache($methods = null)
     {
@@ -98,9 +98,9 @@ abstract class AbstractModel
     /**
      * Make a request.
      *
-     * @param string $method
-     * @param array  $data
-     * @param mixed  $flush
+     * @param string          $method
+     * @param array           $data
+     * @param string|string[] $flush
      *
      * @return array
      */

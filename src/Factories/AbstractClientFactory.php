@@ -33,7 +33,7 @@ abstract class AbstractClientFactory
     /**
      * Make a new guzzle services client.
      *
-     * @param array $config
+     * @param string[] $config
      *
      * @return \GuzzleHttp\Command\Guzzle\GuzzleClient
      */
@@ -47,7 +47,7 @@ abstract class AbstractClientFactory
     /**
      * Make a guzzle client.
      *
-     * @param array $config
+     * @param string[] $config
      *
      * @return \GuzzleHttp\Client
      */
@@ -63,7 +63,7 @@ abstract class AbstractClientFactory
     /**
      * Get the client constructor parameters.
      *
-     * @param array $config
+     * @param string[] $config
      *
      * @return array
      */
@@ -90,7 +90,7 @@ abstract class AbstractClientFactory
     /**
      * Get all subscribers.
      *
-     * @return array
+     * @return \GuzzleHttp\Event\SubscriberInterface[]
      */
     protected function getSubscribers()
     {

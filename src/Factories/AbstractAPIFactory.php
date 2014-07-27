@@ -47,7 +47,7 @@ abstract class AbstractAPIFactory
     /**
      * Make a new api instance.
      *
-     * @param array $config
+     * @param string[] $config
      *
      * @return \GrahamCampbell\CoreAPI\AbstractAPI
      */
@@ -70,7 +70,7 @@ abstract class AbstractAPIFactory
     /**
      * Get a new guzzle client.
      *
-     * @param array $config
+     * @param string[] $config
      *
      * @return \GuzzleHttp\Command\Guzzle\GuzzleClient
      */
