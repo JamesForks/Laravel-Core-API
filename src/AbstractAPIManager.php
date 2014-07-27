@@ -23,26 +23,25 @@ use Illuminate\Config\Repository;
 /**
  * This is the abstract api manager class.
  *
- * @package    Laravel-Core-API
- * @author     Graham Campbell
- * @copyright  Copyright 2013-2014 Graham Campbell
- * @license    https://github.com/GrahamCampbell/Laravel-Core-API/blob/master/LICENSE.md
- * @link       https://github.com/GrahamCampbell/Laravel-Core-API
+ * @author    Graham Campbell <graham@mineuk.com>
+ * @copyright 2013-2014 Graham Campbell
+ * @license   <https://github.com/GrahamCampbell/Laravel-Core-API/blob/master/LICENSE.md> Apache 2.0
  */
 abstract class AbstractAPIManager extends AbstractManager
 {
     /**
      * The factory instance.
      *
-     * @var \GrahamCampbell\CoreAPI\Factories\AbstractAPIFactory
+     * @type \GrahamCampbell\CoreAPI\Factories\AbstractAPIFactory
      */
     protected $factory;
 
     /**
      * Create a new api manager instance.
      *
-     * @param  \Illuminate\Config\Repository   $config
-     * @param  \GrahamCampbell\CoreAPI\Factories\AbstractAPIFactory  $factory
+     * @param \Illuminate\Config\Repository                        $config
+     * @param \GrahamCampbell\CoreAPI\Factories\AbstractAPIFactory $factory
+     *
      * @return void
      */
     public function __construct(Repository $config, AbstractAPIFactory $factory)
@@ -54,7 +53,8 @@ abstract class AbstractAPIManager extends AbstractManager
     /**
      * Create the connection instance.
      *
-     * @param  array  $config
+     * @param array $config
+     *
      * @return \GrahamCampbell\CoreAPI\AbstractAPI
      */
     protected function createConnection(array $config)

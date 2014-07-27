@@ -21,33 +21,32 @@ use GuzzleHttp\Command\Guzzle\GuzzleClient;
 /**
  * This is the abstract model class.
  *
- * @package    Laravel-Core-API
- * @author     Graham Campbell
- * @copyright  Copyright 2013-2014 Graham Campbell
- * @license    https://github.com/GrahamCampbell/Laravel-Core-API/blob/master/LICENSE.md
- * @link       https://github.com/GrahamCampbell/Laravel-Core-API
+ * @author    Graham Campbell <graham@mineuk.com>
+ * @copyright 2013-2014 Graham Campbell
+ * @license   <https://github.com/GrahamCampbell/Laravel-Core-API/blob/master/LICENSE.md> Apache 2.0
  */
 abstract class AbstractModel
 {
     /**
      * The guzzle client class.
      *
-     * @var \GuzzleHttp\Command\Guzzle\GuzzleClient
+     * @type \GuzzleHttp\Command\Guzzle\GuzzleClient
      */
     protected $client;
 
     /**
      * The request cache.
      *
-     * @var array
+     * @type array
      */
     protected $cache;
 
     /**
      * Create a new model instance.
      *
-     * @param  \GuzzleHttp\Command\Guzzle\GuzzleClient  $client
-     * @param  array  $cache
+     * @param \GuzzleHttp\Command\Guzzle\GuzzleClient $client
+     * @param array                                   $cache
+     *
      * @return void
      */
     public function __construct(GuzzleClient $client, array $cache = array())
@@ -59,7 +58,8 @@ abstract class AbstractModel
     /**
      * Clear the request cache.
      *
-     * @param  array|string  $methods
+     * @param string|string[] $methods
+     *
      * @return self
      */
     public function clearCache($methods = null)
@@ -78,9 +78,10 @@ abstract class AbstractModel
     /**
      * Make a get request.
      *
-     * @param  string  $method
-     * @param  array   $data
-     * @param  string  $key
+     * @param string $method
+     * @param array  $data
+     * @param string $key
+     *
      * @return array
      */
     protected function get($method, array $data = array(), $key = 'key')
@@ -97,9 +98,10 @@ abstract class AbstractModel
     /**
      * Make a request.
      *
-     * @param  string  $method
-     * @param  array   $data
-     * @param  mixed   $flush
+     * @param string $method
+     * @param array  $data
+     * @param mixed  $flush
+     *
      * @return array
      */
     protected function action($method, array $data = array(), $flush = null)
@@ -114,7 +116,8 @@ abstract class AbstractModel
     /**
      * Get the data to make a request.
      *
-     * @param  array   $data
+     * @param array $data
+     *
      * @return array
      */
     protected function data(array $data = array())

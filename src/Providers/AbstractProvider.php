@@ -21,25 +21,24 @@ use GuzzleHttp\Command\Guzzle\GuzzleClient;
 /**
  * This is the abstract provider class.
  *
- * @package    Laravel-Core-API
- * @author     Graham Campbell
- * @copyright  Copyright 2013-2014 Graham Campbell
- * @license    https://github.com/GrahamCampbell/Laravel-Core-API/blob/master/LICENSE.md
- * @link       https://github.com/GrahamCampbell/Laravel-Core-API
+ * @author    Graham Campbell <graham@mineuk.com>
+ * @copyright 2013-2014 Graham Campbell
+ * @license   <https://github.com/GrahamCampbell/Laravel-Core-API/blob/master/LICENSE.md> Apache 2.0
  */
 abstract class AbstractProvider
 {
     /**
      * The guzzle client class.
      *
-     * @var \GuzzleHttp\Command\Guzzle\GuzzleClient
+     * @type \GuzzleHttp\Command\Guzzle\GuzzleClient
      */
     protected $client;
 
     /**
      * Create a new provider instance.
      *
-     * @param  \GuzzleHttp\Command\Guzzle\GuzzleClient  $client
+     * @param \GuzzleHttp\Command\Guzzle\GuzzleClient $client
+     *
      * @return void
      */
     public function __construct(GuzzleClient $client)

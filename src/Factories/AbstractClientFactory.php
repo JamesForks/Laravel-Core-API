@@ -24,18 +24,17 @@ use GuzzleHttp\Subscriber\Retry\RetrySubscriber;
 /**
  * This is the abstract client factory class.
  *
- * @package    Laravel-Core-API
- * @author     Graham Campbell
- * @copyright  Copyright 2013-2014 Graham Campbell
- * @license    https://github.com/GrahamCampbell/Laravel-Core-API/blob/master/LICENSE.md
- * @link       https://github.com/GrahamCampbell/Laravel-Core-API
+ * @author    Graham Campbell <graham@mineuk.com>
+ * @copyright 2013-2014 Graham Campbell
+ * @license   <https://github.com/GrahamCampbell/Laravel-Core-API/blob/master/LICENSE.md> Apache 2.0
  */
 abstract class AbstractClientFactory
 {
     /**
      * Make a new guzzle services client.
      *
-     * @param  array  $config
+     * @param array $config
+     *
      * @return \GuzzleHttp\Command\Guzzle\GuzzleClient
      */
     public function make(array $config)
@@ -48,7 +47,8 @@ abstract class AbstractClientFactory
     /**
      * Make a guzzle client.
      *
-     * @param  array  $config
+     * @param array $config
+     *
      * @return \GuzzleHttp\Client
      */
     protected function makeBaseClient($config)
@@ -63,7 +63,8 @@ abstract class AbstractClientFactory
     /**
      * Get the client constructor parameters.
      *
-     * @param  array  $config
+     * @param array $config
+     *
      * @return array
      */
     abstract protected function getParameters(array $config);
@@ -71,7 +72,8 @@ abstract class AbstractClientFactory
     /**
      * Attach all subscribers to the guzzle client.
      *
-     * @param  \GuzzleHttp\Client  $client
+     * @param \GuzzleHttp\Client $client
+     *
      * @return \GuzzleHttp\Client
      */
     protected function attachSubscribers($client)
@@ -131,7 +133,8 @@ abstract class AbstractClientFactory
     /**
      * Make a new guzzle services client.
      *
-     * @param  \GuzzleHttp\Client  $client
+     * @param \GuzzleHttp\Client $client
+     *
      * @return \GuzzleHttp\Command\Guzzle\GuzzleClient
      */
     protected function makeServicesClient(Client $client)

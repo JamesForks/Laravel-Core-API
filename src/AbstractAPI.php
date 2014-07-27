@@ -22,32 +22,31 @@ use GuzzleHttp\Command\Guzzle\GuzzleClient;
 /**
  * This is the abstract api class.
  *
- * @package    Laravel-Core-API
- * @author     Graham Campbell
- * @copyright  Copyright 2013-2014 Graham Campbell
- * @license    https://github.com/GrahamCampbell/Laravel-Core-API/blob/master/LICENSE.md
- * @link       https://github.com/GrahamCampbell/Laravel-Core-API
+ * @author    Graham Campbell <graham@mineuk.com>
+ * @copyright 2013-2014 Graham Campbell
+ * @license   https://github.com/GrahamCampbell/Laravel-Core-API/blob/master/LICENSE.md> Apache 2.0
  */
 abstract class AbstractAPI
 {
     /**
      * The provider cache.
      *
-     * @var array
+     * @type array
      */
     protected $providers = array();
 
     /**
      * The guzzle client class.
      *
-     * @var \GuzzleHttp\Command\Guzzle\GuzzleClient
+     * @type \GuzzleHttp\Command\Guzzle\GuzzleClient
      */
     protected $client;
 
     /**
      * Create a new core api instance.
      *
-     * @param  \GuzzleHttp\Command\Guzzle\GuzzleClient  $client
+     * @param \GuzzleHttp\Command\Guzzle\GuzzleClient $client
+     *
      * @return void
      */
     public function __construct(GuzzleClient $client)
@@ -65,7 +64,8 @@ abstract class AbstractAPI
     /**
      * Get a provider object.
      *
-     * @param  string  $name
+     * @param string $name
+     *
      * @return \GrahamCampbell\CoreAPI\Providers\AbstractProvider
      */
     protected function getProvider($name)
@@ -80,7 +80,8 @@ abstract class AbstractAPI
     /**
      * Get a new provider object.
      *
-     * @param  string  $name
+     * @param string $name
+     *
      * @return \GrahamCampbell\CoreAPI\Providers\AbstractProvider
      */
     protected function getNewProvider($name)
@@ -93,10 +94,11 @@ abstract class AbstractAPI
     /**
      * Get a provider class name.
      *
-     * @param  string  $name
-     * @return string
+     * @param string $name
      *
      * @throws \GrahamCampbell\CoreAPI\Exceptions\ProviderResolutionException
+     *
+     * @return string
      */
     protected function getProviderClass($name)
     {
@@ -119,12 +121,13 @@ abstract class AbstractAPI
      * want a single model, or a collection unless we were to change the syntax
      * of the whole process which is undesirable.
      *
-     * @param  bool  $singular
-     * @param  bool  $where
-     * @param  bool  $create
-     * @return string
+     * @param bool $singular
+     * @param bool $where
+     * @param bool $create
      *
      * @throws \GrahamCampbell\CoreAPI\Exceptions\ProviderResolutionException
+     *
+     * @return string
      */
     protected function getProviderMethod($singular, $where, $create)
     {
@@ -152,7 +155,8 @@ abstract class AbstractAPI
      *
      * See the node about naming on the getProviderMethod method.
      *
-     * @param  string  $method
+     * @param string $method
+     *
      * @return array
      */
     protected function normaliseMethod($method)
@@ -186,11 +190,12 @@ abstract class AbstractAPI
     /**
      * Dynamically pass information between the providers.
      *
-     * @param  string  $method
-     * @param  array   $parameters
-     * @return mixed
+     * @param string $method
+     * @param array  $parameters
      *
      * @throws \GrahamCampbell\CoreAPI\Exceptions\ProviderResolutionException
+     *
+     * @return mixed
      */
     public function __call($method, $parameters)
     {

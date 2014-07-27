@@ -19,25 +19,24 @@ namespace GrahamCampbell\CoreAPI\Factories;
 /**
  * This is the abstract api factory class.
  *
- * @package    Laravel-CloudFlare-API
- * @author     Graham Campbell
- * @copyright  Copyright 2013-2014 Graham Campbell
- * @license    https://github.com/GrahamCampbell/Laravel-CloudFlare-API/blob/master/LICENSE.md
- * @link       https://github.com/GrahamCampbell/Laravel-CloudFlare-API
+ * @author    Graham Campbell <graham@mineuk.com>
+ * @copyright 2013-2014 Graham Campbell
+ * @license   <https://github.com/GrahamCampbell/Laravel-CloudFlare-API/blob/master/LICENSE.md> Apache 2.0
  */
 abstract class AbstractAPIFactory
 {
     /**
      * The client factory instance.
      *
-     * @var \GrahamCampbell\CoreAPI\Factories\AbstractClientFactory
+     * @type \GrahamCampbell\CoreAPI\Factories\AbstractClientFactory
      */
     protected $client;
 
     /**
      * Create a new api factory instance.
      *
-     * @param  \GrahamCampbell\CoreAPI\Factories\AbstractClientFactory  $client
+     * @param \GrahamCampbell\CoreAPI\Factories\AbstractClientFactory $client
+     *
      * @return void
      */
     public function __construct(AbstractClientFactory $client)
@@ -48,7 +47,8 @@ abstract class AbstractAPIFactory
     /**
      * Make a new api instance.
      *
-     * @param  array  $config
+     * @param array $config
+     *
      * @return \GrahamCampbell\CoreAPI\AbstractAPI
      */
     public function make(array $config)
@@ -70,7 +70,8 @@ abstract class AbstractAPIFactory
     /**
      * Get a new guzzle client.
      *
-     * @param  array  $config
+     * @param array $config
+     *
      * @return \GuzzleHttp\Command\Guzzle\GuzzleClient
      */
     public function createClient(array $config)
