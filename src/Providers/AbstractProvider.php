@@ -30,7 +30,7 @@ abstract class AbstractProvider
     /**
      * The guzzle client class.
      *
-     * @type \GuzzleHttp\Command\Guzzle\GuzzleClient
+     * @var \GuzzleHttp\Command\Guzzle\GuzzleClient
      */
     protected $client;
 

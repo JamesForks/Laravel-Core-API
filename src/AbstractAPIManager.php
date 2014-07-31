@@ -32,7 +32,7 @@ abstract class AbstractAPIManager extends AbstractManager
     /**
      * The factory instance.
      *
-     * @type \GrahamCampbell\CoreAPI\Factories\AbstractAPIFactory
+     * @var \GrahamCampbell\CoreAPI\Factories\AbstractAPIFactory
      */
     protected $factory;
 

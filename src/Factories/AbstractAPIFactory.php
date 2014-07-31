@@ -28,7 +28,7 @@ abstract class AbstractAPIFactory
     /**
      * The client factory instance.
      *
-     * @type \GrahamCampbell\CoreAPI\Factories\AbstractClientFactory
+     * @var \GrahamCampbell\CoreAPI\Factories\AbstractClientFactory
      */
     protected $client;
 

@@ -30,14 +30,14 @@ abstract class AbstractModel
     /**
      * The guzzle client class.
      *
-     * @type \GuzzleHttp\Command\Guzzle\GuzzleClient
+     * @var \GuzzleHttp\Command\Guzzle\GuzzleClient
      */
     protected $client;
 
     /**
      * The request cache.
      *
-     * @type array
+     * @var array
      */
     protected $cache;
 

@@ -31,14 +31,14 @@ abstract class AbstractAPI
     /**
      * The provider cache.
      *
-     * @type array
+     * @var array
      */
     protected $providers = array();
 
     /**
      * The guzzle client class.
      *
-     * @type \GuzzleHttp\Command\Guzzle\GuzzleClient
+     * @var \GuzzleHttp\Command\Guzzle\GuzzleClient
      */
     protected $client;
 
