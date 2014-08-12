@@ -76,7 +76,7 @@ abstract class AbstractClientFactory
      *
      * @return \GuzzleHttp\Client
      */
-    protected function attachSubscribers($client)
+    protected function attachSubscribers(Client $client)
     {
         $subscribers = $this->getSubscribers();
 
