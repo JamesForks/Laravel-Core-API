@@ -2,11 +2,11 @@ Laravel Core API
 ================
 
 
-[![Build Status](https://img.shields.io/travis/GrahamCampbell/Laravel-Core-API/master.svg?style=flat)](https://travis-ci.org/GrahamCampbell/Laravel-Core-API)
-[![Coverage Status](https://img.shields.io/scrutinizer/coverage/g/GrahamCampbell/Laravel-Core-API.svg?style=flat)](https://scrutinizer-ci.com/g/GrahamCampbell/Laravel-Core-API/code-structure)
-[![Quality Score](https://img.shields.io/scrutinizer/g/GrahamCampbell/Laravel-Core-API.svg?style=flat)](https://scrutinizer-ci.com/g/GrahamCampbell/Laravel-Core-API)
-[![Software License](https://img.shields.io/badge/license-Apache%202.0-brightgreen.svg?style=flat)](LICENSE.md)
-[![Latest Version](https://img.shields.io/github/release/GrahamCampbell/Laravel-Core-API.svg?style=flat)](https://github.com/GrahamCampbell/Laravel-Core-API/releases)
+[![Build Status](https://img.shields.io/travis/GrahamCampbell/Laravel-Core-API/master.svg?style=flat-square)](https://travis-ci.org/GrahamCampbell/Laravel-Core-API)
+[![Coverage Status](https://img.shields.io/scrutinizer/coverage/g/GrahamCampbell/Laravel-Core-API.svg?style=flat-square)](https://scrutinizer-ci.com/g/GrahamCampbell/Laravel-Core-API/code-structure)
+[![Quality Score](https://img.shields.io/scrutinizer/g/GrahamCampbell/Laravel-Core-API.svg?style=flat-square)](https://scrutinizer-ci.com/g/GrahamCampbell/Laravel-Core-API)
+[![Software License](https://img.shields.io/badge/license-Apache%202.0-brightgreen.svg?style=flat-square)](LICENSE.md)
+[![Latest Version](https://img.shields.io/github/release/GrahamCampbell/Laravel-Core-API.svg?style=flat-square)](https://github.com/GrahamCampbell/Laravel-Core-API/releases)
 
 
 ## Introduction
