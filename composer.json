@@ -1,6 +1,6 @@
 {
     "name": "graham-campbell/core-api",
-    "description": "Core API Provides Some Core API Client Functions For Laravel 4.1+",
+    "description": "Core API Provides Some Core API Client Functions For Laravel 4.1/4.2",
     "keywords": ["laravel", "framework", "core api", "core", "api", "Core API", "Core-API", "Laravel Core API", "Laravel-Core-API", "Graham Campbell", "GrahamCampbell"],
     "license": "Apache-2.0",
     "authors": [
