@@ -124,7 +124,7 @@ abstract class AbstractClientFactory
     {
         $filter = RetrySubscriber::createChainFilter(array(
             RetrySubscriber::createIdempotentFilter(),
-            RetrySubscriber::createStatusFilter()
+            RetrySubscriber::createStatusFilter(),
         ));
 
         return new RetrySubscriber(array('filter' => $filter));
