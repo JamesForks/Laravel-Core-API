@@ -1,17 +1,17 @@
 Laravel Core API
 ================
 
-
-[![Build Status](https://img.shields.io/travis/GrahamCampbell/Laravel-Core-API/master.svg?style=flat-square)](https://travis-ci.org/GrahamCampbell/Laravel-Core-API)
-[![Coverage Status](https://img.shields.io/scrutinizer/coverage/g/GrahamCampbell/Laravel-Core-API.svg?style=flat-square)](https://scrutinizer-ci.com/g/GrahamCampbell/Laravel-Core-API/code-structure)
-[![Quality Score](https://img.shields.io/scrutinizer/g/GrahamCampbell/Laravel-Core-API.svg?style=flat-square)](https://scrutinizer-ci.com/g/GrahamCampbell/Laravel-Core-API)
-[![Software License](https://img.shields.io/badge/license-Apache%202.0-brightgreen.svg?style=flat-square)](LICENSE.md)
-[![Latest Version](https://img.shields.io/github/release/GrahamCampbell/Laravel-Core-API.svg?style=flat-square)](https://github.com/GrahamCampbell/Laravel-Core-API/releases)
-
-
-## Introduction
-
 Laravel Core API was created by, and is maintained by [Graham Campbell](https://github.com/GrahamCampbell), and provides some core API client functions for [Laravel 4.1/4.2](http://laravel.com). It utilises [Guzzle 4](https://github.com/guzzle/guzzle), and my [Laravel Manager](https://github.com/GrahamCampbell/Laravel-Manager) package. Feel free to check out the [change log](CHANGELOG.md), [releases](https://github.com/GrahamCampbell/Laravel-Core-API/releases), [license](LICENSE.md), [api docs](http://docs.grahamjcampbell.co.uk), and [contribution guidelines](CONTRIBUTING.md).
+
+![Laravel Core API](https://cloud.githubusercontent.com/assets/2829600/4432314/c1665754-468c-11e4-995f-e7b5c56d3174.PNG)
+
+<p align="center">
+<a href="https://travis-ci.org/GrahamCampbell/Laravel-Core-API"><img src="https://img.shields.io/travis/GrahamCampbell/Laravel-Core-API/master.svg?style=flat-square" alt="Build Status"></img></a>
+<a href="https://scrutinizer-ci.com/g/GrahamCampbell/Laravel-Core-API/code-structure"><img src="https://img.shields.io/scrutinizer/coverage/g/GrahamCampbell/Laravel-Core-API.svg?style=flat-square" alt="Coverage Status"></img></a>
+<a href="https://scrutinizer-ci.com/g/GrahamCampbell/Laravel-Core-API"><img src="https://img.shields.io/scrutinizer/g/GrahamCampbell/Laravel-Core-API.svg?style=flat-square" alt="Quality Score"></img></a>
+<a href="LICENSE.md"><img src="https://img.shields.io/badge/license-Apache%202.0-brightgreen.svg?style=flat-square" alt="Software License"></img></a>
+<a href="https://github.com/GrahamCampbell/Laravel-Core-API/releases"><img src="https://img.shields.io/github/release/GrahamCampbell/Laravel-Core-API.svg?style=flat-square" alt="Latest Version"></img></a>
+</p>
 
 
 ## Installation
