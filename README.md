@@ -3,6 +3,10 @@ Laravel Core API
 
 Laravel Core API was created by, and is maintained by [Graham Campbell](https://github.com/GrahamCampbell), and provides some core API client functions for [Laravel 4.1/4.2](http://laravel.com). It utilises [Guzzle 4](https://github.com/guzzle/guzzle), and my [Laravel Manager](https://github.com/GrahamCampbell/Laravel-Manager) package. Feel free to check out the [change log](CHANGELOG.md), [releases](https://github.com/GrahamCampbell/Laravel-Core-API/releases), [license](LICENSE.md), [api docs](http://docs.grahamjcampbell.co.uk), and [contribution guidelines](CONTRIBUTING.md).
 
+## WARNING
+
+#### This package is no longer maintained.
+
 ![Laravel Core API](https://cloud.githubusercontent.com/assets/2829600/4432314/c1665754-468c-11e4-995f-e7b5c56d3174.PNG)
 
 <p align="center">
